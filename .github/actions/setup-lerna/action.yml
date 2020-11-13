@@ -11,15 +11,13 @@ inputs:
   npm_token:
     description: 'NPM Token'
     required: true
-  node_version:
-    description: 'Node.js Version'
-    required: true
 
 runs:
   using: 'composite'
   steps:
 
   - name: Configure Lerna
+    shell: bash
     run: |
       git config --global user.email ${{ inputs.git_user_email }}
       git config --global user.name ${{ inputs.git_username }}
@@ -27,15 +25,3 @@ runs:
       git config --global push.default simple
       npm config set //registry.npmjs.org/:_authToken=${{ inputs.npm_token }} -q
       npm whoami
-
-  - name: Use Node.js ${{ inputs.node_version }}
-    uses: actions/setup-node@v1
-    with:
-      node-version: ${{ inputs.node_version }}
-
-  - uses: actions/cache@v2
-    with:
-      path: ~/.npm
-      key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-      restore-keys: |
-        ${{ runner.os }}-node-

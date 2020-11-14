@@ -38,126 +38,30 @@ jobs:
       - name: Build
         run: make clean verify report site
 
-      - name: Archive packages
-        uses: actions/upload-artifact@v2
-        if: matrix.node-version == '14.x' # && github.ref == 'refs/heads/master'
-        with:
-          name: packages
-          path: packages/*/lib/**
-          retention-days: 3
+      - name: Publish coverage
+        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/master'
+        run: npm run coverage:publish
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
-      - name: Archive site
-        uses: actions/upload-artifact@v2
-        if: matrix.node-version == '14.x' # && github.ref == 'refs/heads/master'
-        with:
-          name: site
-          path: documentation/website/target
-          retention-days: 3
+      - name: Publish artifacts
+        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/master'
+        run: npx lerna publish --yes
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: Archive reports
-        uses: actions/upload-artifact@v2
-        if: matrix.node-version == '14.x' # && github.ref == 'refs/heads/master'
-        with:
-          name: packages
-          path: packages
-          retention-days: 3
+      - name: Publish site
+        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/master'
+        run: npm run site:publish
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
-  publish_packages:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    needs: [ build ]
-    steps:
-      - uses: actions/download-artifact@v2
+      - name: Publish site
+        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/master'
+        uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
-          name: packages
-          path: packages
-      - name: Test site archive
-        run: |
-          ls -lah packages/core/lib
-
-  publish_site:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    needs: [ build, publish_packages ]
-    steps:
-      - uses: actions/download-artifact@v2
-        with:
-          name: site
-          path: documentation/website/target
-      - name: Test site archive
-        run: ls -lah documentation/website/target
-
-  publish_reports:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    needs: [ build ]
-    steps:
-      - uses: actions/download-artifact@v2
-        with:
-          name: reports
-          path: target
-      - name: Test coverage archive
-        run: ls -lah target
-
-#  pipeline:
-#    if: "!contains(github.event.head_commit.message, 'ci skip')"
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#        with:
-#          token: ${{ secrets.GH_TOKEN }}
-#
-#      - name: Configure Lerna
-#        run: |
-#          git config --global user.email $GH_EMAIL
-#          git config --global user.name $GH_USERNAME
-#          git config --global user.password $GH_TOKEN
-#          git config --global push.default simple
-#          npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN -q
-#          npm whoami
-#        env:
-#          GH_EMAIL: ${{secrets.RELEASE_GH_EMAIL}}
-#          GH_USERNAME: ${{secrets.RELEASE_GH_USERNAME}}
-#          GH_TOKEN: ${{secrets.GH_TOKEN}}
-#          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-#
-#      - name: Use Node.js 14.x
-#        uses: actions/setup-node@v1
-#        with:
-#          node-version: 14.x
-#          # configurable
-#
-#      - uses: actions/cache@v2
-#        with:
-#          path: ~/.npm
-#          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-#          restore-keys: |
-#            ${{ runner.os }}-node-
-#
-#
-#      - run: npm ci
-#      - run: make clean
-#      - run: make verify
-#        env:
-#          CI: true
-#      - run: make report
-#      - run: make site
-#
-#      - name: Publish coverage
-#        if: github.ref == 'refs/heads/master'
-#        run: npm run coverage:publish
-#        env:
-#          COVERALLS_REPO_TOKEN: ${{secrets.COVERALLS_REPO_TOKEN}}
-#
-#      - name: Publish artifacts
-#        if: github.ref == 'refs/heads/master'
-#        run: npx lerna publish --yes
-#        env:
-#          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-#          GH_TOKEN: ${{secrets.GH_TOKEN}}
-#
-#      - name: Publish site
-#        if: github.ref == 'refs/heads/master'
-#        run: npm run site:publish
-#        env:
-#          GH_TOKEN: ${{secrets.GH_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: documentation/website/target/site
+          CLEAN: true

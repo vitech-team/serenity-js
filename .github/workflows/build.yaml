@@ -15,6 +15,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_TOKEN }}
       - uses: ./.github/actions/setup-lerna
         with:
           github_token:   ${{ secrets.GH_TOKEN }}
@@ -33,7 +35,32 @@ jobs:
             ${{ runner.os }}-node-
       - run: npm ci
 
-      - run: make clean
+      - name: Build
+        run: make clean verify report site
+
+      - name: Archive site
+        uses: actions/upload-artifact@v2
+        if: github.ref == 'refs/heads/master' && matrix.node-version == '14.x'
+        with:
+          name: site
+          path: documentation/website/target/site
+          retention-days: 3
+
+      - name: Archive reports
+        uses: actions/upload-artifact@v2
+        if: github.ref == 'refs/heads/master' && matrix.node-version == '14.x'
+        with:
+          name: reports
+          path: target
+          retention-days: 3
+
+      - name: Archive packages
+        uses: actions/upload-artifact@v2
+        if: github.ref == 'refs/heads/master' && matrix.node-version == '14.x'
+        with:
+          name: packages
+          path: packages/**
+          retention-days: 3
 
   pipeline:
     if: "!contains(github.event.head_commit.message, 'ci skip')"

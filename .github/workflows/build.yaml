@@ -39,6 +39,22 @@ jobs:
 
       - name: Compile
         run: make compile
+
+      - uses: papeloto/action-zip@v1
+        with:
+          files: |
+            integration/*/lib/**/*
+            packages/*/lib/**/*
+            package.json
+          dest: target/libs.zip
+
+      - uses: actions/upload-artifact@v2
+        with:
+          retention-days: 3
+          name: zipped-libs
+          path: |
+            target/libs.zip
+
       - uses: actions/upload-artifact@v2
         with:
           retention-days: 3
@@ -104,6 +120,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: TEST download zipped libs
+        uses: actions/download-artifact@v2
+        with:
+          name: zipped-libs
       - name: Download compiled libs
         uses: actions/download-artifact@v2
         with:

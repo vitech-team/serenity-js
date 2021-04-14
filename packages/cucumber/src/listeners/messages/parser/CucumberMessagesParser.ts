@@ -139,6 +139,8 @@ export class CucumberMessagesParser {
         })
     }
 
+    // todo: retries
+    //  https://github.com/webdriverio/webdriverio/blob/b7ed4a0705a1d2f8ffc699a2d662792ce7a88453/packages/wdio-cucumber-framework/src/cucumberEventListener.ts#L41
     parseTestCaseFinishes(hookMessage: { testCaseStartedId: string, result: messages.TestStepFinished.ITestStepResult }): DomainEvent {
         return new SceneFinishes(
             this.serenity.currentSceneId(),
@@ -342,6 +344,9 @@ export class CucumberMessagesParser {
         // todo: can't tag the first attempt because the information about max number of attempts is not available to Cucumber formatters
         //  so we don't know if a scenario that has just failed is going to be retried at all
         //  https://github.com/cucumber/cucumber-js/issues/1535
+
+        // todo: the above might no longer be true
+        //  https://github.com/webdriverio/webdriverio/blob/main/packages/wdio-cucumber-framework/src/reporter.ts#L191
 
         const tags = testCaseAttempt.attempt > 0
             ? [ new ArbitraryTag('retried'), new ExecutionRetriedTag(testCaseAttempt.attempt) ]

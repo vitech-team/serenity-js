@@ -136,7 +136,7 @@ describe('CucumberCLIAdapter', function () {
             });
     }
 
-    function run(config: CucumberConfig, output: SerenityFormatterOutput): Promise<string> {
+    async function run(config: CucumberConfig, output: SerenityFormatterOutput): Promise<string> {
         clearRequireCache('steps.ts');
 
         const adapter = new CucumberCLIAdapter({
@@ -149,8 +149,10 @@ describe('CucumberCLIAdapter', function () {
 
         const inspect = stdout.inspect();
 
+        await adapter.load([ 'features/passing_scenario.feature' ])
+
         return adapter
-            .run([ 'features/passing_scenario.feature' ])
+            .run()
             .then(() => {
                 inspect.restore();
                 return inspect.output.join('');

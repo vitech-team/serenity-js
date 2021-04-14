@@ -30,7 +30,7 @@ describe('JasmineAdapter', () => {
     });
 
     /** @test JasmineAdapter#run */
-    it('defaults to running tests sequentially rather than in a random order', () => {
+    it('defaults to running tests sequentially rather than in a random order', async () => {
 
         const
             config = {},
@@ -38,7 +38,9 @@ describe('JasmineAdapter', () => {
 
         const adapter = new JasmineAdapter(config, loader);
 
-        const result = adapter.run(specs);
+        await adapter.load(specs);
+
+        const result = adapter.run();
 
         FakeJasmineRunner.instance.complete(true);
 
@@ -50,7 +52,7 @@ describe('JasmineAdapter', () => {
     });
 
     /** @test JasmineAdapter#run */
-    it('configures the default timeout interval if required', () => {
+    it('configures the default timeout interval if required', async () => {
 
         const
             defaultTimeoutInterval = 5000,
@@ -64,7 +66,8 @@ describe('JasmineAdapter', () => {
 
         const adapter = new JasmineAdapter(config, loader);
 
-        const result = adapter.run(specs);
+        await adapter.load(specs)
+        const result = adapter.run();
 
         FakeJasmineRunner.instance.complete(true);
 

@@ -4,6 +4,7 @@ import {
     BusinessRuleDetected,
     DomainEvent,
     FeatureNarrativeDetected,
+    RetryableSceneDetected,
     SceneDescriptionDetected,
     SceneFinished,
     SceneFinishes,
@@ -139,8 +140,6 @@ export class CucumberMessagesParser {
         })
     }
 
-    // todo: retries
-    //  https://github.com/webdriverio/webdriverio/blob/b7ed4a0705a1d2f8ffc699a2d662792ce7a88453/packages/wdio-cucumber-framework/src/cucumberEventListener.ts#L41
     parseTestCaseFinishes(hookMessage: { testCaseStartedId: string, result: messages.TestStepFinished.ITestStepResult }): DomainEvent {
         return new SceneFinishes(
             this.serenity.currentSceneId(),
@@ -155,7 +154,8 @@ export class CucumberMessagesParser {
             testCaseAttempt = this.eventDataCollector.getTestCaseAttempt(message.testCaseStartedId),
             currentSceneId  = this.serenity.currentSceneId();
 
-        return this.extract(this.scenarioOutcomeFrom(testCaseAttempt), ({ outcome, tags }) => [
+        return this.extract(this.scenarioOutcomeFrom(testCaseAttempt), ({ outcome, willBeRetried, tags }) => [
+            willBeRetried ? new RetryableSceneDetected(currentSceneId, this.serenity.currentTime()) : undefined,
             ...tags.map(tag => new SceneTagged(currentSceneId, tag, this.serenity.currentTime())),
             new SceneFinished(
                 currentSceneId,
@@ -331,7 +331,7 @@ export class CucumberMessagesParser {
         }
     }
 
-    private scenarioOutcomeFrom(testCaseAttempt: ITestCaseAttempt): { outcome: Outcome, tags: Tag[] } {
+    private scenarioOutcomeFrom(testCaseAttempt: ITestCaseAttempt): { outcome: Outcome, willBeRetried: boolean, tags: Tag[] } {
         const parsed = this.formatterHelpers.parseTestCaseAttempt({
             cwd: this.cwd,
             snippetBuilder: this.snippetBuilder,
@@ -339,20 +339,21 @@ export class CucumberMessagesParser {
             testCaseAttempt
         });
 
-        const outcome = this.outcomeFrom(parsed.testCase.worstTestStepResult, ...parsed.testSteps);
+        const worstStepResult   = parsed.testCase.worstTestStepResult;
+        const willBeRetried     = worstStepResult.willBeRetried;
+        const outcome           = this.outcomeFrom(worstStepResult, ...parsed.testSteps);
 
-        // todo: can't tag the first attempt because the information about max number of attempts is not available to Cucumber formatters
-        //  so we don't know if a scenario that has just failed is going to be retried at all
-        //  https://github.com/cucumber/cucumber-js/issues/1535
+        const tags = [];
 
-        // todo: the above might no longer be true
-        //  https://github.com/webdriverio/webdriverio/blob/main/packages/wdio-cucumber-framework/src/reporter.ts#L191
+        if (testCaseAttempt.attempt > 0 || willBeRetried) {
+            tags.push(new ArbitraryTag('retried'));
+        }
 
-        const tags = testCaseAttempt.attempt > 0
-            ? [ new ArbitraryTag('retried'), new ExecutionRetriedTag(testCaseAttempt.attempt) ]
-            : [];
+        if (testCaseAttempt.attempt > 0) {
+            tags.push(new ExecutionRetriedTag(testCaseAttempt.attempt));
+        }
 
-        return { outcome, tags };
+        return { outcome, willBeRetried, tags };
     }
 }
 

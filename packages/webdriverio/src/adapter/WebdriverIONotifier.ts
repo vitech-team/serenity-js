@@ -1,19 +1,21 @@
 import { LogicError, Stage, StageCrewMember } from '@serenity-js/core';
-import { DomainEvent, SceneFinished, SceneStarts, SceneTagged, TestSuiteFinished, TestSuiteStarts } from '@serenity-js/core/lib/events';
+import { DomainEvent, RetryableSceneDetected, SceneFinished, SceneStarts, TestSuiteFinished, TestSuiteStarts } from '@serenity-js/core/lib/events';
 import type { EventEmitter } from 'events';
 import {
-    ArbitraryTag,
     CorrelationId,
     ExecutionCompromised,
     ExecutionFailedWithAssertionError,
-    ExecutionFailedWithError, ExecutionIgnored, ExecutionRetriedTag, ExecutionSkipped,
-    ExecutionSuccessful, ImplementationPending,
-    Outcome, ProblemIndication,
-    ScenarioDetails,
+    ExecutionFailedWithError,
+    ExecutionIgnored,
+    ExecutionSkipped,
+    ImplementationPending,
+    Outcome,
+    ProblemIndication,
     TestSuiteDetails,
-    Timestamp,
 } from '@serenity-js/core/lib/model';
+// tslint:disable-next-line:no-submodule-imports
 import { Suite } from '@wdio/reporter/build/stats/suite';
+// tslint:disable-next-line:no-submodule-imports
 import { Test } from '@wdio/reporter/build/stats/test';
 import { match } from 'tiny-types';
 
@@ -22,39 +24,36 @@ export class WebdriverIONotifier implements StageCrewMember {
     private readonly events = new EventLog();
     private readonly suites: TestSuiteDetails[] = [];
 
-    // todo: I might need something more elegant than this ;-)
-    private failures: number = 0;
-
     constructor(
         private readonly reporter: EventEmitter,
         private readonly successThreshold: Outcome | { Code: number },
         private readonly cid: string,
         private readonly specs: string[],
-        private readonly stage: Stage = null,
+        private failures: number = 0,       // todo: I might need something more elegant than this ;-)
+        private stage: Stage = null,
     ) {
     }
 
     assignedTo(stage: Stage): StageCrewMember {
-        return new WebdriverIONotifier(
-            this.reporter,
-            this.successThreshold,
-            this.cid,
-            this.specs,
-            stage,
-        );
+        this.stage = stage;
+        return this;
     }
 
     notifyOf(event: DomainEvent): void {
         return match<DomainEvent, void>(event)
-            .when(TestSuiteStarts,      this.onTestSuiteStarts.bind(this))
-            .when(TestSuiteFinished,    this.onTestSuiteFinished.bind(this))
-            .when(SceneStarts,          this.onSceneStarts.bind(this))
-            .when(SceneTagged,          this.onSceneTagged.bind(this))
-            .when(SceneFinished,        this.onSceneFinished.bind(this))
+            .when(TestSuiteStarts,          this.onTestSuiteStarts.bind(this))
+            .when(TestSuiteFinished,        this.onTestSuiteFinished.bind(this))
+            .when(SceneStarts,              this.onSceneStarts.bind(this))
+            .when(RetryableSceneDetected,   this.onRetryableSceneDetected.bind(this))
+            .when(SceneFinished,            (e: SceneFinished) => {
+                this.onSceneFinished(e);
+            })
             .else(() => void 0);
     }
 
     failureCount(): number {
+        // todo: both failed and retried tests count
+
         return this.failures;
     }
 
@@ -63,6 +62,10 @@ export class WebdriverIONotifier implements StageCrewMember {
         this.reporter.emit('suite:start', this.suiteStartEventFrom(started));
 
         this.suites.push(started.details);
+    }
+
+    private onRetryableSceneDetected(event: RetryableSceneDetected) {
+        // todo: implement proper t
     }
 
     private onTestSuiteFinished(finished: TestSuiteFinished) {
@@ -106,28 +109,37 @@ export class WebdriverIONotifier implements StageCrewMember {
         this.reporter.emit(test.type, test);
     }
 
-    private onSceneTagged(tagged: SceneTagged) {
-        // todo: avoid string comparison; introduce a dedicated tag for retries
-        if (tagged.tag instanceof ArbitraryTag && tagged.tag.name === 'retried') {
-
-        }
-    }
-
     private onSceneFinished(finished: SceneFinished) {
 
+        // todo: check if the scene will be retried
+        // ...
+
+        // todo: don't count retryables
         if (finished.outcome.isWorseThan(this.successThreshold)) {
             this.failures++;
         }
 
-        // todo: if not retried
         const started     = this.events.getByCorrelationId<SceneStarts>(finished.sceneId);
-        const testResult  = this.testResultEventFrom(started, finished);
-        this.reporter.emit(testResult.type, testResult);
 
-        const testEnd     = this.testEndEventFrom(started, finished);
-        this.reporter.emit(testEnd.type, testEnd);
+        // todo: hack, clean up; if Ignored and retryable
+        if (finished.outcome instanceof ExecutionIgnored /* todo: and is retryable */) {
+            const testResult  = this.testEndEventFrom(started, finished);
 
-        // todo: emit test:end when there are no retries left
+            const type = 'test:retry';
+
+            this.reporter.emit(type, {
+                ...testResult,
+                type,
+                error:  this.errorFrom(finished.outcome),
+            });
+        } else {
+
+            const testResult  = this.testResultEventFrom(started, finished);
+            this.reporter.emit(testResult.type, testResult);
+
+            const testEnd     = this.testEndEventFrom(started, finished);
+            this.reporter.emit(testEnd.type, testEnd);
+        }
     }
 
     private testStartEventFrom(started: SceneStarts): Test {
@@ -165,9 +177,9 @@ export class WebdriverIONotifier implements StageCrewMember {
         const test = this.testEndEventFrom(started, finished)
 
         const unlessSuccessful = (outcome: Outcome, type: Test['type']) =>
-            outcome.isWorseThan(this.successThreshold)
-                ? type
-                : 'test:pass';
+            ! outcome.isWorseThan(this.successThreshold) && (outcome instanceof ProblemIndication)
+                ? 'test:pass'
+                : type;
 
         return match<Outcome, Test>(finished.outcome)
             .when(ExecutionCompromised, (outcome: ExecutionCompromised) => ({

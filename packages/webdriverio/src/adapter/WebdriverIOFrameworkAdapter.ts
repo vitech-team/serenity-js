@@ -1,11 +1,12 @@
-import { ArtifactArchiver, Serenity, SerenityConfig } from '@serenity-js/core';
+import { ArtifactArchiver, Serenity } from '@serenity-js/core';
 import { ModuleLoader, TestRunnerAdapter } from '@serenity-js/core/lib/io';
 import type { Capabilities } from '@wdio/types';
-import deepmerge = require('deepmerge');
 import type { EventEmitter } from 'events';
 import { isPlainObject } from 'is-plain-object';
 import { WebdriverIONotifier } from './WebdriverIONotifier';
 import { WebdriverIOConfig } from './WebdriverIOConfig';
+
+import deepmerge = require('deepmerge');
 
 export class WebdriverIOFrameworkAdapter {
 
@@ -49,7 +50,6 @@ export class WebdriverIOFrameworkAdapter {
                 this.notifier,
             ]
         });
-        // todo: inject failure threshold into notifier
     }
 
     async init(): Promise<WebdriverIOFrameworkAdapter> {
@@ -66,6 +66,8 @@ export class WebdriverIOFrameworkAdapter {
     run(): Promise<number> {
         return this.adapter.run().then(() => {
             // todo: return the number of failures from the reporter
+            // todo: should it be the count of failed scenarios or failed files?!
+
             return this.notifier.failureCount();
         });
     }

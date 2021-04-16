@@ -10,7 +10,7 @@ export const config = {
 
     serenity: {
         crew: [
-            new StreamReporter(createWriteStream(`events-${ process.pid }.ndjson`)),
+            // new StreamReporter(createWriteStream(`events-${ process.pid }.ndjson`)),
         ]
     },
 

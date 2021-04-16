@@ -2,7 +2,8 @@
 
 import { Serenity } from '@serenity-js/core';
 import {
-    DomainEvent, RetryableSceneDetected,
+    DomainEvent,
+    RetryableSceneDetected,
     SceneFinished,
     SceneFinishes,
     SceneStarts,

@@ -37,6 +37,7 @@ export const config = {
         browserName: 'chrome',
         'goog:chromeOptions': {
             args: [
+                '--headless',
                 '--disable-infobars',
                 '--no-sandbox',
                 '--disable-gpu',

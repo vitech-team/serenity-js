@@ -43,11 +43,14 @@ export const config = {
 
     maxInstances: 1,
 
+    headless: true,
+
     capabilities: [{
 
         browserName: 'chrome',
         'goog:chromeOptions': {
             args: [
+                '--headless',
                 '--disable-infobars',
                 '--no-sandbox',
                 '--disable-gpu',

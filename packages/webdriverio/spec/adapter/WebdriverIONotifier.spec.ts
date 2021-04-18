@@ -1,91 +1,38 @@
 import 'mocha';
-import EventEmitter = require('events');
+import { WebdriverIONotifier } from '../../src/adapter/WebdriverIONotifier';
+import { Cast, Clock, Duration, Stage, StageManager } from '@serenity-js/core';
+import {
+    cid,
+    executionCompromised,
+    executionFailedWithAssertionError,
+    executionFailedWithError,
+    executionIgnored,
+    executionSkipped,
+    executionSuccessful,
+    implementationPending,
+    retryableSceneDetected,
+    retryableSceneFinishedWith,
+    retryableSceneStarts, scene1Duration,
+    scene1FinishedWith, scene1Id,
+    scene1Starts,
+    scene2FinishedWith,
+    scene2Starts,
+    successThreshold,
+    testRunFinished,
+    testRunFinishes,
+    testRunStarts, testSuiteFinished, testSuiteStarts,
+    when
+} from './fixtures';
+import { expect } from '@integration/testing-tools';
 import { given } from 'mocha-testdata';
+import EventEmitter = require('events');
 import sinon = require('sinon');
 
-import { AssertionError, Cast, Clock, Duration, ImplementationPendingError, Stage, StageManager, TestCompromisedError } from '@serenity-js/core';
-import { DomainEvent, SceneFinished, SceneStarts, TestRunFinished, TestRunFinishes, TestRunStarts } from '@serenity-js/core/lib/events';
-import { FileSystemLocation, Path } from '@serenity-js/core/lib/io';
-import {
-    Category,
-    CorrelationId, ExecutionCompromised,
-    ExecutionFailedWithAssertionError, ExecutionFailedWithError,
-    ExecutionIgnored,
-    ExecutionSkipped,
-    ExecutionSuccessful, ImplementationPending,
-    Name,
-    Outcome,
-    ScenarioDetails,
-    Timestamp,
-} from '@serenity-js/core/lib/model';
-import { expect } from '@integration/testing-tools';
+describe('WebdriverIONotifier', () => {
 
-import { WebdriverIONotifier } from '../../src/adapter/WebdriverIONotifier';
-
-describe.skip('WebdriverIONotifier', () => {
-
-    const
-        startTime = Timestamp.fromMillisecondTimestamp(0),
-        cid = '0-0',
-        successThreshold: Outcome | { Code: number } = ExecutionIgnored,
-
-        scene1Id = CorrelationId.create(),
-        scene2Id = CorrelationId.create(),
-        scenario1Details = new ScenarioDetails(
-            new Name('Paying with a default card'),
-            new Category('Online Checkout'),
-            new FileSystemLocation(
-                new Path(`payments/checkout.feature`),
-                3,
-            ),
-        ),
-        scenario2Details = new ScenarioDetails(
-            new Name('Paying with a voucher'),
-            new Category('Online Checkout'),
-            new FileSystemLocation(
-                new Path(`payments/checkout.feature`),
-                10,
-            ),
-        ),
-        categoryUID = 'payments/checkout.feature:Online Checkout',
-
-        scene1Duration = Duration.ofMilliseconds(500),
-        scene2Duration = Duration.ofMilliseconds(250),
-
-        testRunStarts = new TestRunStarts(startTime),
-        scene1Starts = new SceneStarts(scene1Id, scenario1Details, startTime),
-        scene1FinishedWith = (outcome: Outcome) =>
-            new SceneFinished(scene1Id, scenario1Details, outcome, startTime.plus(scene1Duration)),
-        scene2Starts = new SceneStarts(scene2Id, scenario2Details, startTime.plus(scene1Duration)),
-        scene2FinishedWith = (outcome: Outcome) =>
-            new SceneFinished(scene2Id, scenario2Details, outcome, startTime.plus(scene1Duration).plus(scene2Duration)),
-        testRunFinishes = new TestRunFinishes(startTime.plus(scene1Duration).plus(scene2Duration)),
-        testRunFinished = new TestRunFinished(startTime.plus(scene1Duration).plus(scene2Duration)),
-
-        executionSuccessful    = new ExecutionSuccessful(),
-        executionSkipped       = new ExecutionSkipped(),
-        executionIgnored       = new ExecutionIgnored(thrown(new Error('Execution ignored'))),
-        implementationPending  = new ImplementationPending(thrown(new ImplementationPendingError('Step missing'))),
-        failedWithAssertion    = new ExecutionFailedWithAssertionError(thrown(new AssertionError('Expected false to be true', true, false))),
-        failedWithError        = new ExecutionFailedWithError(thrown(new Error(`We're sorry, something happened`))),
-        compromised            = new ExecutionCompromised(thrown(new TestCompromisedError('DB is down')))
-    ;
-
-    function thrown<T extends Error>(error: T): T {
-        try {
-            throw error;
-        } catch (e) {
-            return e;
-        }
-    }
-
-    function givenEvents(...events: DomainEvent[]): void {
-        events.forEach(event => {
-            notifier.notifyOf(event);
-        })
-    }
-
-    const specs = [];
+    const specs = [
+        '/users/jan/project/feature.spec.ts'
+    ];
 
     let notifier: WebdriverIONotifier,
         reporter: sinon.SinonStubbedInstance<EventEmitter>,
@@ -110,184 +57,341 @@ describe.skip('WebdriverIONotifier', () => {
         stage.assign(notifier);
     });
 
-    describe('when notifying WebdriverIO', () => {
+    describe('failureCount()', () => {
 
-        // https://github.com/webdriverio/webdriverio/tree/main/packages/wdio-reporter
-
-        it('translates Serenity/JS events to WebdriverIO events', () => {
-            givenEvents(
-                testRunStarts,
+        given([{
+            description: 'no scenarios',
+            expectedFailureCount: 0,
+            events: []
+        }, {
+            description: 'all successful',
+            expectedFailureCount: 0,
+            events: [
+                scene1Starts,
+                scene1FinishedWith(executionSuccessful)
+            ]
+        }, {
+            description: 'one failure',
+            expectedFailureCount: 1,
+            events: [
+                scene1Starts,
+                scene1FinishedWith(executionFailedWithError)
+            ]
+        }, {
+            description: 'two failures',
+            expectedFailureCount: 2,
+            events: [
+                scene1Starts,
+                scene1FinishedWith(executionFailedWithError),
+                scene2Starts,
+                scene2FinishedWith(executionFailedWithError)
+            ]
+        }, {
+            description: 'failure and success',
+            expectedFailureCount: 1,
+            events: [
                 scene1Starts,
                 scene1FinishedWith(executionSuccessful),
-                testRunFinished,
-            );
-
-            /*
-            SuiteStats {
-              type: 'suite',
-              start: '2018-02-09T13:30:40.177Z',
-              duration: 0,
-              uid: 'root suite2',
-              cid: '0-0',
-              title: 'root suite',
-              fullTitle: 'root suite',
-              tests: [],
-              hooks: [],
-              suites: [] } }
-             */
-            expect(reporter.emit.getCall(0)).to.have.been.calledWith('suite:start', {
-                type:       'suite',
-                start:      scene1Starts.timestamp.toJSON(),    // ISO8601
-                duration:   0,
-                uid:        categoryUID,
-                cid,
-                title:      scene1Starts.details.category.value,
-            });
-
-            /*
-            TestStats {
-              type: 'test',
-              start: '2018-02-09T13:30:40.180Z',
-              duration: 0,
-              uid: 'passing test3',
-              cid: '0-0',
-              title: 'passing test',
-              fullTitle: 'passing test',
-              retries: 0,
-              state: 'pending' } }
-             */
-
-            expect(reporter.emit.getCall(1)).to.have.been.calledWith('test:start', {
-                type:       'test',
-                start:      scene1Starts.timestamp.toJSON(),    // ISO8601
-                duration:   0,
-                uid:        scene1Starts.sceneId.value,
-                cid,
-                title:      scene1Starts.details.name.value,
-            });
-
-
-            /*
-            TestStats {
-              type: 'test',
-              start: '2018-02-09T14:11:28.075Z',
-              duration: 1503,
-              uid: 'passing test3',
-              cid: '0-0',
-              title: 'passing test',
-              fullTitle: 'passing test',
-              retries: 0,
-              state: 'passed',
-              end: '2018-02-09T14:11:29.578Z' } }
-             */
-            expect(reporter.emit.getCall(2)).to.have.been.calledWith('test:pass', {
-                type:       'test',
-                start:      scene1Starts.timestamp.toJSON(),    // ISO8601
-                duration:   scene1Duration.inMilliseconds(),
-                uid:        scene1Starts.sceneId.value,
-                cid,
-                title:      scene1Starts.details.name.value,
-                state:      'passed',
-                end:        scene1Starts.timestamp.plus(scene1Duration).toJSON(), // ISO8601
-            });
-
-            /*
-            TestStats {
-              type: 'test',
-              start: '2018-02-09T14:11:28.075Z',
-              duration: 1503,
-              uid: 'passing test3',
-              cid: '0-0',
-              title: 'passing test',
-              fullTitle: 'passing test',
-              retries: 0,
-              state: 'passed',
-              end: '2018-02-09T14:11:29.578Z' } }
-             */
-            expect(reporter.emit.getCall(3)).to.have.been.calledWith('test:end', {
-                type:       'test',
-                start:      scene1Starts.timestamp.toJSON(),    // ISO8601
-                duration:   scene1Duration.inMilliseconds(),
-                uid:        scene1Starts.sceneId.value,
-                cid,
-                title:      scene1Starts.details.name.value,
-                state:      'passed',
-                end:        scene1Starts.timestamp.plus(scene1Duration).toJSON(), // ISO8601
-            });
-
-            /*
-            * todo: this emits a subset of those fields:
-            *  https://github.com/webdriverio/webdriverio/blob/main/packages/wdio-cucumber-framework/src/reporter.ts#L240
-
-            SuiteStats {
-              type: 'suite',
-              start: '2018-02-09T13:30:40.177Z',
-              duration: 1432,
-              uid: 'root suite2',
-              cid: '0-0',
-              title: 'root suite',
-              fullTitle: 'root suite',
-              tests: [ [TestStats] ],
-              hooks: [ [HookStats], [HookStats] ],
-              suites: [ [Object] ],
-              end: '2018-02-09T13:30:41.609Z' } }
-            */
-            expect(reporter.emit.getCall(4)).to.have.been.calledWith('suite:end', {
-                type:       'suite',
-                start:      scene1Starts.timestamp.toJSON(),    // ISO8601
-                duration:   scene1Duration.inMilliseconds(),
-                uid:        categoryUID,
-                cid,
-                title:      scene1Starts.details.category.value,
-                end:        scene1Starts.timestamp.plus(scene1Duration).toJSON(), // ISO8601
-            });
-        });
-    });
-
-    describe('when reporting the total number of failures it has observed', () => {
-
-        it('returns 0 when no scenarios have been executed', () => {
-            givenEvents(
-                testRunStarts,
-                testRunFinishes,
-                testRunFinished,
-            );
-
-            expect(notifier.failureCount()).to.equal(0);
-        });
-
-        given([
-            { outcome: executionSuccessful, description: 'ExecutionSuccessful' },
-            { outcome: executionSkipped, description: 'ExecutionSkipped' },
-            { outcome: executionIgnored, description: 'ExecutionIgnored' },
-        ]).
-        it('returns 0 when all scenarios have their outcomes are above the success threshold', ({outcome}) => {
-            givenEvents(
-                testRunStarts,
-                scene1Starts,
-                scene1FinishedWith(outcome),
-                testRunFinishes,
-                testRunFinished,
-            );
-
-            expect(notifier.failureCount()).to.equal(0);
-        });
-
-        given([
-            { outcome: implementationPending, description: 'OmplementationPending' },
-            { outcome: failedWithAssertion,   description: 'FailedWithAssertion'   },
-            { outcome: failedWithError,       description: 'FailedWithError'       },
-            { outcome: compromised,           description: 'Compromised'           },
-        ]).
-        it('considers a scenario to be unsuccessful when its outcome is below the success threshold', ({outcome}) => {
-            givenEvents(
-                scene1Starts,
-                scene1FinishedWith(outcome),
                 scene2Starts,
-                scene2FinishedWith(new ExecutionSuccessful()),
+                scene2FinishedWith(executionFailedWithError)
+            ]
+        }]).it('returns the number of scenarios that failed', ({ events, expectedFailureCount }) => {
+            when(notifier).receives(
+                testRunStarts,
+                ...events,
+                testRunFinishes,
+                testRunFinished,
             );
 
-            expect(notifier.failureCount()).to.equal(1);
+            expect(notifier.failureCount()).to.equal(expectedFailureCount);
+        });
+
+        given([
+            { description: 'successful',        expectedFailureCount: 0, outcome: executionSuccessful },
+            { description: 'skipped',           expectedFailureCount: 0, outcome: executionSkipped },
+            { description: 'ignored',           expectedFailureCount: 0, outcome: executionIgnored },
+            { description: 'pending',           expectedFailureCount: 1, outcome: implementationPending },
+            { description: 'assertion failure', expectedFailureCount: 1, outcome: executionFailedWithAssertionError },
+            { description: 'error',             expectedFailureCount: 1, outcome: executionFailedWithError },
+            { description: 'compromised',       expectedFailureCount: 1, outcome: executionCompromised },
+        ]).it('counts results above the success threshold as successful', ({ expectedFailureCount, outcome }) => {
+            when(notifier).receives(
+                testRunStarts,
+                scene1Starts,
+                scene1FinishedWith(outcome),
+                testRunFinishes,
+                testRunFinished,
+            );
+
+            expect(notifier.failureCount()).to.equal(expectedFailureCount);
+        });
+
+        it('does not count retried scenarios', () => {
+            when(notifier).receives(
+                testRunStarts,
+                retryableSceneStarts(0),
+                retryableSceneDetected(0),
+                retryableSceneFinishedWith(0, executionIgnored),
+
+                retryableSceneStarts(1),
+                retryableSceneDetected(1),
+                retryableSceneFinishedWith(1, executionIgnored),
+
+                retryableSceneStarts(2),
+                retryableSceneDetected(2),
+                retryableSceneFinishedWith(2, executionSuccessful),
+
+                testRunFinishes,
+                testRunFinished,
+            );
+
+            expect(notifier.failureCount()).to.equal(0);
         });
     });
-});
+
+    describe('notifications', () => {
+
+        it('emits events when a test suite starts and is finished', () => {
+            when(notifier).receives(
+                testRunStarts,
+                testSuiteStarts(0, 'Checkout'),
+                testSuiteFinished(0, 'Checkout', executionSuccessful),
+                testRunFinishes,
+                testRunFinished,
+            );
+
+            expect(reporter.emit.getCalls().map(_ => _.args)).to.deep.equal([
+                [
+                    'suite:start',
+                    {
+                        type: 'suite:start',
+                        uid: 'suite-0',
+                        cid,
+                        title: 'Checkout',
+                        fullTitle: 'Checkout',
+                        parent: '',
+                        file: 'payments/checkout.feature',
+                        specs,
+                        pending: false
+                    }
+                ],
+                [
+                    'suite:end',
+                    {
+                        type: 'suite:end',
+                        uid: 'suite-0',
+                        cid,
+                        title: 'Checkout',
+                        fullTitle: 'Checkout',
+                        parent: '',
+                        file: 'payments/checkout.feature',
+                        specs,
+                        pending: false,
+                        duration: 500
+                    }
+                ]
+            ])
+        });
+
+        it('emits events when a nested test suite starts and is finished', () => {
+            when(notifier).receives(
+                testRunStarts,
+                testSuiteStarts(0, 'Checkout'),
+                testSuiteStarts(1, 'Credit card payment'),
+                testSuiteFinished(1, 'Credit card payment', executionSuccessful),
+                testSuiteFinished(0, 'Checkout', executionSuccessful),
+                testRunFinishes,
+                testRunFinished,
+            );
+
+            expect(reporter.emit.getCalls().map(_ => _.args)).to.deep.equal([
+                [
+                    'suite:start',
+                    {
+                        type: 'suite:start',
+                        uid: 'suite-0',
+                        cid,
+                        title: 'Checkout',
+                        fullTitle: 'Checkout',
+                        parent: '',
+                        file: 'payments/checkout.feature',
+                        specs,
+                        pending: false
+                    }
+                ],
+                [
+                    'suite:start',
+                    {
+                        type: 'suite:start',
+                        uid: 'suite-1',
+                        cid,
+                        title: 'Credit card payment',
+                        fullTitle: 'Checkout Credit card payment',
+                        parent: 'Checkout',
+                        file: 'payments/checkout.feature',
+                        specs,
+                        pending: false
+                    }
+                ],
+                [
+                    'suite:end',
+                    {
+                        type: 'suite:end',
+                        uid: 'suite-1',
+                        cid,
+                        title: 'Credit card payment',
+                        fullTitle: 'Checkout Credit card payment',
+                        parent: 'Checkout',
+                        file: 'payments/checkout.feature',
+                        specs,
+                        pending: false,
+                        duration: 500
+                    }
+                ],
+                [
+                    'suite:end',
+                    {
+                        type: 'suite:end',
+                        uid: 'suite-0',
+                        cid,
+                        title: 'Checkout',
+                        fullTitle: 'Checkout',
+                        parent: '',
+                        file: 'payments/checkout.feature',
+                        specs,
+                        pending: false,
+                        duration: 500
+                    }
+                ]
+            ]);
+        });
+
+        it('emits events when a nested test starts and is finished', () => {
+            when(notifier).receives(
+                testRunStarts,
+                testSuiteStarts(0, 'Checkout'),
+                testSuiteStarts(1, 'Credit card payment'),
+                scene1Starts,
+                scene1FinishedWith(executionSuccessful),
+                testSuiteFinished(1, 'Credit card payment', executionSuccessful),
+                testSuiteFinished(0, 'Checkout', executionSuccessful),
+                testRunFinishes,
+                testRunFinished,
+            );
+
+            expect(reporter.emit.getCalls().map(_ => _.args)).to.deep.equal([
+                [
+                    'suite:start',
+                    {
+                        type: 'suite:start',
+                        uid: 'suite-0',
+                        cid,
+                        title: 'Checkout',
+                        fullTitle: 'Checkout',
+                        parent: '',
+                        file: 'payments/checkout.feature',
+                        specs,
+                        pending: false
+                    }
+                ],
+                [
+                    'suite:start',
+                    {
+                        type: 'suite:start',
+                        uid: 'suite-1',
+                        cid,
+                        title: 'Credit card payment',
+                        fullTitle: 'Checkout Credit card payment',
+                        parent: 'Checkout',
+                        file: 'payments/checkout.feature',
+                        specs,
+                        pending: false
+                    }
+                ],
+
+                [
+                    'test:start',
+                    {
+                        cid,
+                        file: 'payments/checkout.feature',
+                        fullTitle: 'Checkout Credit card payment Paying with a default card',
+                        parent: 'Credit card payment',
+                        pending: false,
+                        'specs': [
+                            '/users/jan/project/feature.spec.ts',
+                        ],
+                        title: 'Paying with a default card',
+                        type: 'test:start',
+                        uid: scene1Id.value,
+                    }
+                ],
+                [
+                    'test:pass',
+                    {
+                        cid,
+                        duration: 500,
+                        file: 'payments/checkout.feature',
+                        fullTitle: 'Checkout Credit card payment Paying with a default card',
+                        parent: 'Credit card payment',
+                        pending: false,
+                        'specs': [
+                            '/users/jan/project/feature.spec.ts',
+                        ],
+                        title: 'Paying with a default card',
+                        type: 'test:pass',
+                        uid: scene1Id.value,
+                    }
+                ],
+                [
+                    'test:end',
+                    {
+                        cid,
+                        duration: 500,
+                        file: 'payments/checkout.feature',
+                        fullTitle: 'Checkout Credit card payment Paying with a default card',
+                        parent: 'Credit card payment',
+                        pending: false,
+                        'specs': [
+                            '/users/jan/project/feature.spec.ts',
+                        ],
+                        title: 'Paying with a default card',
+                        type: 'test:end',
+                        uid: scene1Id.value,
+                    }
+                ],
+
+
+                [
+                    'suite:end',
+                    {
+                        type: 'suite:end',
+                        uid: 'suite-1',
+                        cid,
+                        title: 'Credit card payment',
+                        fullTitle: 'Checkout Credit card payment',
+                        parent: 'Checkout',
+                        file: 'payments/checkout.feature',
+                        specs,
+                        pending: false,
+                        duration: 500
+                    }
+                ],
+                [
+                    'suite:end',
+                    {
+                        type: 'suite:end',
+                        uid: 'suite-0',
+                        cid,
+                        title: 'Checkout',
+                        fullTitle: 'Checkout',
+                        parent: '',
+                        file: 'payments/checkout.feature',
+                        specs,
+                        pending: false,
+                        duration: 500
+                    }
+                ]
+            ]);
+        })
+    });
+})

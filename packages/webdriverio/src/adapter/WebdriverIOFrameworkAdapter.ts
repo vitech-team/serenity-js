@@ -41,7 +41,6 @@ export class WebdriverIOFrameworkAdapter {
             this.specs,
         );
 
-        // todo: add WDIO reporter - https://github.com/webdriverio/webdriverio/tree/main/packages/wdio-reporter
         this.serenity.configure({
             cueTimeout: this.config.serenity.cueTimeout,
             actors:     this.config.serenity.actors,
@@ -64,12 +63,9 @@ export class WebdriverIOFrameworkAdapter {
     }
 
     run(): Promise<number> {
-        return this.adapter.run().then(() => {
-            // todo: return the number of failures from the reporter
-            // todo: should it be the count of failed scenarios or failed files?!
-
-            return this.notifier.failureCount();
-        });
+        return this.adapter.run().then(() =>
+            this.notifier.failureCount()
+        );
     }
 
     private defaultConfig(): Partial<WebdriverIOConfig> {

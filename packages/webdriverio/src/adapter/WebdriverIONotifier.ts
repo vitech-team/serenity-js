@@ -29,7 +29,7 @@ export class WebdriverIONotifier implements StageCrewMember {
         private readonly successThreshold: Outcome | { Code: number },
         private readonly cid: string,
         private readonly specs: string[],
-        private failures: number = 0,       // todo: I might need something more elegant than this ;-)
+        private failures: number = 0,
         private stage: Stage = null,
     ) {
     }
@@ -44,16 +44,11 @@ export class WebdriverIONotifier implements StageCrewMember {
             .when(TestSuiteStarts,          this.onTestSuiteStarts.bind(this))
             .when(TestSuiteFinished,        this.onTestSuiteFinished.bind(this))
             .when(SceneStarts,              this.onSceneStarts.bind(this))
-            .when(RetryableSceneDetected,   this.onRetryableSceneDetected.bind(this))
-            .when(SceneFinished,            (e: SceneFinished) => {
-                this.onSceneFinished(e);
-            })
+            .when(SceneFinished,            this.onSceneFinished.bind(this))
             .else(() => void 0);
     }
 
     failureCount(): number {
-        // todo: both failed and retried tests count
-
         return this.failures;
     }
 
@@ -64,15 +59,11 @@ export class WebdriverIONotifier implements StageCrewMember {
         this.suites.push(started.details);
     }
 
-    private onRetryableSceneDetected(event: RetryableSceneDetected) {
-        // todo: implement proper t
-    }
-
     private onTestSuiteFinished(finished: TestSuiteFinished) {
+        this.suites.pop();
+
         const started = this.events.getByCorrelationId<TestSuiteStarts>(finished.details.correlationId);
         this.reporter.emit('suite:end', this.suiteEndEventFrom(started, finished));
-
-        this.suites.pop();
     }
 
     private suiteStartEventFrom(started: TestSuiteStarts): Suite {
@@ -111,18 +102,13 @@ export class WebdriverIONotifier implements StageCrewMember {
 
     private onSceneFinished(finished: SceneFinished) {
 
-        // todo: check if the scene will be retried
-        // ...
-
-        // todo: don't count retryables
         if (finished.outcome.isWorseThan(this.successThreshold)) {
             this.failures++;
         }
 
         const started     = this.events.getByCorrelationId<SceneStarts>(finished.sceneId);
 
-        // todo: hack, clean up; if Ignored and retryable
-        if (finished.outcome instanceof ExecutionIgnored /* todo: and is retryable */) {
+        if (this.willBeRetried(finished.outcome)) {
             const testResult  = this.testEndEventFrom(started, finished);
 
             const type = 'test:retry';
@@ -132,6 +118,7 @@ export class WebdriverIONotifier implements StageCrewMember {
                 type,
                 error:  this.errorFrom(finished.outcome),
             });
+
         } else {
 
             const testResult  = this.testResultEventFrom(started, finished);
@@ -140,6 +127,10 @@ export class WebdriverIONotifier implements StageCrewMember {
             const testEnd     = this.testEndEventFrom(started, finished);
             this.reporter.emit(testEnd.type, testEnd);
         }
+    }
+
+    private willBeRetried(outcome: Outcome): outcome is ExecutionIgnored {
+        return outcome instanceof ExecutionIgnored;
     }
 
     private testStartEventFrom(started: SceneStarts): Test {

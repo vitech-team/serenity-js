@@ -10,42 +10,36 @@ import deepmerge = require('deepmerge');
 
 export class WebdriverIOFrameworkAdapter {
 
-    private readonly config: WebdriverIOConfig;
-
     private adapter: TestRunnerAdapter;
     private notifier: WebdriverIONotifier;
 
     constructor(
         private readonly serenity: Serenity,
         private readonly loader: ModuleLoader,
-        private readonly cid: string,
-        config: WebdriverIOConfig,
+        cid: string,
+        webdriverIOConfig: WebdriverIOConfig,
         private readonly specs: string[],
         private readonly capabilities: Capabilities.RemoteCapability,
-        private readonly reporter: EventEmitter
+        reporter: EventEmitter
     ) {
-        this.config = deepmerge<WebdriverIOConfig>(this.defaultConfig(), config, {
+        const config = deepmerge<WebdriverIOConfig>(this.defaultConfig(), webdriverIOConfig, {
             isMergeableObject: isPlainObject,
         });
 
-        // todo: load appropriate adapter based on config
-        // todo: throw if anything other than Mocha
-        const { MochaAdapter } = this.loader.require('@serenity-js/mocha/lib/adapter')
-
-        this.adapter = new MochaAdapter(this.config.mochaOpts, this.loader);
+        this.adapter = this.testRunnerAdapterFrom(config)
 
         this.notifier = new WebdriverIONotifier(
-            this.reporter,
+            reporter,
             this.adapter.successThreshold(),
-            this.cid,
+            cid,
             this.specs,
         );
 
         this.serenity.configure({
-            cueTimeout: this.config.serenity.cueTimeout,
-            actors:     this.config.serenity.actors,
+            cueTimeout: config.serenity.cueTimeout,
+            actors:     config.serenity.actors,
             crew: [
-                ...this.config.serenity.crew,
+                ...config.serenity.crew,
                 this.notifier,
             ]
         });
@@ -66,6 +60,18 @@ export class WebdriverIOFrameworkAdapter {
         return this.adapter.run().then(() =>
             this.notifier.failureCount()
         );
+    }
+
+    private testRunnerAdapterFrom(config: WebdriverIOConfig): TestRunnerAdapter {
+        switch (config?.serenity?.runner) {
+            case 'jasmine':
+                const { JasmineAdapter } = this.loader.require('@serenity-js/jasmine/lib/adapter')
+                return new JasmineAdapter(config.jasmineOpts, this.loader);
+
+            default:
+                const { MochaAdapter } = this.loader.require('@serenity-js/mocha/lib/adapter')
+                return new MochaAdapter(config.mochaOpts, this.loader);
+        }
     }
 
     private defaultConfig(): Partial<WebdriverIOConfig> {

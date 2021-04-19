@@ -12,7 +12,7 @@ export class WebdriverIOFrameworkAdapterFactory {
     ) {
     }
 
-    public init /* todo generic <Config_Type> ? */(
+    public init(
             cid: string,
             config: WebdriverIOConfig,
             specs: string[],

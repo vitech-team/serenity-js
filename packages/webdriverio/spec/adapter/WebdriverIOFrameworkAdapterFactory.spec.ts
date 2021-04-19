@@ -1,7 +1,7 @@
 import 'mocha';
 
 import { expect } from '@integration/testing-tools';
-import { Clock, Serenity } from '@serenity-js/core';
+import { Clock, ConfigurationError, Serenity } from '@serenity-js/core';
 import { ModuleLoader, TestRunnerAdapter } from '@serenity-js/core/lib/io';
 import { ExecutionIgnored, Outcome } from '@serenity-js/core/lib/model';
 import type { Capabilities } from '@wdio/types';
@@ -42,12 +42,6 @@ describe('WebdriverIOFrameworkAdapterFactory', () => {
 
     describe('when initialising WebdriverIOFrameworkAdapter', () => {
 
-        // todo:
-        //  Rules:
-        //  - mocha if no framework specified - https://github.com/webdriverio/webdriverio/blob/main/packages/wdio-config/src/constants.ts
-        //  - `runner` specified - load what's being asked for
-
-
         /*
          * WebdriverIO uses 'mocha' by default, so we do the same:
          * - https://github.com/webdriverio/webdriverio/blob/44b5318a8893c032d7d4989079109782a2ce9a79/packages/wdio-config/src/constants.ts#L18
@@ -80,7 +74,16 @@ describe('WebdriverIOFrameworkAdapterFactory', () => {
 
         it('loads specs using @serenity-js/cucumber when configured to do so');
 
-        it('complains when configured with an invalid runner');
+        it('complains when configured with an invalid runner', () => {
+            const config = defaultConfig({
+                serenity: {
+                    runner: 'invalid',
+                }
+            });
+
+            expect(() => factory.init(cid, config, specs, capabilities, reporter))
+                .to.throw(ConfigurationError, '"invalid" is not a supported test runner. Please use "mocha", "jasmine", or "cucumber"');
+        });
     });
 
     class FakeTestRunnerAdapter implements TestRunnerAdapter {

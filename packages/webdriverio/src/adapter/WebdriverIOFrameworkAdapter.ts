@@ -1,4 +1,4 @@
-import { ArtifactArchiver, Serenity } from '@serenity-js/core';
+import { ArtifactArchiver, ConfigurationError, Serenity } from '@serenity-js/core';
 import { ModuleLoader, TestRunnerAdapter } from '@serenity-js/core/lib/io';
 import type { Capabilities } from '@wdio/types';
 import type { EventEmitter } from 'events';
@@ -7,6 +7,7 @@ import { WebdriverIONotifier } from './WebdriverIONotifier';
 import { WebdriverIOConfig } from './WebdriverIOConfig';
 
 import deepmerge = require('deepmerge');
+import undefinedError = Mocha.utils.undefinedError;
 
 export class WebdriverIOFrameworkAdapter {
 
@@ -67,10 +68,12 @@ export class WebdriverIOFrameworkAdapter {
             case 'jasmine':
                 const { JasmineAdapter } = this.loader.require('@serenity-js/jasmine/lib/adapter')
                 return new JasmineAdapter(config.jasmineOpts, this.loader);
-
-            default:
+            case 'mocha':
+            case undefined:
                 const { MochaAdapter } = this.loader.require('@serenity-js/mocha/lib/adapter')
                 return new MochaAdapter(config.mochaOpts, this.loader);
+            default:
+                throw new ConfigurationError(`"${ config?.serenity?.runner }" is not a supported test runner. Please use "mocha", "jasmine", or "cucumber"`);
         }
     }
 

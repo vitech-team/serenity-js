@@ -1,8 +1,7 @@
 import 'mocha';
 
-import { expect, ifExitCodeIsOtherThan, logOutput, PickEvent } from '@integration/testing-tools';
-import { TestRunFinished, TestRunFinishes, TestRunStarts } from '@serenity-js/core/lib/events';
-import { StdOutReporter, wdio } from '../src';
+import { expect, ifExitCodeIsOtherThan, logOutput, StdOutReporter } from '@integration/testing-tools';
+import { wdio } from '../src';
 
 describe('@serenity-js/mocha', function () {
 

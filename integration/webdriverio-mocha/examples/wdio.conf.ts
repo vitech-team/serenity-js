@@ -1,7 +1,7 @@
+import { StdOutReporter } from '@integration/testing-tools';
 import { Duration } from '@serenity-js/core';
 import { resolve } from 'path';
 import { Actors } from './src';
-import { StdOutReporter } from '../src';
 
 export const config = {
 

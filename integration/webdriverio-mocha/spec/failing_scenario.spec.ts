@@ -1,10 +1,10 @@
 import 'mocha';
 
-import { expect, ifExitCodeIsOtherThan, logOutput, PickEvent } from '@integration/testing-tools';
+import { expect, ifExitCodeIsOtherThan, logOutput, PickEvent, StdOutReporter } from '@integration/testing-tools';
 import { AssertionError } from '@serenity-js/core';
 import { SceneFinished, SceneStarts, SceneTagged, TestRunnerDetected } from '@serenity-js/core/lib/events';
 import { ExecutionFailedWithAssertionError, FeatureTag, Name, ProblemIndication } from '@serenity-js/core/lib/model';
-import { StdOutReporter, wdio } from '../src';
+import { wdio } from '../src';
 
 describe('@serenity-js/mocha', function () {
 

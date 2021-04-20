@@ -1,9 +1,9 @@
 import 'mocha';
 
-import { expect, ifExitCodeIsOtherThan, logOutput, PickEvent } from '@integration/testing-tools';
+import { expect, ifExitCodeIsOtherThan, logOutput, PickEvent, StdOutReporter } from '@integration/testing-tools';
 import { SceneFinished, SceneStarts } from '@serenity-js/core/lib/events';
 import { ExecutionFailedWithError, ExecutionIgnored, ExecutionSuccessful, Name } from '@serenity-js/core/lib/model';
-import { StdOutReporter, wdio } from '../src';
+import { wdio } from '../src';
 
 describe('@serenity-js/mocha', function () {
 

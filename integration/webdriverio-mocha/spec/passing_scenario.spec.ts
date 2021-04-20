@@ -5,7 +5,7 @@ import { SceneFinished, SceneStarts, SceneTagged, TestRunFinished, TestRunFinish
 import { ExecutionSuccessful, FeatureTag, Name, Timestamp } from '@serenity-js/core/lib/model';
 import { StdOutReporter, wdio } from '../src';
 
-describe('@serenity-js/webdriverio ', function () {
+describe('@serenity-js/webdriverio', function () {
 
     this.timeout(30000);
 

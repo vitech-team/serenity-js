@@ -57,6 +57,21 @@ describe('WebdriverIOFrameworkAdapterFactory', () => {
             expect(FakeTestRunnerAdapter.loadedPathsToScenarios).to.deep.equal(specs);
         });
 
+        it('loads specs using @serenity-js/mocha when configured to do so', async () => {
+
+            const config = defaultConfig({
+                serenity: {
+                    runner: 'mocha',
+                }
+            });
+
+            loader.require.withArgs('@serenity-js/mocha/lib/adapter').returns({ MochaAdapter: FakeTestRunnerAdapter })
+
+            await factory.init(cid, config, specs, capabilities, reporter);
+
+            expect(FakeTestRunnerAdapter.loadedPathsToScenarios).to.deep.equal(specs);
+        });
+
         it('loads specs using @serenity-js/jasmine when configured to do so', async () => {
 
             const config = defaultConfig({

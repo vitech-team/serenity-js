@@ -7,7 +7,7 @@ import { mocha } from '../src/mocha';
 
 describe('@serenity-js/mocha', function () {
 
-    this.timeout(30000);
+    this.timeout(10000);
 
     describe('recognises a skipped scenario that', () => {
 

@@ -1,6 +1,6 @@
 {
   "name": "@serenity-js/webdriverio",
-  "version": "2.26.0",
+  "version": "2.26.2",
   "description": "Serenity/JS reporter and Screenplay Pattern library for WebdriverIO",
   "author": {
     "name": "Jan Molak",
@@ -47,7 +47,7 @@
     "npm": "^6 || ^7"
   },
   "dependencies": {
-    "@serenity-js/core": "2.26.0",
+    "@serenity-js/core": "2.26.2",
     "@wdio/types": "^7.3.1",
     "@wdio/reporter": "^7.3.1",
     "deepmerge": "^4.2.2",

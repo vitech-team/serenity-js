@@ -34,11 +34,6 @@ export const config = {
             project: resolve(__dirname, './tsconfig.json'),
         },
     },
-
-    services: [
-        'chromedriver',
-    ],
-
     runner: 'local',
 
     maxInstances: 1,

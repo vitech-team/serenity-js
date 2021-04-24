@@ -1,36 +1,38 @@
-import { resolve } from 'path';
+import { StdOutReporter } from '@integration/testing-tools';
+import { Duration } from '@serenity-js/core';
 
 export const config = {
 
-    framework: 'mocha',
+    framework: '@serenity-js/webdriverio',
+    // framework: 'cucumber',
 
-    mochaOpts: {
-        ui: 'bdd',
-        timeout: 60000,
+    serenity: {
+        runner: 'cucumber',
+        // crew: [
+        //     new StdOutReporter(),
+        // ],
+        cueTimeout: Duration.ofSeconds(1),
+    },
+
+    cucumberOpts: {
+        require: [
+            './examples/features/step_definitions/*.js',
+        ],
     },
 
     specs: [
-        './spec/**/*.spec.ts',
+        // './features/passing.feature'
     ],
 
     reporters: [
-        'dot',
+        'spec',
     ],
-
-    autoCompileOpts: {
-        autoCompile: true,
-        tsNodeOpts: {
-            transpileOnly: true,
-            project: resolve(__dirname, './tsconfig.json'),
-        },
-    },
-
-    headless: true,
-    automationProtocol: 'devtools',
 
     runner: 'local',
 
     maxInstances: 1,
+
+    headless: true,
 
     capabilities: [{
 

@@ -1,15 +1,17 @@
 import { ArtifactArchiver, ConfigurationError, Serenity } from '@serenity-js/core';
-import { ModuleLoader, TestRunnerAdapter } from '@serenity-js/core/lib/io';
+import { Config, FileFinder, FileSystem, ModuleLoader, Path, TestRunnerAdapter } from '@serenity-js/core/lib/io';
 import type { Capabilities } from '@wdio/types';
 import type { EventEmitter } from 'events';
 import { isPlainObject } from 'is-plain-object';
 import { WebdriverIONotifier } from './WebdriverIONotifier';
-import { WebdriverIOConfig } from './WebdriverIOConfig';
 
+import { WebdriverIOConfig } from './WebdriverIOConfig';
 import deepmerge = require('deepmerge');
-import undefinedError = Mocha.utils.undefinedError;
 
 export class WebdriverIOFrameworkAdapter {
+
+    private readonly fileSystem: FileSystem;
+    private readonly finder: FileFinder;
 
     private adapter: TestRunnerAdapter;
     private notifier: WebdriverIONotifier;
@@ -17,12 +19,16 @@ export class WebdriverIOFrameworkAdapter {
     constructor(
         private readonly serenity: Serenity,
         private readonly loader: ModuleLoader,
-        cid: string,
+        private readonly cwd: Path,
+        private readonly cid: string,
         webdriverIOConfig: WebdriverIOConfig,
         private readonly specs: string[],
         private readonly capabilities: Capabilities.RemoteCapability,
         reporter: EventEmitter
     ) {
+        this.fileSystem = new FileSystem(cwd);
+        this.finder = new FileFinder(cwd);
+
         const config = deepmerge<WebdriverIOConfig>(this.defaultConfig(), webdriverIOConfig, {
             isMergeableObject: isPlainObject,
         });
@@ -64,7 +70,48 @@ export class WebdriverIOFrameworkAdapter {
     }
 
     private testRunnerAdapterFrom(config: WebdriverIOConfig): TestRunnerAdapter {
+        // todo: clean up
         switch (config?.serenity?.runner) {
+            case 'cucumber':
+                const { CucumberCLIAdapter, CucumberFormat, StandardOutput, TempFileOutput } = this.loader.require('@serenity-js/cucumber/lib/cli');
+
+                // todo: support setting a timeout?
+                delete config?.cucumberOpts?.timeout;
+
+                const cucumberOpts = new Config(config?.cucumberOpts)
+                    .where('require', requires =>
+                        this.finder.filesMatching(requires).map(p => p.value)
+                    )
+                    .where('format', values =>
+                        [].concat(values).map(value => {
+                            const format = new CucumberFormat(value);
+
+                            if (format.output === '') {
+                                return format.value;
+                            }
+
+                            const basename = Path.from(format.output).basename();
+                            const filenameParts = basename.split('.');
+
+                            if (filenameParts[0] === basename) {
+                                return `${ format.formatter }:${ format.output }.${ this.cid }`;
+                            }
+
+                            filenameParts.splice(-1, 0, `${ this.cid }`);
+
+                            return `${ format.formatter }:${ format.output.replace(basename, filenameParts.join('.')) }`;
+                        })
+                    );
+
+                const useSerenityReportingServices = config?.serenity?.crew?.length > 0;
+
+                // todo: this will fail because of the defaults
+                const output = useSerenityReportingServices
+                    ? new StandardOutput()
+                    : new TempFileOutput(this.fileSystem);
+
+                return new CucumberCLIAdapter(cucumberOpts.object(), this.loader, output);
+
             case 'jasmine':
                 const { JasmineAdapter } = this.loader.require('@serenity-js/jasmine/lib/adapter')
                 return new JasmineAdapter(config.jasmineOpts, this.loader);
@@ -81,7 +128,8 @@ export class WebdriverIOFrameworkAdapter {
         return {
             serenity: {
                 crew: [
-                    ArtifactArchiver.storingArtifactsAt(process.cwd(), 'target/site/serenity'),
+                    // todo: disable default crew?
+                    // ArtifactArchiver.storingArtifactsAt(process.cwd(), 'target/site/serenity'),
                 ]
             }
         }

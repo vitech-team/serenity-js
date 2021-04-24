@@ -1,5 +1,5 @@
 import { Serenity } from '@serenity-js/core';
-import { ModuleLoader } from '@serenity-js/core/lib/io';
+import { ModuleLoader, Path } from '@serenity-js/core/lib/io';
 import type { Capabilities } from '@wdio/types';
 import type { EventEmitter } from 'events';
 import { WebdriverIOFrameworkAdapter } from './WebdriverIOFrameworkAdapter';
@@ -9,6 +9,7 @@ export class WebdriverIOFrameworkAdapterFactory {
     constructor(
         private readonly serenity: Serenity,
         private readonly loader: ModuleLoader,
+        private readonly cwd: Path,
     ) {
     }
 
@@ -22,6 +23,7 @@ export class WebdriverIOFrameworkAdapterFactory {
         return new WebdriverIOFrameworkAdapter(
             this.serenity,
             this.loader,
+            this.cwd,
             cid,
             config,
             specs,

@@ -24,10 +24,6 @@ export const config = {
         'spec',
     ],
 
-    services: [
-        'chromedriver',
-    ],
-
     runner: 'local',
 
     maxInstances: 1,

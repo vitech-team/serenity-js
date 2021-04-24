@@ -2,7 +2,7 @@ import 'mocha';
 
 import { expect } from '@integration/testing-tools';
 import { Clock, ConfigurationError, Serenity } from '@serenity-js/core';
-import { ModuleLoader, TestRunnerAdapter } from '@serenity-js/core/lib/io';
+import { ModuleLoader, Path, TestRunnerAdapter } from '@serenity-js/core/lib/io';
 import { ExecutionIgnored, Outcome } from '@serenity-js/core/lib/model';
 import type { Capabilities } from '@wdio/types';
 import * as sinon from 'sinon';
@@ -30,6 +30,7 @@ describe('WebdriverIOFrameworkAdapterFactory', () => {
         factory     = new WebdriverIOFrameworkAdapterFactory(
             serenity,
             loader,
+            Path.from(__dirname),
         );
     });
 

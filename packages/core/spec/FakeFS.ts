@@ -1,6 +1,6 @@
 import fs = require('fs');
 import path = require('upath');
-const { createFsFromVolume, Volume } = require('memfs'); // tslint:disable-line:no-var-requires Typings incorrectly assume the presence of "dom" lib
+const { createFsFromVolume, Volume } = require('memfs'); // Typings incorrectly assume the presence of "dom" lib
 
 export interface DirectoryStructure {
     [ key: string ]: DirectoryStructure | string;

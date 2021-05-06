@@ -1,7 +1,7 @@
 import 'mocha';
 
 import { expect } from '@integration/testing-tools';
-import { CucumberConfig } from '@serenity-js/cucumber/lib/cli'; // tslint:disable-line:no-submodule-imports
+import { CucumberConfig } from '@serenity-js/cucumber/lib/cli';
 import * as sinon from 'sinon';
 import { CucumberAdapterConfig, TestRunnerDetector, TestRunnerLoader } from '../../../src/adapter/runner';
 import { Photographer, TakePhotosOfFailures } from '../../../src';

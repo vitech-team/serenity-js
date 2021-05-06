@@ -1,5 +1,6 @@
-import { Answerable, AnswersQuestions, CollectsArtifacts, Interaction, Log, LogicError, UsesAbilities } from '@serenity-js/core';
+import { Answerable, AnswersQuestions, CollectsArtifacts, Interaction, LogicError, UsesAbilities } from '@serenity-js/core';
 import { URL } from 'url';
+
 import { CallAnApi } from '../abilities';
 
 /**
@@ -79,7 +80,7 @@ import { CallAnApi } from '../abilities';
  *      Ensure.that(LastResponse.status(), equals(200)),
  *  );
  */
-export class ChangeApiConfig {
+export class ChangeApiConfig {  // eslint-disable-line unicorn/no-static-only-class
 
     /**
      * @desc
@@ -161,8 +162,8 @@ class ChangeApiConfigSetPort  extends Interaction {
                     newUrl.port = `${ newPort }`;
                     config.baseURL = newUrl.toString();
                 }
-                catch (e) {
-                    throw new LogicError(`Could not change the API port`, e);
+                catch (error) {
+                    throw new LogicError(`Could not change the API port`, error);
                 }
             }));
     }

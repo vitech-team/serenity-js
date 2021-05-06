@@ -89,7 +89,7 @@ export class ExecuteScript {
      *
      * @see {@link LastScriptExecution.result}
      */
-    static async(script: string | Function): ExecuteScriptWithArguments {                // tslint:disable-line:ban-types
+    static async(script: string | Function): ExecuteScriptWithArguments {
         return new ExecuteAsynchronousScript(script);
     }
 
@@ -120,7 +120,7 @@ export class ExecuteScript {
      *
      * @see {@link LastScriptExecution.result}
      */
-    static sync(script: string | Function): ExecuteScriptWithArguments {                  // tslint:disable-line:ban-types
+    static sync(script: string | Function): ExecuteScriptWithArguments {
         return new ExecuteSynchronousScript(script);
     }
 }
@@ -148,7 +148,7 @@ export abstract class ExecuteScriptWithArguments extends Interaction {
      *  Arguments to parametrise the script with
      */
     constructor(
-        protected readonly script: string | Function,                                   // tslint:disable-line:ban-types
+        protected readonly script: string | Function,
         protected readonly args: Array<Answerable<any>> = [],
     ) {
         super();
@@ -228,7 +228,7 @@ class ExecuteAsynchronousScript extends ExecuteScriptWithArguments {
         return BrowseTheWeb.as(actor).executeAsyncScript(this.script, ...args);
     }
 
-    // tslint:disable-next-line:member-ordering
+
     toString(): string {
         return this.args.length > 0
             ? formatted `#actor executes an asynchronous script with arguments: ${ this.args }`
@@ -314,7 +314,7 @@ class ExecuteSynchronousScript extends ExecuteScriptWithArguments {
         return BrowseTheWeb.as(actor).executeScript(this.toString(), this.script, ...args);
     }
 
-    // tslint:disable-next-line:member-ordering
+
     toString(): string {
         return this.args.length > 0
             ? formatted `#actor executes a synchronous script with arguments: ${ this.args }`

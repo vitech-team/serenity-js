@@ -170,8 +170,8 @@ describe('ArtifactArchiver', () => {
                 someEvent,
             );
 
-            expect(stageManager.notifyOf).to.not.have.been.called;            // tslint:disable-line:no-unused-expression
-            expect(fs.store).to.not.have.been.called;                         // tslint:disable-line:no-unused-expression
+            expect(stageManager.notifyOf).to.not.have.been.called;
+            expect(fs.store).to.not.have.been.called;
         });
     });
 

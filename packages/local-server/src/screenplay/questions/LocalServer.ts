@@ -1,10 +1,10 @@
 import { LogicError, Question } from '@serenity-js/core';
-import { ManageALocalServer } from '../abilities';
-
 import { AddressInfo } from 'net';
 import { parse } from 'url';
 
-export class LocalServer {
+import { ManageALocalServer } from '../abilities';
+
+export class LocalServer {  // eslint-disable-line unicorn/no-static-only-class
 
     /**
      * @desc
@@ -58,7 +58,7 @@ export class LocalServer {
         return Question.about(`local server port number`, actor => {
             const url = LocalServer.url().answeredBy(actor);
 
-            return parseInt(parse(url).port, 10);
+            return Number.parseInt(parse(url).port, 10);
         });
     }
 }

@@ -40,7 +40,7 @@ describe('Check', () => {
                     ),
             )).to.be.fulfilled.
             then(() => {
-                expect(spy).to.not.have.been.called;    // tslint:disable-line:no-unused-expression
+                expect(spy).to.not.have.been.called;
             }),
         );
     });

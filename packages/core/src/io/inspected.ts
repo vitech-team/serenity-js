@@ -184,7 +184,7 @@ function isSerialisableAsJSON<T>(v: any): v is object {
  * https://davidwalsh.name/detect-native-function
  * @param {any} v
  */
-function isNative(v: any): v is Function {      // tslint:disable-line:ban-types
+function isNative(v: any): v is Function {
 
     const
         toString        = Object.prototype.toString,       // Used to resolve the internal `[[Class]]` of values

@@ -165,7 +165,7 @@ export function cucumberEventProtocolAdapter({ serenity, notifier, mapper, cache
         outcomeFrom(result: { duration: number, exception: string | Error, status: string }): Outcome {
             const error = !! result.exception && this.errorFrom(result.exception);
 
-            // tslint:disable:switch-default
+
             switch (result.status) {
                 case 'undefined':
                     return new ImplementationPending(new ImplementationPendingError('Step not implemented'));
@@ -187,7 +187,7 @@ export function cucumberEventProtocolAdapter({ serenity, notifier, mapper, cache
                 case 'skipped':
                     return new ExecutionSkipped();
             }
-            // tslint:enable:switch-default
+
         }
 
         errorFrom(exception: Error | string): Error {

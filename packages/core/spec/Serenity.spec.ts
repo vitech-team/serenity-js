@@ -34,7 +34,7 @@ describe('Serenity', () => {
 
             const Joe = serenity.theActorCalled('Joe');
 
-            expect(prepareSpy).to.have.been.calledOnce;                      // tslint:disable-line:no-unused-expression
+            expect(prepareSpy).to.have.been.calledOnce;
             expect(prepareSpy.getCall(0).args[0]).to.equal(Joe);
         });
 

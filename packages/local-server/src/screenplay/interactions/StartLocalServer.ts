@@ -1,11 +1,12 @@
 import { Answerable, AnswersQuestions, CollectsArtifacts, Interaction, UsesAbilities } from '@serenity-js/core';
+
 import { ManageALocalServer } from '../abilities';
 
 /**
  * @desc
  *  Starts local server so that a test can interact with it.
  */
-export class StartLocalServer {
+export class StartLocalServer { // eslint-disable-line unicorn/no-static-only-class
 
     /**
      * @desc
@@ -127,10 +128,10 @@ class StartLocalServerOnRandomPortBetween extends Interaction {
 
     performAs(actor: UsesAbilities & CollectsArtifacts & AnswersQuestions): Promise<void> {
         return Promise.all([
-                actor.answer(this.lowestPort),
-                actor.answer(this.highestPort),
-            ])
-            .then(([lowestPort, highestPort]) => ManageALocalServer.as(actor).listen(lowestPort, highestPort));
+            actor.answer(this.lowestPort),
+            actor.answer(this.highestPort),
+        ]).
+        then(([lowestPort, highestPort]) => ManageALocalServer.as(actor).listen(lowestPort, highestPort));
     }
 
     toString(): string {

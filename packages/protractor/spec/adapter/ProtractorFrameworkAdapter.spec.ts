@@ -180,7 +180,7 @@ describe('ProtractorFrameworkAdapter', () => {
                     ]))
                     .to.be.fulfilled
                     .then(() => {
-                        expect(protractorRunner.afterEach).to.have.been.calledTwice;    // tslint:disable-line:no-unused-expression
+                        expect(protractorRunner.afterEach).to.have.been.calledTwice;
                     }));
         });
 
@@ -205,7 +205,7 @@ describe('ProtractorFrameworkAdapter', () => {
                     ]))
                     .to.be.fulfilled            // promise resolved even upon test failure; test suite failure is determined based on the ProtractorReport
                     .then(() => {
-                        expect(protractorRunner.afterEach).to.have.been.calledTwice;    // tslint:disable-line:no-unused-expression
+                        expect(protractorRunner.afterEach).to.have.been.calledTwice;
                     }));
         });
 

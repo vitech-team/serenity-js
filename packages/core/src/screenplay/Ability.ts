@@ -97,5 +97,5 @@
  *
  * @access public
  */
-export interface Ability {  // tslint:disable-line:no-empty-interface
+export interface Ability {
 }

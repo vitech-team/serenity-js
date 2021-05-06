@@ -1,4 +1,4 @@
-const Module = require('module');             // tslint:disable-line:no-var-requires     No type definitions available
+const Module = require('module'); // No type definitions available
 import * as path from 'path';
 import { Version } from './Version';
 

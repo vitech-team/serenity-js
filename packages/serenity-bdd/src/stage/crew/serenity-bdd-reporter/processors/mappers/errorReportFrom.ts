@@ -1,10 +1,11 @@
 import { RuntimeError } from '@serenity-js/core';
 import { ErrorStackParser } from '@serenity-js/core/lib/io';
 import { inspect } from 'util';
+
 import { ErrorDetails } from '../../SerenityBDDJsonSchema';
 
 /** @package */
-export function errorReportFrom(error: any): ErrorDetails {
+export function errorReportFrom(error?: Error | string): ErrorDetails {
     return {
         ...errorDetailsOf(error),
         ...(error instanceof RuntimeError && error.cause)
@@ -14,7 +15,7 @@ export function errorReportFrom(error: any): ErrorDetails {
 }
 
 /** @package */
-function errorDetailsOf(maybeError: any): ErrorDetails {
+function errorDetailsOf(maybeError: Error | string): ErrorDetails {
     return {
         errorType:  errorTypeOf(maybeError),
         message:    errorMessageOf(maybeError),
@@ -23,7 +24,7 @@ function errorDetailsOf(maybeError: any): ErrorDetails {
 }
 
 /** @package */
-function errorTypeOf(maybeError: any) {
+function errorTypeOf(maybeError: Error | string): string {
     if (! isDefined(maybeError)) {
         return `${ maybeError }`;
     }
@@ -32,7 +33,7 @@ function errorTypeOf(maybeError: any) {
 }
 
 /** @package */
-function errorMessageOf(maybeError: any) {
+function errorMessageOf(maybeError: any): string {
     if (! isDefined(maybeError)) {
         return '';
     }

@@ -63,7 +63,7 @@ describe('Stage', () => {
             const a2 = stage.actor(name);
 
             expect((actors.prepare as any).getCall(0).args[0].name).to.equal(name);
-            expect(actors.prepare).to.have.been.calledOnce;                    // tslint:disable-line:no-unused-expression
+            expect(actors.prepare).to.have.been.calledOnce;
 
             expect(a1).to.equal(a2);
         });
@@ -161,7 +161,7 @@ describe('Stage', () => {
 
                 stage.announce(new SceneFinishes(sceneId, scenario, new ExecutionSuccessful()));
 
-                expect(actor.dismiss).to.have.been.calledOnce;  // tslint:disable-line:no-unused-expression
+                expect(actor.dismiss).to.have.been.calledOnce;
 
                 stage.announce(new SceneFinished(sceneId, scenario, new ExecutionSuccessful()));
 
@@ -171,7 +171,7 @@ describe('Stage', () => {
                 await stage.waitForNextCue()
 
                 // make sure it's not called again
-                expect(actor.dismiss).to.have.been.calledOnce;  // tslint:disable-line:no-unused-expression
+                expect(actor.dismiss).to.have.been.calledOnce;
             });
 
             it('re-instantiates actors dismissed when the SceneFinished', async () => {
@@ -212,7 +212,7 @@ describe('Stage', () => {
                 stage.announce(new SceneStarts(sceneId, scenario));
                 stage.announce(new SceneFinishes(sceneId, scenario, new ExecutionSuccessful()));
 
-                expect(actor.dismiss).to.have.not.been.called;  // tslint:disable-line:no-unused-expression
+                expect(actor.dismiss).to.have.not.been.called;
 
                 stage.announce(new SceneFinished(sceneId, scenario, new ExecutionSuccessful()));
 
@@ -222,7 +222,7 @@ describe('Stage', () => {
                 await stage.waitForNextCue()
 
                 // make sure it's called
-                expect(actor.dismiss).to.have.been.calledOnce;  // tslint:disable-line:no-unused-expression
+                expect(actor.dismiss).to.have.been.calledOnce;
             });
 
             it('retains instances of actors instantiated before the SceneStarts', async () => {

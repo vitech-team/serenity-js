@@ -166,7 +166,7 @@ function retrocycle($: any) {
                     if (typeof element === 'object' && element !== null) {
                         const path = element.$ref;
                         if (typeof path === 'string' && px.test(path)) {
-                            value[i] = eval(path);      // tslint:disable-line:no-eval
+                            value[i] = eval(path);
                         } else {
                             rez(element);
                         }
@@ -178,7 +178,7 @@ function retrocycle($: any) {
                     if (typeof item === 'object' && item !== null) {
                         const path = item.$ref;
                         if (typeof path === 'string' && px.test(path)) {
-                            value[name] = eval(path);   // tslint:disable-line:no-eval
+                            value[name] = eval(path);
                         } else {
                             rez(item);
                         }

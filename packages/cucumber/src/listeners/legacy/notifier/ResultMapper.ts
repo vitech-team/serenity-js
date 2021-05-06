@@ -21,7 +21,7 @@ export class ResultMapper {
             return new ExecutionFailedWithError(error);
         }
 
-        // tslint:disable:switch-default
+
         switch (true) {
             case status === 'undefined':
                 return new ImplementationPending(new ImplementationPendingError('Step not implemented'));
@@ -50,7 +50,7 @@ export class ResultMapper {
             case status === 'skipped':
                 return new ExecutionSkipped();
         }
-        // tslint:enable:switch-default
+
     }
 
     errorFrom(error: Error | string | undefined): Error | undefined {

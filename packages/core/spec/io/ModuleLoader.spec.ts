@@ -17,7 +17,7 @@ describe('ModuleLoader', () => {
     it('returns the version of the npm-resolved package if the local package could not be found', () => {
         const loader = new ModuleLoader(path.join(__dirname, 'non-existent', 'local', 'directory'));
 
-        const expectedVersion = require('tiny-types/package.json').version;                             // tslint:disable-line:no-submodule-imports
+        const expectedVersion = require('tiny-types/package.json').version;
 
         expect(loader.versionOf('tiny-types')).to.equal(new Version(expectedVersion));
     });

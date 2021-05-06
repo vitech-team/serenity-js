@@ -96,7 +96,7 @@ export class FeatureFileMapper {
                             const scenarioParameters = variableCells
                                 .map((cell, i) => ({ [cell.value]: valueCells[i].value }))
                                 .reduce((acc, current) => {
-                                    // tslint:disable-next-line:prefer-object-spread Esdoc doesn't understand object spreads
+                                    // ESDoc doesn't understand object spreads
                                     return Object.assign(
                                         {},
                                         acc,

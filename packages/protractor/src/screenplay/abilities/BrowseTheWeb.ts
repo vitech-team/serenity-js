@@ -1,4 +1,4 @@
-// tslint:disable:member-ordering
+
 
 import { Ability, ConfigurationError, LogicError, UsesAbilities } from '@serenity-js/core';
 import { ActionSequence, ElementArrayFinder, ElementFinder, Locator, protractor, ProtractorBrowser } from 'protractor';
@@ -389,7 +389,7 @@ export class BrowseTheWeb implements Ability {
      *
      * @see {@link BrowseTheWeb#getLastScriptExecutionResult}
      */
-    executeScript(description: string, script: string | Function, ...args: any[]): Promise<any> {        // tslint:disable-line:ban-types
+    executeScript(description: string, script: string | Function, ...args: any[]): Promise<any> {
         return promiseOf(this.browser.executeScriptWithDescription(script, description, ...args))
             .then(result => {
                 this.lastScriptExecutionSummary = new LastScriptExecutionSummary(
@@ -451,7 +451,7 @@ export class BrowseTheWeb implements Ability {
      *
      * @see {@link BrowseTheWeb#getLastScriptExecutionResult}
      */
-    executeAsyncScript(script: string | Function, ...args: any[]): Promise<any> {   // tslint:disable-line:ban-types
+    executeAsyncScript(script: string | Function, ...args: any[]): Promise<any> {
         return promiseOf(this.browser.executeAsyncScript(script, ...args))
             .then(result => {
                 this.lastScriptExecutionSummary = new LastScriptExecutionSummary(

@@ -20,7 +20,7 @@ import { ExecutionSuccessful, FeatureTag, Name, Timestamp } from '@serenity-js/c
 import { given } from 'mocha-testdata';
 import { CucumberCLIAdapter, CucumberConfig, SerenityFormatterOutput, StandardOutput, TempFileOutput } from '../../src/cli';
 
-const { stdout } = require('test-console'); // tslint:disable-line:no-var-requires  no type defs available
+const { stdout } = require('test-console'); // no type defs available
 
 /** @test {CucumberCLIAdapter} */
 describe('CucumberCLIAdapter', function () {

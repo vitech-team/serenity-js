@@ -16,12 +16,12 @@ describe('Timestamp', () => {
 
         /** @test {Timestamp} */
         it('can be instantiated with an arbitrary Date', () => {
-            expect(() => new Timestamp(new Date())).to.not.throw;            // tslint:disable-line:no-unused-expression
+            expect(() => new Timestamp(new Date())).to.not.throw;
         });
 
         /** @test {Timestamp} */
         it('defaults to current time if no argument is provided', () => {
-            expect(() => new Timestamp()).to.not.throw;                      // tslint:disable-line:no-unused-expression
+            expect(() => new Timestamp()).to.not.throw;
         });
 
         given<any>(

@@ -73,11 +73,13 @@ module.exports = {
                 'args': true,
                 'attrs': true,
                 'docString': true,
+                'DocString': true,
                 'e': true,
                 'env': true,
                 'fn': true,
                 'fnAttrs': true,
                 'i': true,
+                'params': true,
                 'pkg': true,
                 'props': true,
             }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { RuntimeError } from '@serenity-js/core';
 import { ErrorStackParser } from '@serenity-js/core/lib/io';
 import { inspect } from 'util';
@@ -8,8 +9,8 @@ import { ErrorDetails } from '../../SerenityBDDJsonSchema';
 export function errorReportFrom(error?: Error | string | number | boolean | object): ErrorDetails {
     return {
         ...errorDetailsOf(error),
-        ...(error instanceof RuntimeError && error.cause)
-            ? { rootCause: errorReportFrom(error.cause) }
+        ...(error instanceof RuntimeError && (error as RuntimeError).cause)
+            ? { rootCause: errorReportFrom((error as RuntimeError).cause) }
             : { },
     };
 }

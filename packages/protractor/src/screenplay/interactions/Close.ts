@@ -130,7 +130,7 @@ class CloseWindowsOtherThan extends Interaction {
                 this.isDefined(windowToKeep) && allWindows.length > 1
                     ? allWindows.filter(handle => handle !== windowToKeep)
                     : []
-        )
+            )
     }
 
     /**

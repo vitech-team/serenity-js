@@ -22,7 +22,7 @@ module.exports = {
         'plugin:unicorn/recommended',
     ],
     rules: {
-        'simple-import-sort/imports': 'error',
+        // 'simple-import-sort/imports': 'error',
 
         'no-multiple-empty-lines': ['warn', {
             'max': 1,

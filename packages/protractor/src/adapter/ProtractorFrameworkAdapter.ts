@@ -27,8 +27,6 @@ export class ProtractorFrameworkAdapter {
      */
     run(specs: string[]): Promise<ProtractorReport> {
 
-        const noop      = () => void 0;
-
         const runner    = this.detector.runnerFor(this.protractorRunner.getConfig());
         const reporter  = new ProtractorReporter(this.protractorRunner, runner.successThreshold());
 
@@ -62,4 +60,9 @@ export class ProtractorFrameworkAdapter {
             },
         };
     }
+}
+
+/** @private */
+function noop() {
+    // no-op
 }

@@ -15,7 +15,7 @@ export class TestRunnerDetector {
     static jasmineNodeOpts = 'jasmineNodeOpts';
     static mochaOpts = 'mochaOpts';
 
-    static protractorCliOptions() {
+    static protractorCliOptions(): string[] {
         return [
             TestRunnerDetector.cucumberOpts,
             TestRunnerDetector.jasmineNodeOpts,

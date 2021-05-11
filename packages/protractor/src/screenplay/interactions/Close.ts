@@ -115,7 +115,7 @@ class CloseWindowsOtherThan extends Interaction {
             );
     }
 
-    toString() {
+    toString(): string {
         return this.description;
     }
 
@@ -177,7 +177,7 @@ class CloseCurrentWindow extends Interaction {
         return BrowseTheWeb.as(actor).closeCurrentWindow();
     }
 
-    toString() {
+    toString(): string {
         return `#actor closes current browser window`;
     }
 }

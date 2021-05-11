@@ -143,7 +143,7 @@ describe('Stage', () => {
                 new FileSystemLocation(
                     new Path('payments/checkout.feature'),
                 ),
-        );
+            );
 
         let manager: StageManager;
 
@@ -301,13 +301,13 @@ describe('Stage', () => {
 
         it('complains when instantiated with no Cast', () => {
             expect(() => {
-                const stage = new Stage(null, stageManager as unknown as StageManager);
+                const stage_ = new Stage(undefined, stageManager as unknown as StageManager);
             }).to.throw(Error, 'Cast should be defined');
         });
 
         it('complains when instantiated with no StageManager', () => {
             expect(() => {
-                const stage = new Stage(new Extras(), null);
+                const stage_ = new Stage(new Extras(), undefined);
             }).to.throw(Error, 'StageManager should be defined');
         });
 
@@ -316,7 +316,7 @@ describe('Stage', () => {
             const
                 name   = 'Alice',
                 actors: Cast = {
-                    prepare: (actor: Actor) => undefined,
+                    prepare: (actor: Actor) => undefined,   // eslint-disable-line unicorn/no-useless-undefined
                 },
                 stage  = new Stage(actors, stageManager as unknown as StageManager);
 

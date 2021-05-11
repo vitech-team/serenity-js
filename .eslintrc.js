@@ -22,6 +22,8 @@ module.exports = {
         'plugin:unicorn/recommended',
     ],
     rules: {
+        'simple-import-sort/imports': 'error',
+
         'no-multiple-empty-lines': ['warn', {
             'max': 1,
         }],
@@ -46,8 +48,6 @@ module.exports = {
             'varsIgnorePattern': '^.*_$',
         }],
 
-        'simple-import-sort/imports': 'error',
-
         'unicorn/empty-brace-spaces': 'off',
 
         'unicorn/filename-case': [ 'error', {
@@ -61,6 +61,7 @@ module.exports = {
         'unicorn/no-array-for-each': 'off',
         'unicorn/no-array-reduce': 'off',
         'unicorn/no-array-callback-reference': 'off',
+        'unicorn/no-static-only-class': 'off',
 
         'unicorn/prefer-module': 'off',         // fixme disable when we can provide support for ESM
         'unicorn/prefer-node-protocol': 'off',  // fixme requires Node 14.13 or newer, disable until we no longer have to support Node 12

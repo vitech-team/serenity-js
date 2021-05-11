@@ -29,7 +29,7 @@ import { CallAnApi } from '../abilities';
  *      })),
  *  );
  */
-export class LastResponse { // eslint-disable-line unicorn/no-static-only-class
+export class LastResponse {
 
     /**
      * @desc

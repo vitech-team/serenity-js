@@ -5,7 +5,7 @@ import { inspect } from 'util';
 import { ErrorDetails } from '../../SerenityBDDJsonSchema';
 
 /** @package */
-export function errorReportFrom(error?: Error | string): ErrorDetails {
+export function errorReportFrom(error?: Error | string | number | boolean | object): ErrorDetails {
     return {
         ...errorDetailsOf(error),
         ...(error instanceof RuntimeError && error.cause)
@@ -15,7 +15,7 @@ export function errorReportFrom(error?: Error | string): ErrorDetails {
 }
 
 /** @package */
-function errorDetailsOf(maybeError: Error | string): ErrorDetails {
+function errorDetailsOf(maybeError: Error | string | number | boolean | object): ErrorDetails {
     return {
         errorType:  errorTypeOf(maybeError),
         message:    errorMessageOf(maybeError),
@@ -24,7 +24,7 @@ function errorDetailsOf(maybeError: Error | string): ErrorDetails {
 }
 
 /** @package */
-function errorTypeOf(maybeError: Error | string): string {
+function errorTypeOf(maybeError: Error | string | number | boolean | object): string {
     if (! isDefined(maybeError)) {
         return `${ maybeError }`;
     }

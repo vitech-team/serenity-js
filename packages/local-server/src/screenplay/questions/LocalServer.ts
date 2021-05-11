@@ -4,7 +4,7 @@ import { parse } from 'url';
 
 import { ManageALocalServer } from '../abilities';
 
-export class LocalServer {  // eslint-disable-line unicorn/no-static-only-class
+export class LocalServer {
 
     /**
      * @desc

@@ -42,9 +42,9 @@ describe('CucumberMessagesListener', () => {
                         const lines = error.message.split('\n');
 
                         expect(lines[0]).to.equal('Multiple step definitions match:');
-                        expect(lines[1]).to.contain('/^.*step (?:.*) passes$/');
+                        expect(lines[1]).to.contain('/^.*step .* passes$/');
                         expect(lines[1]).to.contain('ambiguous.steps.ts');
-                        expect(lines[2]).to.contain('/^.*step (?:.*) passes$/');
+                        expect(lines[2]).to.contain('/^.*step .* passes$/');
                         expect(lines[2]).to.contain('ambiguous.steps.ts');
                     })
                     .next(SceneFinishes, event => {

@@ -6,7 +6,7 @@ import { ManageALocalServer } from '../abilities';
  * @desc
  *  Starts local server so that a test can interact with it.
  */
-export class StartLocalServer { // eslint-disable-line unicorn/no-static-only-class
+export class StartLocalServer {
 
     /**
      * @desc

@@ -101,7 +101,7 @@ export class Press extends Interaction {
      *
      * @returns {string}
      */
-    toString() {
+    toString(): string {
         return `#actor presses ${ describeSequenceOf(this.keys) } in ${ this.field.toString() }`;
     }
 }

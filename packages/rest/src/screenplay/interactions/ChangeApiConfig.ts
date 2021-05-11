@@ -80,7 +80,7 @@ import { CallAnApi } from '../abilities';
  *      Ensure.that(LastResponse.status(), equals(200)),
  *  );
  */
-export class ChangeApiConfig {  // eslint-disable-line unicorn/no-static-only-class
+export class ChangeApiConfig {
 
     /**
      * @desc
@@ -137,7 +137,7 @@ class ChangeApiConfigSetUrl extends Interaction {
             .then(newApiUrl => CallAnApi.as(actor).modifyConfig(config => config.baseURL = newApiUrl));
     }
 
-    toString() {
+    toString(): string {
         return `#actor changes API URL configuration to ${ this.newApiUrl }`;
     }
 }
@@ -168,7 +168,7 @@ class ChangeApiConfigSetPort  extends Interaction {
             }));
     }
 
-    toString() {
+    toString(): string {
         return `#actor changes API port configuration to ${ this.newPort }`;
     }
 }
@@ -206,7 +206,7 @@ class ChangeApiConfigSetHeader extends Interaction {
         });
     }
 
-    toString() {
+    toString(): string {
         return `#actor changes API URL and sets header "${ this.name }" to "${ this.value }"`;
     }
 }

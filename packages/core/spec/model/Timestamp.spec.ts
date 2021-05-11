@@ -1,4 +1,5 @@
 import 'mocha';
+
 import { given } from 'mocha-testdata';
 
 import { Duration, Timestamp } from '../../src/model';
@@ -49,7 +50,7 @@ describe('Timestamp', () => {
         given<any>(
             0,
             '',
-            null,
+            null,       // eslint-disable-line unicorn/no-null
             undefined,
             {},
             [],

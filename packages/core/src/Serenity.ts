@@ -1,21 +1,28 @@
 import { ensure, isDefined, isInstanceOf, property } from 'tiny-types';
 
+import { ConfigurationError } from './errors';
 import { DomainEvent } from './events';
+import { formatted, has, OutputStream } from './io';
 import { CorrelationId, Duration, Timestamp } from './model';
 import { Actor } from './screenplay/actor/Actor';
 import { SerenityConfig } from './SerenityConfig';
+import { StageCrewMember, StageCrewMemberBuilder } from './stage';
 import { Cast } from './stage/Cast';
 import { Clock } from './stage/Clock';
+import { Extras } from './stage/Extras';
 import { Stage } from './stage/Stage';
 import { StageManager } from './stage/StageManager';
-import { Extras } from './stage/Extras';
 
 export class Serenity {
     private static defaultCueTimeout    = Duration.ofSeconds(5);
     private static defaultActors        = new Extras();
 
     private stage: Stage;
+    private outputStream: OutputStream  = process.stdout;
 
+    /**
+     * @param {Clock} clock
+     */
     constructor(private readonly clock: Clock = new Clock()) {
         this.stage = new Stage(
             Serenity.defaultActors,
@@ -34,23 +41,41 @@ export class Serenity {
      * @return {void}
      */
     configure(config: SerenityConfig): void {
+        const looksLikeBuilder          = has<StageCrewMemberBuilder>({ build: 'function' });
+        const looksLikeStageCrewMember  = has<StageCrewMember>({ assignedTo: 'function', notifyOf: 'function' });
 
-        const cueTimeout = !! config.cueTimeout
+        const cueTimeout = config.cueTimeout
             ? ensure('cueTimeout', config.cueTimeout, isInstanceOf(Duration))
             : Serenity.defaultCueTimeout;
+
+        if (config.outputStream) {
+            this.outputStream = config.outputStream;
+        }
 
         this.stage = new Stage(
             Serenity.defaultActors,
             new StageManager(cueTimeout, this.clock),
         );
 
-        if (!! config.actors) {
+        if (config.actors) {
             this.engage(config.actors);
         }
 
         if (Array.isArray(config.crew)) {
             this.stage.assign(
-                ...config.crew.map(stageCrewMember => stageCrewMember.assignedTo(this.stage)),
+                ...config.crew.map((stageCrewMember, i) => {
+                    if (looksLikeBuilder(stageCrewMember)) {
+                        return stageCrewMember.build({ stage: this.stage, outputStream: this.outputStream });
+                    }
+
+                    if (looksLikeStageCrewMember(stageCrewMember)) {
+                        return stageCrewMember.assignedTo(this.stage);
+                    }
+
+                    throw new ConfigurationError(
+                        formatted `Entries under \`crew\` should implement either StageCrewMember or StageCrewMemberBuilder interfaces, \`${ stageCrewMember }\` found at index ${ i }`
+                    );
+                }),
             );
         }
     }
@@ -145,7 +170,7 @@ export class Serenity {
      *
      *  This function is particularly useful when automating Cucumber scenarios.
      *
-     * @example <captiongit>Usage with Cucumber</caption>
+     * @example <caption>Usage with Cucumber</caption>
      *   import { actorCalled } from '@serenity-js/core';
      *   import { Given, When } from 'cucumber';
      *

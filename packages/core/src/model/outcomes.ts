@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types,unicorn/prefer-math-trunc */
 import { JSONObject, match, TinyType } from 'tiny-types';
+
 import { AssertionError } from '../errors';
 import { ErrorSerialiser } from '../io';
 

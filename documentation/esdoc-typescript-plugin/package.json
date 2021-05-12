@@ -31,11 +31,11 @@
     "url": "https://github.com/serenity-js/serenity-js/issues"
   },
   "engines": {
-    "node": "^10 || ^12 || ^14",
+    "node": "^12 || ^14 || ^16",
     "npm": "^6 || ^7"
   },
   "dependencies": {
-    "@babel/parser": "^7.13.16",
+    "@babel/parser": "^7.14.0",
     "typescript": "^4.2.4"
   },
   "devDependencies": {

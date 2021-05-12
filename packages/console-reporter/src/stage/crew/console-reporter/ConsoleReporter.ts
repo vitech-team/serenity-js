@@ -1,4 +1,4 @@
-import { Stage, StageCrewMember } from '@serenity-js/core';
+import { ListensToDomainEvents, Stage, StageCrewMemberBuilder } from '@serenity-js/core';
 import { AssertionError } from '@serenity-js/core/lib';
 import {
     ActivityRelatedArtifactGenerated,
@@ -11,6 +11,7 @@ import {
     TaskStarts,
     TestRunFinished,
 } from '@serenity-js/core/lib/events';
+import { OutputStream } from '@serenity-js/core/lib/io';
 import {
     AssertionReport,
     CorrelationId,
@@ -28,8 +29,9 @@ import {
     ProblemIndication,
     Timestamp,
 } from '@serenity-js/core/lib/model';
-import { Instance as ChalkInstance } from 'chalk';
+import { Instance as ChalkInstance } from 'chalk';  // eslint-disable-line unicorn/import-style
 import { ensure, isDefined, match } from 'tiny-types';
+
 import { Printer } from './Printer';
 import { Summary } from './Summary';
 import { SummaryFormatter } from './SummaryFormatter';
@@ -52,6 +54,16 @@ import { TerminalTheme, ThemeForDarkTerminals, ThemeForLightTerminals, ThemeForM
  *      crew: [ ConsoleReporter.withDefaultColourSupport() ],
  *  });
  *
+ * @example <caption>Redirecting output to a file</caption>
+ *  import { configure } from '@serenity-js/core';
+ *  import { ConsoleReporter } from '@serenity-js/console-reporter';
+ *  import { createWriteStream } from 'fs';
+ *
+ *  configure({
+ *      outputStream: createWriteStream('./output.log'),
+ *      crew: [ ConsoleReporter.withDefaultColourSupport() ],
+ *  });
+ *
  * @example <caption>Registering the reporter using Protractor configuration</caption>
  *  // protractor.conf.js
  *  const { ConsoleReporter } = require('@serenity-js/console-reporter');
@@ -71,9 +83,9 @@ import { TerminalTheme, ThemeForDarkTerminals, ThemeForLightTerminals, ThemeForM
  *  };
  *
  * @public
- * @implements {@serenity-js/core/lib/stage~StageCrewMember}
+ * @implements {@serenity-js/core/lib/stage~ListensToDomainEvents}
  */
-export class ConsoleReporter implements StageCrewMember {
+export class ConsoleReporter implements ListensToDomainEvents {
 
     private startTimes = new StartTimes();
     private artifacts = new ActivityRelatedArtifacts();
@@ -95,13 +107,10 @@ export class ConsoleReporter implements StageCrewMember {
      *  If the above describes your setup, use {@link ConsoleReporter#forDarkTerminals}
      *  or {@link ConsoleReporter#forLightTerminals} to make the sub-process produce colour output.
      *
-     * @returns {ConsoleReporter}
+     * @returns {@serenity-js/core/lib/stage~StageCrewMemberBuilder}
      */
-    static withDefaultColourSupport() {
-        return new ConsoleReporter(
-            new Printer(process.stdout),
-            new ThemeForDarkTerminals(new ChalkInstance(/* auto-detect */)),
-        );
+    static withDefaultColourSupport(): StageCrewMemberBuilder<ConsoleReporter> {
+        return new ConsoleReporterBuilder(new ThemeForDarkTerminals(new ChalkInstance(/* auto-detect */)));
     }
 
     /**
@@ -111,39 +120,30 @@ export class ConsoleReporter implements StageCrewMember {
      *  or for when you need to pipe the output to a text file and want
      *  to avoid printing control characters.
      *
-     * @returns {ConsoleReporter}
+     * @returns {@serenity-js/core/lib/stage~StageCrewMemberBuilder}
      */
-    static forMonochromaticTerminals(): StageCrewMember {
-        return new ConsoleReporter(
-            new Printer(process.stdout),
-            new ThemeForMonochromaticTerminals(),
-        );
+    static forMonochromaticTerminals(): StageCrewMemberBuilder<ConsoleReporter> {
+        return new ConsoleReporterBuilder(new ThemeForMonochromaticTerminals());
     }
 
     /**
      * @desc
      *  Instantiates a `ConsoleReporter` with a colour theme optimised for terminals with dark backgrounds.
      *
-     * @returns {ConsoleReporter}
+     * @returns {@serenity-js/core/lib/stage~StageCrewMemberBuilder}
      */
-    static forDarkTerminals(): StageCrewMember {
-        return new ConsoleReporter(
-            new Printer(process.stdout),
-            new ThemeForDarkTerminals(new ChalkInstance({ level: 2 })),
-        );
+    static forDarkTerminals(): StageCrewMemberBuilder<ConsoleReporter> {
+        return new ConsoleReporterBuilder(new ThemeForDarkTerminals(new ChalkInstance({ level: 2 })));
     }
 
     /**
      * @desc
      *  Instantiates a `ConsoleReporter` with a colour theme optimised for terminals with light backgrounds.
      *
-     * @returns {ConsoleReporter}
+     * @returns {@serenity-js/core/lib/stage~StageCrewMemberBuilder}
      */
-    static forLightTerminals(): StageCrewMember {
-        return new ConsoleReporter(
-            new Printer(process.stdout),
-            new ThemeForLightTerminals(new ChalkInstance({ level: 2 })),
-        );
+    static forLightTerminals(): StageCrewMemberBuilder<ConsoleReporter> {
+        return new ConsoleReporterBuilder(new ThemeForLightTerminals(new ChalkInstance({ level: 2 })));
     }
 
     /**
@@ -154,26 +154,12 @@ export class ConsoleReporter implements StageCrewMember {
     constructor(
         private readonly printer: Printer,
         private readonly theme: TerminalTheme,
-        private readonly stage: Stage = null,
+        private readonly stage?: Stage,
     ) {
         ensure('printer', printer, isDefined());
         ensure('theme', theme, isDefined());
 
         this.summaryFormatter = new SummaryFormatter(this.theme);
-    }
-
-    /**
-     * @desc
-     *  Creates a new instance of this {@link @serenity-js/core/lib/stage~StageCrewMember}
-     *  and assigns it to a given {@link @serenity-js/core/lib/stage~Stage}.
-     *
-     * @see {@link @serenity-js/core/lib/stage~StageCrewMember}
-     *
-     * @param {@serenity-js/core/lib/stage~Stage} stage - An instance of a {@link @serenity-js/core/lib/stage~Stage} this {@link @serenity-js/core/lib/stage~StageCrewMember} will be assigned to
-     * @returns {@serenity-js/core/lib/stage~StageCrewMember} - A new instance of this {@link @serenity-js/core/lib/stage~StageCrewMember}
-     */
-    assignedTo(stage: Stage) {
-        return new ConsoleReporter(this.printer, this.theme, stage);
     }
 
     /**
@@ -202,7 +188,7 @@ export class ConsoleReporter implements StageCrewMember {
                 this.printer.println();
             })
 
-            // todo: add SceneTagged ...
+        // todo: add SceneTagged ...
 
             .when(TaskStarts, (e: TaskStarts) => {
 
@@ -233,21 +219,21 @@ export class ConsoleReporter implements StageCrewMember {
                     }
                 }
 
-                const artifacts = this.artifacts.recordedFor(e.activityId);
+                const artifactGeneratedEvents = this.artifacts.recordedFor(e.activityId);
 
-                if (artifacts.filter(a => a instanceof AssertionReport || a instanceof LogEntry).length > 0) {
+                if (artifactGeneratedEvents.filter(a => a instanceof AssertionReport || a instanceof LogEntry).length > 0) {
                     this.printer.println();
                 }
 
-                artifacts.forEach(evt => {
-                    if (evt.artifact instanceof AssertionReport) {
-                        const details = evt.artifact.map(
+                artifactGeneratedEvents.forEach(artifactGenerated => {
+                    if (artifactGenerated.artifact instanceof AssertionReport) {
+                        const details = artifactGenerated.artifact.map(
                             (artifactContents: { expected: string, actual: string }) =>
                                 this.theme.diff(
                                     artifactContents.expected,
                                     artifactContents.actual,
                                 ),
-                            );
+                        );
 
                         this.printer.println();
 
@@ -256,11 +242,11 @@ export class ConsoleReporter implements StageCrewMember {
                         this.printer.println();
                     }
 
-                    if (evt.artifact instanceof LogEntry) {
-                        const details = evt.artifact.map((artifactContents: { data: string }) => artifactContents.data);
+                    if (artifactGenerated.artifact instanceof LogEntry) {
+                        const details = artifactGenerated.artifact.map((artifactContents: { data: string }) => artifactContents.data);
 
-                        if (evt.name.value !== details) {
-                            this.printer.println(this.theme.log(evt.name.value, ':'));
+                        if (artifactGenerated.name.value !== details) {
+                            this.printer.println(this.theme.log(artifactGenerated.name.value, ':'));
                         }
 
                         this.printer.println(details);
@@ -328,14 +314,14 @@ export class ConsoleReporter implements StageCrewMember {
 
                 this.artifacts.clear();
             })
-            .when(TestRunFinished, (e: TestRunFinished) => {
+            .when(TestRunFinished, (_: TestRunFinished) => {
                 this.printer.println(this.theme.separator('='));
 
                 this.printer.print(this.summaryFormatter.format(this.summary.aggregated()));
 
                 this.printer.println(this.theme.separator('='));
             })
-            .else((e: DomainEvent) => {
+            .else((_: DomainEvent) => {
                 return void 0;
             });
     }
@@ -373,6 +359,15 @@ export class ConsoleReporter implements StageCrewMember {
             default:
                 return '';
         }
+    }
+}
+
+class ConsoleReporterBuilder implements StageCrewMemberBuilder<ConsoleReporter> {
+    constructor(private readonly theme: TerminalTheme) {
+    }
+
+    build({ stage, outputStream }: { stage: Stage; outputStream: OutputStream; }): ConsoleReporter {
+        return new ConsoleReporter(new Printer(outputStream), this.theme, stage);
     }
 }
 

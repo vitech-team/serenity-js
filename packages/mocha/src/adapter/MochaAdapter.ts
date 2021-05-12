@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 import * as fs from 'fs';
-import * as path from 'path';
+import * as path from 'path';   // eslint-disable-line unicorn/import-style
 import { ModuleLoader, TestRunnerAdapter } from '@serenity-js/core/lib/io';
 import { ExecutionIgnored, Outcome } from '@serenity-js/core/lib/model';
 import type Mocha = require('mocha');
@@ -114,7 +114,7 @@ export class MochaAdapter implements TestRunnerAdapter {
     }
 
     private requireAny(filesOrModules: string | string[]) {
-        const requires = !! filesOrModules
+        const requires = filesOrModules
             ? [].concat(filesOrModules).filter(item => !! item)
             : [];
 

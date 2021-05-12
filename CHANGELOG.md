@@ -3,6 +3,52 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.28.0](https://github.com/serenity-js/serenity-js/compare/v2.27.1...v2.28.0) (2021-05-12)
+
+
+### Bug Fixes
+
+* **deps:** migrated from TSLint to ESLint ([0c7580b](https://github.com/serenity-js/serenity-js/commit/0c7580b5fa06f9fa1796f0e9e19da45190940dfd)), closes [#842](https://github.com/serenity-js/serenity-js/issues/842)
+
+
+### Features
+
+* **node:** introduced support for Node.js 16.x, dropped support for Node.js 10.x ([0f67dcc](https://github.com/serenity-js/serenity-js/commit/0f67dcc63f904a4df48e331d12a37f40f6814cee)), closes [#842](https://github.com/serenity-js/serenity-js/issues/842)
+* **protractor:** implemented right click ([eeddb7f](https://github.com/serenity-js/serenity-js/commit/eeddb7fd3664e19d27c640b7f866c46b4c480c38)), closes [#833](https://github.com/serenity-js/serenity-js/issues/833)
+
+
+
+
+
+## [2.27.1](https://github.com/serenity-js/serenity-js/compare/v2.27.0...v2.27.1) (2021-05-04)
+
+
+### Bug Fixes
+
+* **serenity-bdd:** downgraded Yargs to v16.2.0 to avoid dropping support for Node 10 just yet ([5bedd26](https://github.com/serenity-js/serenity-js/commit/5bedd260fb5e2a8313ff95088b82efba1a752fef))
+
+
+
+
+
+# [2.27.0](https://github.com/serenity-js/serenity-js/compare/v2.26.2...v2.27.0) (2021-05-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @babel/parser to ^7.14.0 ([5f97160](https://github.com/serenity-js/serenity-js/commit/5f97160cd165f8d2271c3f4f066edcd93b9a4a7e))
+* **deps:** update dependency filenamify to ^4.3.0 ([35d8de9](https://github.com/serenity-js/serenity-js/commit/35d8de93b138e9df3fbbc6e7db49937c867eec1c))
+* **deps:** update dependency yargs to v17 ([8ad524a](https://github.com/serenity-js/serenity-js/commit/8ad524a512814f93c721494db9922dce537102d2))
+
+
+### Features
+
+* **core:** new interface StageCrewMemberBuilder and an easy way to redirect output to a file ([40c3086](https://github.com/serenity-js/serenity-js/commit/40c3086c6783f1bb56fffc84b30949d697bed182)), closes [#805](https://github.com/serenity-js/serenity-js/issues/805)
+
+
+
+
+
 ## [2.26.2](https://github.com/serenity-js/serenity-js/compare/v2.26.1...v2.26.2) (2021-04-22)
 
 

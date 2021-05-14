@@ -1,4 +1,4 @@
-import { ArtifactArchiver, ConfigurationError, Serenity } from '@serenity-js/core';
+import { ConfigurationError, Serenity } from '@serenity-js/core';
 import { Config, FileFinder, FileSystem, ModuleLoader, Path, TestRunnerAdapter } from '@serenity-js/core/lib/io';
 import type { Capabilities } from '@wdio/types';
 import type { EventEmitter } from 'events';
@@ -6,7 +6,9 @@ import { isPlainObject } from 'is-plain-object';
 import { WebdriverIONotifier } from './WebdriverIONotifier';
 
 import { WebdriverIOConfig } from './WebdriverIOConfig';
+import { WriteStreamProvider } from './WriteStreamProvider';
 import deepmerge = require('deepmerge');
+import { BufferedOutputStream } from './BufferedOutputStream';
 
 export class WebdriverIOFrameworkAdapter {
 
@@ -24,10 +26,10 @@ export class WebdriverIOFrameworkAdapter {
         webdriverIOConfig: WebdriverIOConfig,
         private readonly specs: string[],
         private readonly capabilities: Capabilities.RemoteCapability,
-        reporter: EventEmitter
+        reporter: EventEmitter & WriteStreamProvider
     ) {
         this.fileSystem = new FileSystem(cwd);
-        this.finder = new FileFinder(cwd);
+        this.finder     = new FileFinder(cwd);
 
         const config = deepmerge<WebdriverIOConfig>(this.defaultConfig(), webdriverIOConfig, {
             isMergeableObject: isPlainObject,
@@ -42,9 +44,15 @@ export class WebdriverIOFrameworkAdapter {
             this.specs,
         );
 
+        const outputStream = new BufferedOutputStream(
+            `[${this.cid}]`,
+            reporter.getWriteStreamObject('@serenity-js/webdriverio')
+        );
+
         this.serenity.configure({
-            cueTimeout: config.serenity.cueTimeout,
-            actors:     config.serenity.actors,
+            outputStream,
+            cueTimeout:     config.serenity.cueTimeout,
+            actors:         config.serenity.actors,
             crew: [
                 ...config.serenity.crew,
                 this.notifier,
@@ -72,7 +80,7 @@ export class WebdriverIOFrameworkAdapter {
     private testRunnerAdapterFrom(config: WebdriverIOConfig): TestRunnerAdapter {
         // todo: clean up
         switch (config?.serenity?.runner) {
-            case 'cucumber':
+            case 'cucumber': {
                 const { CucumberCLIAdapter, CucumberFormat, StandardOutput, TempFileOutput } = this.loader.require('@serenity-js/cucumber/lib/cli');
 
                 // todo: support setting a timeout?
@@ -111,10 +119,12 @@ export class WebdriverIOFrameworkAdapter {
                     : new TempFileOutput(this.fileSystem);
 
                 return new CucumberCLIAdapter(cucumberOpts.object(), this.loader, output);
+            }
 
-            case 'jasmine':
+            case 'jasmine': {
                 const { JasmineAdapter } = this.loader.require('@serenity-js/jasmine/lib/adapter')
                 return new JasmineAdapter(config.jasmineOpts, this.loader);
+            }
             case 'mocha':
             case undefined:
                 const { MochaAdapter } = this.loader.require('@serenity-js/mocha/lib/adapter')

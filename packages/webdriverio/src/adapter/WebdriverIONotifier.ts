@@ -1,5 +1,5 @@
 import { LogicError, Stage, StageCrewMember } from '@serenity-js/core';
-import { DomainEvent, RetryableSceneDetected, SceneFinished, SceneStarts, TestSuiteFinished, TestSuiteStarts } from '@serenity-js/core/lib/events';
+import { DomainEvent, SceneFinished, SceneStarts, TestSuiteFinished, TestSuiteStarts } from '@serenity-js/core/lib/events';
 import type { EventEmitter } from 'events';
 import {
     CorrelationId,
@@ -13,9 +13,7 @@ import {
     ProblemIndication,
     TestSuiteDetails,
 } from '@serenity-js/core/lib/model';
-// tslint:disable-next-line:no-submodule-imports
 import { Suite } from '@wdio/reporter/build/stats/suite';
-// tslint:disable-next-line:no-submodule-imports
 import { Test } from '@wdio/reporter/build/stats/test';
 import { match } from 'tiny-types';
 

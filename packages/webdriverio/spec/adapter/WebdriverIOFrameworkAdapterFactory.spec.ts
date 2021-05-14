@@ -9,6 +9,7 @@ import * as sinon from 'sinon';
 
 import { WebdriverIOFrameworkAdapterFactory } from '../../src/adapter';
 import { WebdriverIOConfig } from '../../src/adapter/WebdriverIOConfig';
+import { WriteStreamProvider } from '../../src/adapter/WriteStreamProvider';
 import EventEmitter = require('events');
 
 describe('WebdriverIOFrameworkAdapterFactory', () => {
@@ -20,13 +21,13 @@ describe('WebdriverIOFrameworkAdapterFactory', () => {
 
     let serenity:   Serenity,
         loader:     sinon.SinonStubbedInstance<ModuleLoader>,
-        reporter:   EventEmitter,
+        reporter:   FakeReporter,
         factory:    WebdriverIOFrameworkAdapterFactory;
 
     beforeEach(() => {
         serenity    = new Serenity(new Clock());
         loader      = sinon.createStubInstance(ModuleLoader);
-        reporter    = new EventEmitter();
+        reporter    = new FakeReporter();
         factory     = new WebdriverIOFrameworkAdapterFactory(
             serenity,
             loader,
@@ -88,7 +89,7 @@ describe('WebdriverIOFrameworkAdapterFactory', () => {
             expect(FakeTestRunnerAdapter.loadedPathsToScenarios).to.deep.equal(specs);
         });
 
-        it('loads specs using @serenity-js/cucumber when configured to do so');
+        it('loads specs using @serenity-js/cucumber when configured to do so'); // todo
 
         it('complains when configured with an invalid runner', () => {
             const config = defaultConfig({
@@ -101,6 +102,18 @@ describe('WebdriverIOFrameworkAdapterFactory', () => {
                 .to.throw(ConfigurationError, '"invalid" is not a supported test runner. Please use "mocha", "jasmine", or "cucumber"');
         });
     });
+
+    class FakeReporter extends EventEmitter implements WriteStreamProvider {
+        public output = '';
+
+        getWriteStreamObject(reporter: string) {
+            return {
+                write: (content: string): void => {
+                    this.output += content;
+                }
+            };
+        }
+    }
 
     class FakeTestRunnerAdapter implements TestRunnerAdapter {
 

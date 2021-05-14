@@ -4,6 +4,7 @@ import type { Capabilities } from '@wdio/types';
 import type { EventEmitter } from 'events';
 import { WebdriverIOFrameworkAdapter } from './WebdriverIOFrameworkAdapter';
 import { WebdriverIOConfig } from './WebdriverIOConfig';
+import { WriteStreamProvider } from './WriteStreamProvider';
 
 export class WebdriverIOFrameworkAdapterFactory {
     constructor(
@@ -18,7 +19,7 @@ export class WebdriverIOFrameworkAdapterFactory {
             config: WebdriverIOConfig,
             specs: string[],
             capabilities: Capabilities.RemoteCapability,
-            reporter: EventEmitter
+            reporter: EventEmitter & WriteStreamProvider
     ): Promise<WebdriverIOFrameworkAdapter> {
         return new WebdriverIOFrameworkAdapter(
             this.serenity,

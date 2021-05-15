@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import { BufferedOutputStream } from '../../src/adapter/BufferedOutputStream';
 import { expect } from '@integration/testing-tools';
 
-describe('DecoratedOutputStream', () => {
+describe('BufferedOutputStream', () => {
 
     let write:  sinon.SinonSpy,
         buffer: BufferedOutputStream;
@@ -43,4 +43,12 @@ describe('DecoratedOutputStream', () => {
         expect(write).to.have.been.calledWith('[prefix] The bright blessed day,\n');
         expect(write).to.have.been.calledWith('[prefix] The dark sacred night\n');
     });
+
+    it('splits lines upon new line character', () => {
+        buffer.write('first\nsecond\nthird\n');
+
+        expect(write).to.have.been.calledWith('[prefix] first\n');
+        expect(write).to.have.been.calledWith('[prefix] second\n');
+        expect(write).to.have.been.calledWith('[prefix] third\n');
+    })
 });

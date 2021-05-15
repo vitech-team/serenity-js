@@ -26,15 +26,9 @@ export class BufferedOutputStream implements OutputStream {
         this.outputStream.write(`${ this.prefix } ${ this.buffer }\n`);
 
         this.buffer = tail.pop()
-        //
-        // this.outputStream.write(this.buffer + head + '\n')
-        //
-        // this.buffer = tail.pop();
-        //
-        // tail.forEach(line => {
-        //     this.outputStream.write(line + '\n');
-        // })
 
-        // this.outputStream.write(decorated);
+        tail.forEach(line => {
+            this.outputStream.write(`${ this.prefix } ${ line }\n`);
+        });
     }
 }

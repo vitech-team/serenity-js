@@ -1,8 +1,8 @@
 import { ModuleLoader, TestRunnerAdapter } from '@serenity-js/core/lib/io';
-import reporter = require('../index');
 import { JasmineConfig } from './JasmineConfig';
 import { ExecutionIgnored, Outcome } from '@serenity-js/core/lib/model';
-import { GrepSpecFilter, CustomFunctionSpecFilter, InvertedGrepSpecFilter, AcceptingSpecFilter, SpecFilter } from './filters';
+import { AcceptingSpecFilter, CustomFunctionSpecFilter, GrepSpecFilter, InvertedGrepSpecFilter, SpecFilter } from './filters';
+import reporter = require('../index');
 
 /**
  * @desc
@@ -14,7 +14,26 @@ import { GrepSpecFilter, CustomFunctionSpecFilter, InvertedGrepSpecFilter, Accep
 export class JasmineAdapter implements TestRunnerAdapter {
 
     private runner: any;
-    private totalScenarios: number;
+    private totalScenarios = 0;
+
+    private static readonly defaultConfig = {
+        /*
+         * Serenity/JS doesn't use Jasmine's assertions, so this mechanism can be disabled
+         */
+        oneFailurePerSpec: true,
+
+        /*
+         * A spec should stop execution as soon as there's a hook or spec failure
+         * See https://github.com/angular/protractor/issues/3234
+         */
+        stopSpecOnExpectationFailure: true,
+
+        /*
+         * Default to not executing tests at random.
+         * See https://github.com/angular/protractor/blob/4f74a4ec753c97adfe955fe468a39286a0a55837/lib/frameworks/jasmine.js#L76
+         */
+        random: false,
+    };
 
     /**
      * @param {JasmineConfig} config
@@ -54,52 +73,36 @@ export class JasmineAdapter implements TestRunnerAdapter {
 
         this.runner.clearReporters();
 
-        // tslint:disable-next-line:prefer-object-spread
         this.runner.loadConfig(Object.assign(
-            {
-                /*
-                 * Serenity/JS doesn't use Jasmine's assertions, so this mechanism can be disabled
-                 */
-                oneFailurePerSpec: true,
-
-                /*
-                 * A spec should stop execution as soon as there's a hook or spec failure
-                 * See https://github.com/angular/protractor/issues/3234
-                 */
-                stopSpecOnExpectationFailure: true,
-
-                /*
-                 * Default to not executing tests at random.
-                 * See https://github.com/angular/protractor/blob/4f74a4ec753c97adfe955fe468a39286a0a55837/lib/frameworks/jasmine.js#L76
-                 */
-                random: false,
-            },
+            JasmineAdapter.defaultConfig,
             this.config,
         ));
 
         this.runner.addReporter(reporter(this.runner.jasmine));
         this.runner.configureDefaultReporter(this.config);
 
+        this.configureSpecFilter();
+
+        await this.loadSpecs(pathsToScenarios);
+
+        this.countScenarios(this.runner.env.topSuite())
+    }
+
+    private configureSpecFilter(): void {
         /*
          * Configure spec filter
          */
         this.runner.env.configure({
             specFilter: spec => this.specFilter().matches(spec.getFullName()),
         })
+    }
 
-        /*
-         * Load files
-         * todo: extract
-         */
+    private async loadSpecs(pathsToScenarios: string[]): Promise<void> {
         this.runner.specDir     = '';
         this.runner.specFiles   = [];
         this.runner.addSpecFiles(pathsToScenarios);
 
         await this.runner.loadSpecs();
-
-        //
-        // // todo: count files
-        // this.runner.env.topSuite()
     }
 
     private specFilter(): SpecFilter {
@@ -120,39 +123,47 @@ export class JasmineAdapter implements TestRunnerAdapter {
      * @desc
      *  Returns the number of loaded scenarios
      *
-     * @throws {@serenity-js/core/lib/errors~LogicError}
-     *  If called before `load`
-     *
      * @returns {number}
      */
     scenarioCount(): number {
-        // todo: implement counting
-        return 1;
+        return this.totalScenarios;
+    }
 
-        // if (this.totalScenarios === undefined) {
-        //     throw new LogicError('Make sure to call `load` before calling `scenarioCount`');
-        // }
-        //
-        // return this.totalScenarios;
+    private countScenarios(suite: JasmineSuite): void {
+        suite.children?.forEach((child) => {
+            if (Array.isArray(child.children)) {
+                return this.countScenarios(child)
+            }
+            if (this.specFilter().matches(child.getFullName())) {
+                this.totalScenarios++
+            }
+        })
     }
 
     /**
      * @desc
      *  Runs loaded test scenarios.
      *
-     * @throws {LogicError}
-     *  If called before `load`
-     *
      * @returns {Promise<void>}
      */
     run(): Promise<void> {
         return new Promise((resolve, reject) => {
             this.runner.onComplete((passed: boolean) => resolve());
-
-            // todo: move paths to load
-            //  -> this.runner.execute()
-            // this.runner.execute(this.pathsToScenarios, this.config.grep);
             this.runner.execute();
         });
     }
+}
+
+/**
+ * @package
+ */
+interface JasmineSuite extends JasmineSpec {
+    children?: JasmineSuite[]
+}
+
+/**
+ * @package
+ */
+interface JasmineSpec {
+    getFullName(): string;
 }

@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+
 import * as sinon from 'sinon';
 
 export class FakeJasmineRunner {
     static instance: FakeJasmineRunner;
+    static topSuite = sinon.stub();
 
     clearReporters  = sinon.spy();
 
@@ -29,7 +32,8 @@ export class FakeJasmineRunner {
     }
 
     public readonly env = {
-        configure: sinon.spy(),
+        configure:  sinon.spy(),
+        topSuite:   FakeJasmineRunner.topSuite,
     }
 
     constructor() {

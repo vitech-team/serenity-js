@@ -6,7 +6,7 @@ import { SceneFinished, SceneStarts, SceneTagged, TestRunnerDetected } from '@se
 import { ExecutionFailedWithAssertionError, FeatureTag, Name, ProblemIndication } from '@serenity-js/core/lib/model';
 import { wdio } from '../src';
 
-describe('@serenity-js/jasmine', function () {
+describe('@serenity-js/webdriverio with @serenity-js/jasmine', function () {
 
     this.timeout(30000);
 

@@ -12,22 +12,8 @@ describe('JasmineAdapter', () => {
 
     beforeEach(() => {
         loader = sinon.createStubInstance(ModuleLoader);
-        (global as any).jasmine = {
-            Suite: () => void 0,
-            Spec: () => void 0,
-            getEnv() {
-                return {
-                    beforeEach: () => void 0,
-                    afterAll: () => void 0,
-                };
-            },
-        };
 
         loader.require.withArgs('jasmine').returns(FakeJasmineRunner);
-    });
-
-    afterEach(() => {
-        (global as any).jasmine = void 0;
     });
 
     /** @test JasmineAdapter#run */
@@ -60,10 +46,9 @@ describe('JasmineAdapter', () => {
             config = {
                 defaultTimeoutInterval,
             },
-            specs  = [],
-            globalScope = global as any;
+            specs  = [];
 
-        expect(globalScope.jasmine.DEFAULT_TIMEOUT_INTERVAL).to.equal(undefined);
+        expect(FakeJasmineRunner.instance.jasmine.DEFAULT_TIMEOUT_INTERVAL).to.equal(undefined);
 
         const adapter = new JasmineAdapter(config, loader);
 
@@ -72,7 +57,7 @@ describe('JasmineAdapter', () => {
 
         FakeJasmineRunner.instance.complete(true);
 
-        expect(globalScope.jasmine.DEFAULT_TIMEOUT_INTERVAL).to.equal(defaultTimeoutInterval);
+        expect(FakeJasmineRunner.instance.jasmine.DEFAULT_TIMEOUT_INTERVAL).to.equal(defaultTimeoutInterval);
 
         return result;
     });

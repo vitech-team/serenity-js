@@ -2,10 +2,10 @@ import 'mocha';
 
 import { expect, ifExitCodeIsOtherThan, logOutput, PickEvent, StdOutReporter } from '@integration/testing-tools';
 import { SceneFinished, SceneStarts, SceneTagged, TestRunnerDetected } from '@serenity-js/core/lib/events';
-import { ExecutionSkipped, FeatureTag, Name } from '@serenity-js/core/lib/model';
+import { ExecutionSkipped, ExecutionSuccessful, FeatureTag, Name } from '@serenity-js/core/lib/model';
 import { wdio } from '../src';
 
-describe('@serenity-js/mocha', function () {
+describe('@serenity-js/webdriverio with @serenity-js/jasmine', function () {
 
     this.timeout(30000);
 
@@ -25,6 +25,30 @@ describe('@serenity-js/mocha', function () {
                 .next(SceneTagged,         event => expect(event.tag).to.equal(new FeatureTag('Jasmine')))
                 .next(TestRunnerDetected,  event => expect(event.name).to.equal(new Name('Jasmine')))
                 .next(SceneFinished,       event => expect(event.outcome).to.equal(new ExecutionSkipped()))
+            ;
+        }));
+
+    it('allows for pattern to be inverted via invertGrep', () =>
+        wdio(
+            './examples/wdio.conf.ts',
+            '--spec=examples/passing_and_failing.spec.js',
+            '--jasmineOpts.grep=".*fails.*"',
+            '--jasmineOpts.invertGrep=true',
+        ).
+        then(ifExitCodeIsOtherThan(0, logOutput)).
+        then(res => {
+
+            expect(res.exitCode).to.equal(0);
+
+            PickEvent.from(StdOutReporter.parse(res.stdout))
+                .next(SceneStarts, event => expect(event.details.name).to.equal(new Name('A scenario passes')))
+                .next(SceneTagged, event => expect(event.tag).to.equal(new FeatureTag('Jasmine')))
+                .next(TestRunnerDetected, event => expect(event.name).to.equal(new Name('Jasmine')))
+                .next(SceneFinished, event => expect(event.outcome).to.equal(new ExecutionSuccessful()))
+                .next(SceneStarts, event => expect(event.details.name).to.equal(new Name('A scenario fails')))
+                .next(SceneTagged, event => expect(event.tag).to.equal(new FeatureTag('Jasmine')))
+                .next(TestRunnerDetected, event => expect(event.name).to.equal(new Name('Jasmine')))
+                .next(SceneFinished, event => expect(event.outcome).to.equal(new ExecutionSkipped()))
             ;
         }));
 });

@@ -2,7 +2,7 @@ import { ModuleLoader, TestRunnerAdapter } from '@serenity-js/core/lib/io';
 import reporter = require('../index');
 import { JasmineConfig } from './JasmineConfig';
 import { ExecutionIgnored, Outcome } from '@serenity-js/core/lib/model';
-import { LogicError } from '@serenity-js/core';
+import { GrepSpecFilter, CustomFunctionSpecFilter, InvertedGrepSpecFilter, AcceptingSpecFilter, SpecFilter } from './filters';
 
 /**
  * @desc
@@ -12,9 +12,6 @@ import { LogicError } from '@serenity-js/core';
  * @implements {@serenity-js/core/lib/io~TestRunnerAdapter}
  */
 export class JasmineAdapter implements TestRunnerAdapter {
-
-    // todo: remove
-    private pathsToScenarios: string[] = [];
 
     private runner: any;
     private totalScenarios: number;
@@ -48,15 +45,11 @@ export class JasmineAdapter implements TestRunnerAdapter {
      * @returns {Promise<void>}
      */
     async load(pathsToScenarios: string[]): Promise<void> {
-        // todo: remove
-        this.pathsToScenarios = pathsToScenarios;
-
-        const JasmineRunner   = this.loader.require('jasmine');
-        this.runner          = new JasmineRunner({ projectBaseDir: '' });   // instantiating the JasmineRunner has a side-effect...
-        const jasmine         = (global as any).jasmine;                    // ... of registering a global jasmine instance
+        const JasmineRunner = this.loader.require('jasmine');
+        this.runner         = new JasmineRunner({ projectBaseDir: '' });
 
         if (this.config.defaultTimeoutInterval) {
-            jasmine.DEFAULT_TIMEOUT_INTERVAL = this.config.defaultTimeoutInterval;
+            this.runner.jasmine.DEFAULT_TIMEOUT_INTERVAL = this.config.defaultTimeoutInterval;
         }
 
         this.runner.clearReporters();
@@ -84,8 +77,43 @@ export class JasmineAdapter implements TestRunnerAdapter {
             this.config,
         ));
 
-        this.runner.addReporter(reporter(jasmine));
+        this.runner.addReporter(reporter(this.runner.jasmine));
         this.runner.configureDefaultReporter(this.config);
+
+        /*
+         * Configure spec filter
+         */
+        this.runner.env.configure({
+            specFilter: spec => this.specFilter().matches(spec.getFullName()),
+        })
+
+        /*
+         * Load files
+         * todo: extract
+         */
+        this.runner.specDir     = '';
+        this.runner.specFiles   = [];
+        this.runner.addSpecFiles(pathsToScenarios);
+
+        await this.runner.loadSpecs();
+
+        //
+        // // todo: count files
+        // this.runner.env.topSuite()
+    }
+
+    private specFilter(): SpecFilter {
+        if (this.config.specFilter) {
+            return new CustomFunctionSpecFilter(this.config.specFilter);
+        }
+
+        if (this.config.grep) {
+            return this.config.invertGrep
+                ? new InvertedGrepSpecFilter(this.config.grep)
+                : new GrepSpecFilter(this.config.grep);
+        }
+
+        return new AcceptingSpecFilter();
     }
 
     /**
@@ -122,7 +150,9 @@ export class JasmineAdapter implements TestRunnerAdapter {
             this.runner.onComplete((passed: boolean) => resolve());
 
             // todo: move paths to load
-            this.runner.execute(this.pathsToScenarios, this.config.grep);
+            //  -> this.runner.execute()
+            // this.runner.execute(this.pathsToScenarios, this.config.grep);
+            this.runner.execute();
         });
     }
 }

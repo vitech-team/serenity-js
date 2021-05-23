@@ -3,7 +3,7 @@ import 'mocha';
 import { expect, ifExitCodeIsOtherThan, logOutput, PickEvent, StdOutReporter } from '@integration/testing-tools';
 import { AssertionError } from '@serenity-js/core';
 import { SceneFinished, SceneStarts, SceneTagged, TestRunnerDetected } from '@serenity-js/core/lib/events';
-import { ExecutionFailedWithAssertionError, FeatureTag, Name, ProblemIndication } from '@serenity-js/core/lib/model';
+import { BrowserTag, ExecutionFailedWithAssertionError, FeatureTag, Name, PlatformTag, ProblemIndication } from '@serenity-js/core/lib/model';
 import { wdio } from '../src';
 
 describe('@serenity-js/mocha', function () {
@@ -22,6 +22,8 @@ describe('@serenity-js/mocha', function () {
 
             PickEvent.from(StdOutReporter.parse(res.stdout))
                 .next(SceneStarts,         event => expect(event.details.name).to.equal(new Name('A scenario fails')))
+                .next(SceneTagged,         event => expect(event.tag).to.be.instanceOf(BrowserTag))
+                .next(SceneTagged,         event => expect(event.tag).to.be.instanceOf(PlatformTag))
                 .next(SceneTagged,         event => expect(event.tag).to.equal(new FeatureTag('Mocha')))
                 .next(TestRunnerDetected,  event => expect(event.name).to.equal(new Name('Mocha')))
                 .next(SceneFinished,       event => {

@@ -2,7 +2,7 @@ import 'mocha';
 
 import { expect, ifExitCodeIsOtherThan, logOutput, PickEvent, StdOutReporter } from '@integration/testing-tools';
 import { SceneFinished, SceneStarts, SceneTagged, TestRunFinished, TestRunFinishes, TestRunnerDetected, TestRunStarts } from '@serenity-js/core/lib/events';
-import { ExecutionSuccessful, FeatureTag, Name, Timestamp } from '@serenity-js/core/lib/model';
+import { BrowserTag, ExecutionSuccessful, FeatureTag, Name, PlatformTag, Timestamp } from '@serenity-js/core/lib/model';
 import { wdio } from '../src';
 
 describe('@serenity-js/webdriverio with @serenity-js/jasmine', function () {
@@ -22,6 +22,8 @@ describe('@serenity-js/webdriverio with @serenity-js/jasmine', function () {
             PickEvent.from(StdOutReporter.parse(res.stdout))
                 .next(TestRunStarts,       event => expect(event.timestamp).to.be.instanceof(Timestamp))
                 .next(SceneStarts,         event => expect(event.details.name).to.equal(new Name('A scenario passes')))
+                .next(SceneTagged,         event => expect(event.tag).to.be.instanceOf(BrowserTag))
+                .next(SceneTagged,         event => expect(event.tag).to.be.instanceOf(PlatformTag))
                 .next(SceneTagged,         event => expect(event.tag).to.equal(new FeatureTag('Jasmine')))
                 .next(TestRunnerDetected,  event => expect(event.name).to.equal(new Name('Jasmine')))
                 .next(SceneFinished,       event => expect(event.outcome).to.equal(new ExecutionSuccessful()))

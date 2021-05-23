@@ -2,7 +2,7 @@ import 'mocha';
 
 import { expect, ifExitCodeIsOtherThan, logOutput, PickEvent, StdOutReporter } from '@integration/testing-tools';
 import { SceneFinished, SceneStarts, SceneTagged, TestRunFinished, TestRunFinishes, TestRunnerDetected, TestRunStarts } from '@serenity-js/core/lib/events';
-import { ExecutionSuccessful, FeatureTag, Name, Timestamp } from '@serenity-js/core/lib/model';
+import { BrowserTag, ExecutionSuccessful, FeatureTag, Name, PlatformTag, Timestamp } from '@serenity-js/core/lib/model';
 import { wdio } from '../src';
 
 describe('@serenity-js/webdriverio with @serenity-js/cucumber', function () {
@@ -23,6 +23,9 @@ describe('@serenity-js/webdriverio with @serenity-js/cucumber', function () {
                 .next(TestRunStarts,       event => expect(event.timestamp).to.be.instanceof(Timestamp))
                 .next(SceneStarts,         event => expect(event.details.name).to.equal(new Name('A passing scenario')))
                 .next(TestRunnerDetected,  event => expect(event.name).to.equal(new Name('Cucumber')))
+                // todo: tagging doesn't fully work with Cucumber yet
+                //  .next(SceneTagged,         event => expect(event.tag).to.be.instanceOf(BrowserTag))
+                //  .next(SceneTagged,         event => expect(event.tag).to.be.instanceOf(PlatformTag))
                 .next(SceneTagged,         event => expect(event.tag).to.equal(new FeatureTag('A passing feature')))
                 .next(SceneFinished,       event => expect(event.outcome).to.equal(new ExecutionSuccessful()))
                 .next(TestRunFinishes,     event => expect(event.timestamp).to.be.instanceof(Timestamp))

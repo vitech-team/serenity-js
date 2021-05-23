@@ -46,7 +46,7 @@ export const config = {
         }
     }],
 
-    logLevel: 'debug',
+    logLevel: 'warn',
 
     waitforTimeout: 10000,
 

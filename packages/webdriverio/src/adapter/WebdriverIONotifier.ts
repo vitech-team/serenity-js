@@ -28,7 +28,7 @@ export class WebdriverIONotifier implements StageCrewMember {
         private readonly cid: string,
         private readonly specs: string[],
         private failures: number = 0,
-        private stage: Stage = null,
+        private stage?: Stage,
     ) {
     }
 

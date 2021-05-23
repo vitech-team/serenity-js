@@ -6,9 +6,11 @@ import { isPlainObject } from 'is-plain-object';
 import { WebdriverIONotifier } from './WebdriverIONotifier';
 
 import { WebdriverIOConfig } from './WebdriverIOConfig';
-import { WriteStreamProvider } from './WriteStreamProvider';
+import { ProvidesWriteStream } from './ProvidesWriteStream';
 import deepmerge = require('deepmerge');
 import { BufferedOutputStream } from './BufferedOutputStream';
+import { BrowserCapabilitiesReporter } from './reporter';
+import { InitialisesReporters } from './InitialisesReporters';
 
 export class WebdriverIOFrameworkAdapter {
 
@@ -26,7 +28,7 @@ export class WebdriverIOFrameworkAdapter {
         webdriverIOConfig: WebdriverIOConfig,
         private readonly specs: string[],
         private readonly capabilities: Capabilities.RemoteCapability,
-        reporter: EventEmitter & WriteStreamProvider
+        reporter: EventEmitter & ProvidesWriteStream & InitialisesReporters
     ) {
         this.fileSystem = new FileSystem(cwd);
         this.finder     = new FileFinder(cwd);
@@ -35,7 +37,14 @@ export class WebdriverIOFrameworkAdapter {
             isMergeableObject: isPlainObject,
         });
 
-        this.adapter = this.testRunnerAdapterFrom(config)
+        this.adapter = this.testRunnerAdapterFrom(config);
+
+        // fixme: this is the only (hacky) way to register a fake reporter programmatically (as of @wdio/reporter 7.4.2)
+        //  - https://github.com/webdriverio/webdriverio/blob/365fb0ad79fcf4471f21f23e18afa6818986dbdb/packages/wdio-runner/src/index.ts#L147-L181
+        //  - https://github.com/webdriverio/webdriverio/blob/365fb0ad79fcf4471f21f23e18afa6818986dbdb/packages/wdio-runner/src/reporter.ts#L24
+        (reporter as any)._reporters.push(reporter.initReporter([
+            BrowserCapabilitiesReporter, { serenity: this.serenity },
+        ]));
 
         this.notifier = new WebdriverIONotifier(
             reporter,

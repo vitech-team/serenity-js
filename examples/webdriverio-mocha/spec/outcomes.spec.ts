@@ -24,7 +24,7 @@ describe('@serenity-js/webdriverio', () => {
             this.skip();
         });
 
-        let counter = 5;
+        let counter = 2;
         it('is retried', function () {
             this.retries(2);
 

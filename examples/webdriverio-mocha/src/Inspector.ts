@@ -12,6 +12,7 @@ export default class Inspector extends Reporter {
                 out.write(JSON.stringify({ type, event }) + '\n');
         }
 
+        this.on('runner:start', log('runner:start'))
         this.on('suite:start', log('suite:start'))
         this.on('hook:start', log('hook:start'))
         this.on('hook:end', log('hook:end'))
@@ -22,5 +23,6 @@ export default class Inspector extends Reporter {
         this.on('test:pending', log('test:pending'))
         this.on('test:end', log('test:end'))
         this.on('suite:end', log('suite:end'))
+        this.on('runner:end', log('runner:end'))
     }
 }

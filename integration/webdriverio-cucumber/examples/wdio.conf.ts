@@ -1,5 +1,7 @@
 import { StdOutReporter } from '@integration/testing-tools';
 import { Duration } from '@serenity-js/core';
+import Inspector from './Inspector';
+import { resolve } from 'path';
 
 export const config = {
 
@@ -8,24 +10,33 @@ export const config = {
 
     serenity: {
         runner: 'cucumber',
-        // crew: [
-        //     new StdOutReporter(),
-        // ],
+        crew: [
+            new StdOutReporter(),
+        ],
         cueTimeout: Duration.ofSeconds(1),
     },
 
     cucumberOpts: {
         require: [
-            './examples/features/step_definitions/*.js',
+            './examples/features/step_definitions/steps.ts',
         ],
     },
 
     specs: [
-        // './features/passing.feature'
+        // specified directly in tests
     ],
+
+    autoCompileOpts: {
+        autoCompile: true,
+        tsNodeOpts: {
+            transpileOnly: true,
+            project: resolve(__dirname, '../tsconfig.json'),
+        },
+    },
 
     reporters: [
         'spec',
+        Inspector
     ],
 
     runner: 'local',

@@ -92,8 +92,8 @@ export class WebdriverIOFrameworkAdapter {
             case 'cucumber': {
                 const { CucumberCLIAdapter, CucumberFormat, StandardOutput, TempFileOutput } = this.loader.require('@serenity-js/cucumber/lib/cli');
 
-                // todo: support setting a timeout?
-                delete config?.cucumberOpts?.timeout;
+                delete config?.cucumberOpts?.timeout;   // todo: support setting a timeout via config?
+                delete config?.cucumberOpts?.parallel;  // WebdriverIO handles that already
 
                 const cucumberOpts = new Config(config?.cucumberOpts)
                     .where('require', requires =>
@@ -118,16 +118,14 @@ export class WebdriverIOFrameworkAdapter {
 
                             return `${ format.formatter }:${ format.output.replace(basename, filenameParts.join('.')) }`;
                         })
-                    );
+                    ).object();
 
-                const useSerenityReportingServices = config?.serenity?.crew?.length > 0;
+                // should we free up stdout for any native reporters?
+                const output = cucumberOpts?.format?.some(format => new CucumberFormat(format).output === '')
+                    ? new TempFileOutput(this.fileSystem)
+                    : new StandardOutput();
 
-                // todo: this will fail because of the defaults
-                const output = useSerenityReportingServices
-                    ? new StandardOutput()
-                    : new TempFileOutput(this.fileSystem);
-
-                return new CucumberCLIAdapter(cucumberOpts.object(), this.loader, output);
+                return new CucumberCLIAdapter(cucumberOpts, this.loader, output);
             }
 
             case 'jasmine': {

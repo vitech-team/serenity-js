@@ -4,8 +4,7 @@ import type { Capabilities } from '@wdio/types';
 import type { EventEmitter } from 'events';
 import { WebdriverIOFrameworkAdapter } from './WebdriverIOFrameworkAdapter';
 import { WebdriverIOConfig } from './WebdriverIOConfig';
-import { ProvidesWriteStream } from './ProvidesWriteStream';
-import { InitialisesReporters } from './InitialisesReporters';
+import { InitialisesReporters, ProvidesWriteStream } from './reporter';
 
 export class WebdriverIOFrameworkAdapterFactory {
     constructor(

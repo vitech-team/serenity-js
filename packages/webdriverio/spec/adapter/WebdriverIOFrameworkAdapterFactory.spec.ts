@@ -5,14 +5,13 @@ import { Clock, ConfigurationError, Serenity } from '@serenity-js/core';
 import { ModuleLoader, Path, TestRunnerAdapter } from '@serenity-js/core/lib/io';
 import { ExecutionIgnored, Outcome } from '@serenity-js/core/lib/model';
 import type { Capabilities, Reporters } from '@wdio/types';
+import Reporter from '@wdio/reporter';
 import * as sinon from 'sinon';
+import EventEmitter = require('events');
 
 import { WebdriverIOFrameworkAdapterFactory } from '../../src/adapter';
 import { WebdriverIOConfig } from '../../src/adapter/WebdriverIOConfig';
-import { ProvidesWriteStream } from '../../src/adapter/ProvidesWriteStream';
-import { InitialisesReporters } from '../../lib/adapter/InitialisesReporters';
-import EventEmitter = require('events');
-import Reporter from '@wdio/reporter';
+import { InitialisesReporters, ProvidesWriteStream } from '../../src/adapter/reporter';
 
 describe('WebdriverIOFrameworkAdapterFactory', () => {
 

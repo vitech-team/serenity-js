@@ -1,6 +1,6 @@
 import 'mocha';
 import * as sinon from 'sinon';
-import { BufferedOutputStream } from '../../src/adapter/BufferedOutputStream';
+import { BufferedOutputStream } from '../../../src/adapter/reporter';
 import { expect } from '@integration/testing-tools';
 
 describe('BufferedOutputStream', () => {

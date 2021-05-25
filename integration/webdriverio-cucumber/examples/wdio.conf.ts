@@ -1,6 +1,5 @@
 import { StdOutReporter } from '@integration/testing-tools';
 import { Duration } from '@serenity-js/core';
-import Inspector from './Inspector';
 import { resolve } from 'path';
 
 export const config = {
@@ -36,7 +35,6 @@ export const config = {
 
     reporters: [
         'spec',
-        Inspector
     ],
 
     runner: 'local',

@@ -1,8 +1,8 @@
 import { Ability, UsesAbilities } from '@serenity-js/core';
-// import { Browser, MultiRemoteBrowser } from 'webdriverio';
+import type { Browser } from 'webdriverio';
 
 export class BrowseTheWeb implements Ability {
-    static using(browserInstance: any /*Browser<'async'>  todo: support MultiRemoteBrowser<'async'> */) {
+    static using(browserInstance: Browser<'async'>) {
         return new BrowseTheWeb(browserInstance);
     }
 
@@ -10,10 +10,10 @@ export class BrowseTheWeb implements Ability {
         return actor.abilityTo(BrowseTheWeb);
     }
 
-    constructor(private readonly browserInstance: any /* Browser<'async'> /* todo: support MultiRemoteBrowser<'async'> */) {
+    constructor(public readonly browser: Browser<'async'>) {
     }
 
     get(destination: string): Promise<void> {
-        return this.browserInstance.url(destination);  // todo: check if this returns a string or is mistyped
+        return this.browser.url(destination) as any;  // todo: check if this returns a string or is mistyped
     }
 }

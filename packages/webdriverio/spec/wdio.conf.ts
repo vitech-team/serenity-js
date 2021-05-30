@@ -1,15 +1,25 @@
 import { resolve } from 'path';
+import { ConsoleReporter } from '@serenity-js/console-reporter';
+import { Actors } from './screenplay/Actors';
 
 export const config = {
 
-    framework: 'mocha',
+    framework: resolve(__dirname, '../src'),
+
+    serenity: {
+        actors: new Actors(),
+        crew: [
+            ConsoleReporter.forDarkTerminals(),
+        ]
+    },
 
     mochaOpts: {
         ui: 'bdd',
-        timeout: 60000,
+        timeout: 60_000_000,
     },
 
     specs: [
+        // resolve(__dirname, 'screenplay') + '/**/*.spec.ts',
         './spec/**/*.spec.ts',
     ],
 
@@ -21,7 +31,7 @@ export const config = {
         autoCompile: true,
         tsNodeOpts: {
             transpileOnly: true,
-            project: resolve(__dirname, './tsconfig.json'),
+            project: resolve(__dirname, '../tsconfig.json'),
         },
     },
 

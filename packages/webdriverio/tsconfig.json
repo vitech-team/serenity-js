@@ -1,14 +1,22 @@
 {
   "compilerOptions": {
     "target": "es2018",
-    "lib": ["es2018"],
+    "lib": ["es2018", "dom"],
     "module": "commonjs",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
     "declaration": true,
     "outDir": "./lib",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "types": [
+      "node",
+      "chai",
+      "chai-as-promised",
+      "sinon",
+      "sinon-chai",
+      "webdriverio/async"
+    ]
   },
 
   "include": [

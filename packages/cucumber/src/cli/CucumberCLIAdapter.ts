@@ -86,9 +86,6 @@ export class CucumberCLIAdapter implements TestRunnerAdapter {
      * @desc
      *  Instructs Cucumber to execute feature files located at `pathsToScenarios`
      *
-     * @param {string[]} pathsToScenarios
-     *  Absolute or relative paths to feature files
-     *
      * @returns {Promise<void>}
      */
     async run(): Promise<void> {

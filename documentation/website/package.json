@@ -46,6 +46,7 @@
     "@serenity-js/protractor": "^2.0.0",
     "@serenity-js/rest": "^2.0.0",
     "@serenity-js/serenity-bdd": "^2.0.0",
+    "@serenity-js/webdriverio": "^2.0.0",
     "async": "^3.2.0",
     "cheerio": "^1.0.0-rc.9",
     "clean-css": "^5.1.2",

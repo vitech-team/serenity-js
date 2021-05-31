@@ -1,11 +1,11 @@
 import 'mocha';
-import { by, Navigate, Target, Text } from '../../../src';
-import { CreatePage, DeletePage, VisitPage } from '../../pages';
-import { actorCalled, Log, replace, toNumber, trim } from '@serenity-js/core';
-import { LocalServer, StartLocalServer, StopLocalServer } from '@serenity-js/local-server';
-import { ChangeApiConfig } from '@serenity-js/rest';
+import { by, Target, Text } from '../../../src';
+import { CreatePage, VisitPage } from '../../pages';
+import { actorCalled, replace, toNumber, trim } from '@serenity-js/core';
 import { Ensure, equals } from '@serenity-js/assertions';
 import { expect } from '@integration/testing-tools';
+import { LocalServer, StartLocalServer, StopLocalServer } from '@serenity-js/local-server';
+import { ChangeApiConfig } from '@serenity-js/rest';
 
 describe('Text', () => {
 

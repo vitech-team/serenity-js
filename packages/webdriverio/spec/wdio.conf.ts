@@ -19,12 +19,11 @@ export const config = {
     },
 
     specs: [
-        // resolve(__dirname, 'screenplay') + '/**/*.spec.ts',
         './spec/**/*.spec.ts',
     ],
 
     reporters: [
-        'dot',
+        'spec',
     ],
 
     autoCompileOpts: {
@@ -39,8 +38,6 @@ export const config = {
     automationProtocol: 'devtools',
 
     runner: 'local',
-
-    maxInstances: 1,
 
     capabilities: [{
 

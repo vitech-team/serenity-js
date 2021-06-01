@@ -50,5 +50,29 @@ describe('Attribute', () => {
 
                 Ensure.that(Attribute.called('lang'), equals('en')),
             )).to.be.rejectedWith(LogicError, `Target not specified`));
+
+        const ItemsOfInterest = Target.all('items of interest').located(by.tagName('li'))
+            .where(Attribute.called('class'), equals('enabled'))
+
+        /** @test {Attribute.called} */
+        /** @test {Target.all} */
+        it('can be used to filter a list of elements', () =>
+            actorCalled('Wendy').attemptsTo(
+                CreatePage('lists', `
+                    <html>
+                        <body>
+                            <ul>
+                                <li class="enabled">one</li>
+                                <li class="disabled">two</li>
+                                <li class="enabled">three</li>
+                            </ul>
+                        </body>
+                    </html>
+                `),
+
+                VisitPage('lists'),
+
+                Ensure.that(Text.ofAll(ItemsOfInterest), equals(['one', 'three'])),
+            ));
     });
 });

@@ -89,6 +89,7 @@
     "@wdio/spec-reporter": "^7.5.7",
     "@wdio/dot-reporter": "^7.5.7",
     "axios": "^0.21.1",
+    "ci-info": "^3.2.0",
     "mocha": "^8.4.0",
     "mocha-testdata": "^1.2.0",
     "webdriverio": "^7.5.7"

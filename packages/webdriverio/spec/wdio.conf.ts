@@ -1,3 +1,4 @@
+import { isCI } from 'ci-info';
 import { resolve } from 'path';
 import { ConsoleReporter } from '@serenity-js/console-reporter';
 import { Actors } from './screenplay/Actors';
@@ -8,8 +9,8 @@ export const config = {
 
     serenity: {
         actors: new Actors(),
-        crew: [
-            // ConsoleReporter.forDarkTerminals(),
+        crew: isCI ? [] : [
+            ConsoleReporter.forDarkTerminals(),
         ]
     },
 
@@ -61,4 +62,6 @@ export const config = {
     connectionRetryTimeout: 90000,
 
     connectionRetryCount: 3,
+
+    maxInstances: isCI ? 1 : undefined,
 };

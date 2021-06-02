@@ -51,7 +51,9 @@ export const config = {
                 '--disable-gpu',
                 '--window-size=1024x768',
             ],
-        }
+        },
+
+        maxInstances: 1,
     }],
 
     logLevel: 'warn',

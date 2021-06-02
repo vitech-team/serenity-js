@@ -61,7 +61,5 @@ export const config = {
 
     connectionRetryTimeout: 90000,
 
-    connectionRetryCount: 3,
-
-    maxInstances: isCI ? 1 : undefined,
+    connectionRetryCount: 3
 };

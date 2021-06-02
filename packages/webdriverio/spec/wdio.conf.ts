@@ -63,5 +63,6 @@ export const config = {
 
     connectionRetryCount: 3,
 
-    maxInstances: isCI ? 1 : undefined,
+    // maxInstances: isCI ? 1 : undefined,
+    maxInstances: 1,
 };

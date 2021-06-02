@@ -27,6 +27,7 @@
     "clean": "rimraf target && lerna run clean --parallel",
     "lint": "lerna run lint --parallel",
     "test": "lerna run test --stream --scope @serenity-js/*",
+    "test:module": "lerna run test --stream",
     "integration-test": "lerna run test --stream --scope @integration/*",
     "compile": "lerna run compile --stream",
     "verify": "npm run lint && npm run compile && npm test && npm run integration-test",

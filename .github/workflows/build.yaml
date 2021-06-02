@@ -98,6 +98,16 @@ jobs:
     strategy:
       matrix:
         node-version: [ 12.x, 14.x, 16.x ]
+        module:
+          - assertions
+          - cucumber
+          - jasmine
+          - local-server
+          - mocha
+          - protractor
+          - rest
+          - serenity-bdd
+          - webdriverio
       fail-fast: false
       max-parallel: 3
     steps:
@@ -114,7 +124,7 @@ jobs:
         with:
           name: compiled-libs
       - name: Test
-        run: make test
+        run: npm run test:module -- --scope @serenity-js/${{ matrix.module }}
 
   integration-test-linux:
     needs:

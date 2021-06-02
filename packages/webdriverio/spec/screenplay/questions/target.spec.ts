@@ -51,6 +51,11 @@ describe('Target', () => {
 
     describe('allows the actor to locate', () => {
 
+        before(() =>
+            actorCalled('Wendy').attemptsTo(
+                CreatePage('shopping_list', shoppingListPage),
+            ));
+
         /**
          * @test {Target}
          * @test {Target.the}
@@ -58,7 +63,6 @@ describe('Target', () => {
          */
         it('a single web element matching the selector', () =>
             actorCalled('Wendy').attemptsTo(
-                CreatePage('shopping_list', shoppingListPage),
                 VisitPage('shopping_list'),
 
                 Ensure.that(Text.of(ShoppingList.Header), equals('Shopping list')),
@@ -71,7 +75,6 @@ describe('Target', () => {
          */
         it('all web elements matching the selector', () =>
             actorCalled('Wendy').attemptsTo(
-                CreatePage('shopping_list', shoppingListPage),
                 VisitPage('shopping_list'),
 
                 Ensure.that(Text.ofAll(ShoppingList.Items), contain('oats')),
@@ -85,7 +88,6 @@ describe('Target', () => {
          */
         it('an element relative to another target', () =>
             actorCalled('Wendy').attemptsTo(
-                CreatePage('shopping_list', shoppingListPage),
                 VisitPage('shopping_list'),
 
                 Ensure.that(Text.of(ShoppingList.Number_Of_Items_Left), equals('2')),
@@ -99,7 +101,6 @@ describe('Target', () => {
          */
         it('all elements relative to another target', () =>
             actorCalled('Wendy').attemptsTo(
-                CreatePage('shopping_list', shoppingListPage),
                 VisitPage('shopping_list'),
 
                 Ensure.that(Text.ofAll(ShoppingList.Bought_Items), equals(['coffee'])),
@@ -196,6 +197,11 @@ describe('Target', () => {
             static Item_Names = Target.all('item names').located(by.css('span.item-name'));
         }
 
+        before(() =>
+            actorCalled('Wendy').attemptsTo(
+                CreatePage('advanced_shopping_list', advancedShoppingList),
+            ));
+
         describe('and no filters are applied', () => {
 
             describe('lets the actor interact with the list of matching elements so that it', () => {
@@ -207,7 +213,6 @@ describe('Target', () => {
                  */
                 it('gets the number of items', () =>
                     actorCalled('Wendy').attemptsTo(
-                        CreatePage('advanced_shopping_list', advancedShoppingList),
                         VisitPage('advanced_shopping_list'),
 
                         Ensure.that(AdvancedShoppingList.Titles.count(), equals(3)),
@@ -220,7 +225,6 @@ describe('Target', () => {
                  */
                 it('picks all the items', () =>
                     actorCalled('Wendy').attemptsTo(
-                        CreatePage('advanced_shopping_list', advancedShoppingList),
                         VisitPage('advanced_shopping_list'),
 
                         Ensure.that(Text.ofAll(AdvancedShoppingList.Titles), contain('coconut milk')),
@@ -234,7 +238,6 @@ describe('Target', () => {
                  */
                 it('picks the first item', () =>
                     actorCalled('Wendy').attemptsTo(
-                        CreatePage('advanced_shopping_list', advancedShoppingList),
                         VisitPage('advanced_shopping_list'),
 
                         Ensure.that(Text.of(AdvancedShoppingList.Titles.first()), equals('oats')),
@@ -248,7 +251,6 @@ describe('Target', () => {
                  */
                 it('picks the last item', () =>
                     actorCalled('Wendy').attemptsTo(
-                        CreatePage('advanced_shopping_list', advancedShoppingList),
                         VisitPage('advanced_shopping_list'),
 
                         Ensure.that(Text.of(AdvancedShoppingList.Titles.last()), equals('coffee')),
@@ -262,7 +264,6 @@ describe('Target', () => {
                  */
                 it('picks the nth item', () =>
                     actorCalled('Wendy').attemptsTo(
-                        CreatePage('advanced_shopping_list', advancedShoppingList),
                         VisitPage('advanced_shopping_list'),
 
                         Ensure.that(Text.of(AdvancedShoppingList.Titles.get(1)), equals('coconut milk')),
@@ -342,7 +343,6 @@ describe('Target', () => {
                  */
                 it('gets the number of items', () =>
                     actorCalled('Wendy').attemptsTo(
-                        CreatePage('advanced_shopping_list', advancedShoppingList),
                         VisitPage('advanced_shopping_list'),
 
                         Ensure.that(list.count(), equals(2)),
@@ -355,7 +355,6 @@ describe('Target', () => {
                  */
                 it('picks all the items', () =>
                     actorCalled('Wendy').attemptsTo(
-                        CreatePage('advanced_shopping_list', advancedShoppingList),
                         VisitPage('advanced_shopping_list'),
 
                         Ensure.that(Text.ofAll(list), contain('coconut milk x')),
@@ -368,7 +367,6 @@ describe('Target', () => {
                  */
                 it('picks the first item', () =>
                     actorCalled('Wendy').attemptsTo(
-                        CreatePage('advanced_shopping_list', advancedShoppingList),
                         VisitPage('advanced_shopping_list'),
 
                         Ensure.that(Text.of(list.first()), startsWith('oats')),
@@ -381,7 +379,6 @@ describe('Target', () => {
                  */
                 it('picks the last item', () =>
                     actorCalled('Wendy').attemptsTo(
-                        CreatePage('advanced_shopping_list', advancedShoppingList),
                         VisitPage('advanced_shopping_list'),
 
                         Ensure.that(Text.of(list.last()), startsWith('coconut milk')),
@@ -394,7 +391,6 @@ describe('Target', () => {
                  */
                 it('picks the nth item', () =>
                     actorCalled('Wendy').attemptsTo(
-                        CreatePage('advanced_shopping_list', advancedShoppingList),
                         VisitPage('advanced_shopping_list'),
 
                         Ensure.that(Text.of(list.get(1)), startsWith('coconut milk')),
@@ -477,7 +473,6 @@ describe('Target', () => {
                  */
                 it('picks all the items', () =>
                     actorCalled('Wendy').attemptsTo(
-                        CreatePage('advanced_shopping_list', advancedShoppingList),
                         VisitPage('advanced_shopping_list'),
 
                         Ensure.that(Text.ofAll(list), contain('coconut milk x')),
@@ -489,7 +484,6 @@ describe('Target', () => {
                  */
                 it('picks the first item', () =>
                     actorCalled('Wendy').attemptsTo(
-                        CreatePage('advanced_shopping_list', advancedShoppingList),
                         VisitPage('advanced_shopping_list'),
 
                         Ensure.that(Text.of(list.first()), startsWith('coconut milk')),
@@ -501,7 +495,6 @@ describe('Target', () => {
                  */
                 it('picks the last item', () =>
                     actorCalled('Wendy').attemptsTo(
-                        CreatePage('advanced_shopping_list', advancedShoppingList),
                         VisitPage('advanced_shopping_list'),
 
                         Ensure.that(Text.of(list.last()), startsWith('coconut milk')),
@@ -513,7 +506,6 @@ describe('Target', () => {
                  */
                 it('picks the nth item', () =>
                     actorCalled('Wendy').attemptsTo(
-                        CreatePage('advanced_shopping_list', advancedShoppingList),
                         VisitPage('advanced_shopping_list'),
 
                         Ensure.that(Text.of(list.get(0)), startsWith('coconut milk')),
@@ -594,7 +586,6 @@ describe('Target', () => {
              */
             it('makes it easy for an actor to pick the element of interest', () =>
                 actorCalled('Wendy').attemptsTo(
-                    CreatePage('advanced_shopping_list', advancedShoppingList),
                     VisitPage('advanced_shopping_list'),
 
                     Click.on(LinkTo(ItemCalled('coffee'))),
@@ -608,7 +599,6 @@ describe('Target', () => {
              */
             it('makes it easy for an actor to pick all elements of interest', () =>
                 actorCalled('Wendy').attemptsTo(
-                    CreatePage('advanced_shopping_list', advancedShoppingList),
                     VisitPage('advanced_shopping_list'),
 
                     Click.on(LinkTo(ItemCalled('coconut milk'))),

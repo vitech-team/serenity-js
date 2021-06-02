@@ -28,7 +28,7 @@
   "scripts": {
     "clean": "rimraf .nyc_output lib target",
     "lint": "eslint --ext ts --config ../../.eslintrc.js .",
-    "test": "nyc --report-dir ../../target/coverage/cucumber mocha --config ../../.mocharc.yml --timeout 60000 'spec/**/*.spec.*'",
+    "test": "nyc --report-dir ../../target/coverage/cucumber mocha --config ../../.mocharc.yml --timeout 120000 'spec/**/*.spec.*'",
     "compile": "tsc --project tsconfig.json",
     "site": "esdoc -c .esdoc.js"
   },

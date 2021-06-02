@@ -9,7 +9,7 @@ export const config = {
     serenity: {
         actors: new Actors(),
         crew: [
-            ConsoleReporter.forDarkTerminals(),
+            // ConsoleReporter.forDarkTerminals(),
         ]
     },
 
@@ -23,7 +23,8 @@ export const config = {
     ],
 
     reporters: [
-        'spec',
+        // 'spec',
+        'dot',
     ],
 
     autoCompileOpts: {

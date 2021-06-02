@@ -87,6 +87,7 @@
     "@wdio/devtools-service": "^7.5.7",
     "@wdio/mocha-framework": "^7.5.3",
     "@wdio/spec-reporter": "^7.5.7",
+    "@wdio/dot-reporter": "^7.5.7",
     "axios": "^0.21.1",
     "mocha": "^8.4.0",
     "mocha-testdata": "^1.2.0",

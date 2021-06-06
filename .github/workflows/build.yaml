@@ -6,22 +6,7 @@ on:
     branches: [ master ]
     types: [ opened, synchronize ]
 
-env:
-  CHROMEDRIVER_FILEPATH: "${{ runner.os == 'Windows' && env.CHROMEWEBDRIVER/chromedriver || env.CHROMEWEBDRIVER/chromedriver.exe }}"
-
 jobs:
-  debug-linux:
-    runs-on:  ubuntu-latest
-    steps:
-      - name: Env
-        run: env
-
-  debug-windows:
-    runs-on:  windows-latest
-    steps:
-      - name: Env
-        run: set
-
   lint:
     if:       "!contains(github.event.head_commit.message, 'ci skip')"
     runs-on:  ubuntu-latest
@@ -34,6 +19,8 @@ jobs:
           node-version: 14.x
       - name: Setup Node Modules
         uses: bahmutov/npm-install@v1
+        env:
+          CHROMEDRIVER_FILEPATH: "${{ env.CHROMEWEBDRIVER }}/chromedriver"
 
       - name: Lint
         run: make lint
@@ -50,6 +37,8 @@ jobs:
           node-version: 14.x
       - name: Setup Node Modules
         uses: bahmutov/npm-install@v1
+        env:
+          CHROMEDRIVER_FILEPATH: "${{ env.CHROMEWEBDRIVER }}/chromedriver"
 
       - name: Compile
         run: make compile
@@ -85,6 +74,8 @@ jobs:
           node-version: 14.x
       - name: Setup Node Modules
         uses: bahmutov/npm-install@v1
+        env:
+          CHROMEDRIVER_FILEPATH: "${{ env.CHROMEWEBDRIVER }}/chromedriver"
       - name: Download compiled libs
         uses: actions/download-artifact@v2
         with:
@@ -128,6 +119,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Setup Node Modules
         uses: bahmutov/npm-install@v1
+        env:
+          CHROMEDRIVER_FILEPATH: "${{ env.CHROMEWEBDRIVER }}/chromedriver"
       - name: Download compiled libs
         uses: actions/download-artifact@v2
         with:
@@ -155,6 +148,8 @@ jobs:
 # TODO: set path to ChromeDriver
       - name: Setup Node Modules
         uses: bahmutov/npm-install@v1
+        env:
+          CHROMEDRIVER_FILEPATH: "${{ env.CHROMEWEBDRIVER }}/chromedriver.exe"
       - name: Download compiled libs
         uses: actions/download-artifact@v2
         with:
@@ -189,6 +184,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Setup Node Modules
         uses: bahmutov/npm-install@v1
+        env:
+          CHROMEDRIVER_FILEPATH: "${{ env.CHROMEWEBDRIVER }}/chromedriver"
       - name: Download compiled libs
         uses: actions/download-artifact@v2
         with:
@@ -216,6 +213,8 @@ jobs:
 # TODO: set path to ChromeDriver
       - name: Setup Node Modules
         uses: bahmutov/npm-install@v1
+        env:
+          CHROMEDRIVER_FILEPATH: "${{ env.CHROMEWEBDRIVER }}/chromedriver.exe"
       - name: Download compiled libs
         uses: actions/download-artifact@v2
         with:
@@ -235,7 +234,8 @@ jobs:
           node-version: 16.x
       - name: Setup Node Modules
         uses: bahmutov/npm-install@v1
-
+        env:
+          CHROMEDRIVER_FILEPATH: "${{ env.CHROMEWEBDRIVER }}/chromedriver"
       - name: Download code coverage reports
         uses: actions/download-artifact@v2
         with:
@@ -279,6 +279,8 @@ jobs:
           node-version: 16.x
       - name: Setup Node Modules
         uses: bahmutov/npm-install@v1
+        env:
+          CHROMEDRIVER_FILEPATH: "${{ env.CHROMEWEBDRIVER }}/chromedriver"
 
       - name: Publish artifacts
         run: npm run lerna:publish
@@ -320,6 +322,8 @@ jobs:
           node-version: 16.x
       - name: Setup Node Modules
         uses: bahmutov/npm-install@v1
+        env:
+          CHROMEDRIVER_FILEPATH: "${{ env.CHROMEWEBDRIVER }}/chromedriver"
 
       - name: Build Serenity/JS website
         run: make site

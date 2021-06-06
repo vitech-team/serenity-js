@@ -8,11 +8,10 @@ on:
 
 jobs:
   debug-windows:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: chromedriver
         run: where chromedriver.exe
-        shell: powershell
 
   lint:
     if:       "!contains(github.event.head_commit.message, 'ci skip')"

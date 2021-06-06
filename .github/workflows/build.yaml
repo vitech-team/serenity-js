@@ -10,8 +10,8 @@ jobs:
   debug-windows:
     runs-on: windows-latest
     steps:
-      - name: chromedriver
-        run: where chromedriver.exe
+      - name: env
+        run: Get-Item Env:PATH
 
   lint:
     if:       "!contains(github.event.head_commit.message, 'ci skip')"

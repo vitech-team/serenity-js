@@ -7,6 +7,14 @@ on:
     types: [ opened, synchronize ]
 
 jobs:
+  debug:
+    runs-on:  ubuntu-latest
+    steps:
+      - name: Env
+        run: env
+      - name: ChromeDriver
+        run: which chromedriver
+
   lint:
     if:       "!contains(github.event.head_commit.message, 'ci skip')"
     runs-on:  ubuntu-latest

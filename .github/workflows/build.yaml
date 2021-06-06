@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: env
-        uses: SET
+        run: SET
       - name: chromedriver
-        uses: where chromedriver.exe
+        run: where chromedriver.exe
 
   lint:
     if:       "!contains(github.event.head_commit.message, 'ci skip')"

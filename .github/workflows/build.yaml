@@ -6,17 +6,24 @@ on:
     branches: [ master ]
     types: [ opened, synchronize ]
 
+env:
+  NODE_LTS_NEXT:          16.x
+  NODE_LTS_ACTIVE:        14.x
+  NODE_LTS_PREVIOUS:      12.x
+  LINUX_RUNNER_VERSION:   ubuntu-20.04
+  WINDOWS_RUNNER_VERSION: windows-latest
+
 jobs:
   lint:
     if:       "!contains(github.event.head_commit.message, 'ci skip')"
-    runs-on:  ubuntu-20.04
+    runs-on:  ${{ env.LINUX_RUNNER_VERSION }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Setup Node ${{ matrix.node-version }}
+      - name: Setup Node ${{ env.NODE_LTS_ACTIVE }}
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_LTS_ACTIVE }}
       - name: Setup Node Modules
         uses: bahmutov/npm-install@v1
 
@@ -25,14 +32,14 @@ jobs:
 
   compile:
     if:       "!contains(github.event.head_commit.message, 'ci skip')"
-    runs-on:  ubuntu-20.04
+    runs-on:  ${{ env.LINUX_RUNNER_VERSION }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Setup Node 16.x
+      - name: Setup Node ${{ env.NODE_LTS_ACTIVE }}
         uses: actions/setup-node@v2
         with:
-          node-version: 16.x
+          node-version: ${{ env.NODE_LTS_ACTIVE }}
       - name: Setup Node Modules
         uses: bahmutov/npm-install@v1
 

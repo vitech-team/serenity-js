@@ -6,14 +6,21 @@ on:
     branches: [ master ]
     types: [ opened, synchronize ]
 
+env:
+  CHROMEDRIVER_FILEPATH: "${{ runner.os == 'Windows' && env.CHROMEWEBDRIVER/chromedriver || env.CHROMEWEBDRIVER/chromedriver.exe }}"
+
 jobs:
-  debug:
+  debug-linux:
     runs-on:  ubuntu-latest
     steps:
       - name: Env
         run: env
-      - name: ChromeDriver
-        run: ls -lah $(which chromedriver)
+
+  debug-windows:
+    runs-on:  windows-latest
+    steps:
+      - name: Env
+        run: set
 
   lint:
     if:       "!contains(github.event.head_commit.message, 'ci skip')"
@@ -72,7 +79,7 @@ jobs:
           sudo apt-get --only-upgrade install google-chrome-stable
           google-chrome --version
 #        TODO: / replace with SauceLabs Tunnel
-      - name: Setup Node ${{ matrix.node-version }}
+      - name: Setup Node
         uses: actions/setup-node@v2
         with:
           node-version: 14.x

@@ -10,8 +10,6 @@ jobs:
   debug-windows:
     runs-on: ubuntu-latest
     steps:
-      - name: env
-        run: SET
       - name: chromedriver
         run: where chromedriver.exe
 

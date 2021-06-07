@@ -53,6 +53,7 @@ jobs:
             package.json
 
   test-linux-node-lts-active:
+    name: test-linux-node-lts-active (14.x)
     needs:
       - lint
       - compile
@@ -60,15 +61,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-#        TODO: replace with SauceLabs Tunnel
-      - name: apt-get update
-        run: sudo apt-get update
-        continue-on-error: true
-      - name: Update Chrome
-        run: |
-          sudo apt-get --only-upgrade install google-chrome-stable
-          google-chrome --version
-#        TODO: / replace with SauceLabs Tunnel
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
@@ -81,6 +73,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: compiled-libs
+      - name: Open Sauce Connect Tunnel
+        uses: saucelabs/sauce-connect-action@v1
+        with:
+          username: ${{ secrets.SAUCE_USERNAME }}
+          accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
+          tunnelIdentifier: github-serenity-js-test-linux-node-14.x-tunnel
 
       - name: Test
         run: make test

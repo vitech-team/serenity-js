@@ -140,7 +140,7 @@ jobs:
       - name: Setup Node Modules
         uses: bahmutov/npm-install@v1
         env:
-          CHROMEDRIVER_FILEPATH: "C:\SeleniumWebDrivers\ChromeDriver\chromedriver.exe"
+          CHROMEDRIVER_FILEPATH: "C:\\SeleniumWebDrivers\\ChromeDriver\\chromedriver.exe"
       - name: Download compiled libs
         uses: actions/download-artifact@v2
         with:
@@ -195,7 +195,7 @@ jobs:
       - name: Setup Node Modules
         uses: bahmutov/npm-install@v1
         env:
-          CHROMEDRIVER_FILEPATH: "C:\SeleniumWebDrivers\ChromeDriver\chromedriver.exe"
+          CHROMEDRIVER_FILEPATH: "C:\\SeleniumWebDrivers\\ChromeDriver\\chromedriver.exe"
       - name: Download compiled libs
         uses: actions/download-artifact@v2
         with:

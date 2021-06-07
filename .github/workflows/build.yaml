@@ -75,7 +75,7 @@ jobs:
         with:
           name: compiled-libs
       - name: Decompress Libs
-        run:  7z e -ao compiled-libs.zip
+        run:  7z x -aoa compiled-libs.zip
 # todo: correct tests so that they can run with sauce labs
 #      - name: Open Sauce Connect Tunnel
 #        uses: saucelabs/sauce-connect-action@v1
@@ -123,7 +123,7 @@ jobs:
         with:
           name: compiled-libs
       - name: Decompress Libs
-        run:  7z e -ao compiled-libs.zip
+        run:  7z x -aoa compiled-libs.zip
 
       - name: Test
         run: make test
@@ -153,7 +153,7 @@ jobs:
         with:
           name: compiled-libs
       - name: Decompress Libs
-        run:  7z.exe e -ao compiled-libs.zip
+        run:  7z.exe x -aoa compiled-libs.zip
       - name: Test
         run: make test
 
@@ -182,7 +182,7 @@ jobs:
         with:
           name: compiled-libs
       - name: Decompress Libs
-        run:  7z e -ao compiled-libs.zip
+        run:  7z x -aoa compiled-libs.zip
 
       - name: Integration Test
         run: make integration-test
@@ -212,7 +212,7 @@ jobs:
         with:
           name: compiled-libs
       - name: Decompress Libs
-        run:  7z.exe e -ao compiled-libs.zip
+        run:  7z.exe x -aoa compiled-libs.zip
       - name: Integration Test
         run: make integration-test
 
@@ -268,7 +268,7 @@ jobs:
         with:
           name: compiled-libs
       - name: Decompress Libs
-        run:  7z e -ao compiled-libs.zip
+        run:  7z x -aoa compiled-libs.zip
       - name: Setup Node 16.x
         uses: actions/setup-node@v2
         with:

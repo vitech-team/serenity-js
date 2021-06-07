@@ -45,16 +45,13 @@ jobs:
         run: make compile
 
       - name: Compress Libs
-        run:  7z a libs.zip package.json "integration/*/lib/*" "packages/*/lib/*"
+        run:  7z a compiled-libs.zip package.json "integration/*/lib/*" "packages/*/lib/*"
       - uses: actions/upload-artifact@v2
         with:
           retention-days: 3
           name: compiled-libs
           path: |
-            libs.zip
-            integration/*/lib/**/*
-            packages/*/lib/**/*
-            package.json
+            compiled-libs.zip
 
   test-linux-node-lts-active:
     name: test-linux-node-lts-active (14.x)
@@ -77,12 +74,14 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: compiled-libs
-      - name: Open Sauce Connect Tunnel
-        uses: saucelabs/sauce-connect-action@v1
-        with:
-          username: ${{ secrets.SAUCE_USERNAME }}
-          accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
-          tunnelIdentifier: github-serenity-js-test-linux-node-14.x-tunnel
+      - name: Decompress Libs
+        run:  7z e compiled-libs.zip
+#      - name: Open Sauce Connect Tunnel
+#        uses: saucelabs/sauce-connect-action@v1
+#        with:
+#          username: ${{ secrets.SAUCE_USERNAME }}
+#          accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
+#          tunnelIdentifier: github-serenity-js-test-linux-node-14.x-tunnel
 
       - name: Test
         run: make test
@@ -122,6 +121,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: compiled-libs
+      - name: Decompress Libs
+        run:  7z.exe e compiled-libs.zip
 
       - name: Test
         run: make test
@@ -150,6 +151,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: compiled-libs
+      - name: Decompress Libs
+        run:  7z.exe e compiled-libs.zip
       - name: Test
         run: make test
 
@@ -177,6 +180,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: compiled-libs
+      - name: Decompress Libs
+        run:  7z e compiled-libs.zip
 
       - name: Integration Test
         run: make integration-test
@@ -205,6 +210,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: compiled-libs
+      - name: Decompress Libs
+        run:  7z e compiled-libs.zip
       - name: Integration Test
         run: make integration-test
 
@@ -259,6 +266,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: compiled-libs
+      - name: Decompress Libs
+        run:  7z e compiled-libs.zip
       - name: Setup Node 16.x
         uses: actions/setup-node@v2
         with:

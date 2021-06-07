@@ -3,8 +3,8 @@ const useSauceLabs = !! (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_
 
 function sauceLabsChrome(version) {
     return {
-        shardTestFiles: false,
-        maxInstances: 1,
+        shardTestFiles: true,
+        maxInstances: 3,
 
         name: `Chrome ${ version }`,
         browserName: 'chrome',
@@ -31,7 +31,6 @@ const sauceLabsConfig = {
 
     multiCapabilities: [
         sauceLabsChrome('latest'),
-        sauceLabsChrome('latest-1'),
         sauceLabsChrome('beta'),
     ]
 };

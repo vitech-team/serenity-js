@@ -1,7 +1,7 @@
 {
   "lerna": "3.22.1",
   "loglevel": "verbose",
-  "hoist": false,
+  "hoist": true,
   "strict": true,
   "useWorkspaces": false,
   "nohoist": [
@@ -25,12 +25,6 @@
   ],
   "version": "2.29.0",
   "command": {
-    "bootstrap": {
-      "npmClientArgs": [
-        "--no-package-lock"
-      ],
-      "ci": false
-    },
     "create": {
       "homepage": "https://serenity-js.org",
       "license": "Apache-2.0"

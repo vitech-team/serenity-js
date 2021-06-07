@@ -7,7 +7,7 @@ export function equals(chai: any, utils: any) {
         return function assertTinyTypes(another: TinyType) {
 
             const obj = this._obj;
-            if (obj === Object(obj) && Reflect.has(obj, 'equals')) {
+            if (obj && obj instanceof TinyType) {
                 return this.assert(
                     obj.equals(another),
                     `expected #{this} to equal #{exp} but got #{act}`,

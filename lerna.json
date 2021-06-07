@@ -28,7 +28,8 @@
     "bootstrap": {
       "npmClientArgs": [
         "--no-package-lock"
-      ]
+      ],
+      "ci": false
     },
     "create": {
       "homepage": "https://serenity-js.org",

@@ -56,8 +56,6 @@ export const config = {
                 '--window-size=1024x768',
             ],
         },
-
-        maxInstances: 1,
     }],
 
     logLevel: 'warn',

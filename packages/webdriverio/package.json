@@ -30,10 +30,13 @@
   ],
   "scripts": {
     "clean": "rimraf .nyc_output lib target",
-    "lint": "eslint --ext ts --config ../../.eslintrc.js",
-    "test": "start-server-and-test test:start-server http://localhost:8080 test:wdio",
-    "test:start-server": "static-content-server",
-    "test:wdio": "nyc --report-dir ../../target/coverage/webdriverio wdio ./spec/wdio.conf.ts",
+    "lint": "eslint --ext ts --config ../../.eslintrc.js .",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "npm run test:adapter && npm run test:wdio",
+    "test:adapter": "nyc --report-dir ../../target/coverage/webdriverio/adapter mocha --config ../../.mocharc.yml 'spec/adapter/**/*.spec.*'",
+    "test:wdio": "start-server-and-test test:wdio:start-server http://localhost:8080 test:wdio:run",
+    "test:wdio:start-server": "static-content-server",
+    "test:wdio:run": "nyc --report-dir ../../target/coverage/webdriverio/screenplay wdio ./spec/wdio.conf.ts",
     "wdio": "wdio ./spec/wdio.conf.ts",
     "compile": "tsc --project tsconfig.json",
     "site": "esdoc -c .esdoc.js"

@@ -1,6 +1,5 @@
 import 'mocha';
-import { by, Target, Text } from '../../../src';
-import { CreatePage, VisitPage } from '../../pages';
+import { by, Navigate, Target, Text } from '../../../src';
 import { actorCalled, replace, toNumber, trim } from '@serenity-js/core';
 import { Ensure, equals } from '@serenity-js/assertions';
 import { expect } from '@integration/testing-tools';
@@ -27,15 +26,7 @@ describe('Text', () => {
         /** @test {Text.of} */
         it('allows the actor to read the text of the DOM element matching the locator', () =>
             actorCalled('Wendy').attemptsTo(
-                CreatePage('hello_world', `
-                    <html>
-                        <body>
-                            <h1>Hello World!</h1>
-                        </body>
-                    </html>
-                `),
-
-                VisitPage('hello_world'),
+                Navigate.to('/screenplay/questions/text/hello_world.html'),
 
                 Ensure.that(Text.of(Header), equals('Hello World!')),
             ));
@@ -54,15 +45,7 @@ describe('Text', () => {
             it('allows for the answer to be mapped to another type', () =>
                 actorCalled('Wendy').attemptsTo(
 
-                    CreatePage('single_number_example', `
-                        <html>
-                            <body>
-                                <h1>2</h1>
-                            </body>
-                        </html>
-                    `),
-
-                    VisitPage('single_number_example'),
+                    Navigate.to('/screenplay/questions/text/single_number_example.html'),
 
                     Ensure.that(Text.of(Header).map(toNumber()), equals(2)),
                 ));
@@ -72,17 +55,7 @@ describe('Text', () => {
             it('allows for the transformations to be chained', () =>
                 actorCalled('Wendy').attemptsTo(
 
-                    CreatePage('date_example', `
-                        <html>
-                            <body>
-                                <h1>
-                                2020-09-11T19:53:18.160Z
-                                </h1>
-                            </body>
-                        </html>
-                    `),
-
-                    VisitPage('date_example'),
+                    Navigate.to('/screenplay/questions/text/date_example.html'),
 
                     Ensure.that(
                         Text.of(Header).map(trim()).map(actor => value => new Date(value)), // eslint-disable-line unicorn/consistent-function-scoping
@@ -100,18 +73,7 @@ describe('Text', () => {
         it('allows the actor to read the text of all DOM elements matching the locator', () =>
             actorCalled('Wendy').attemptsTo(
 
-                CreatePage('shopping_list', `
-                    <html>
-                    <body>
-                        <h1>Shopping list</h1>
-                        <ul>
-                            <li>milk</li>
-                            <li>oats</li>
-                        </ul>
-                    </body>
-                    </html>
-                `),
-                VisitPage('shopping_list'),
+                Navigate.to('/screenplay/questions/text/shopping_list.html'),
 
                 Ensure.that(Text.ofAll(Shopping_List_Items), equals(['milk', 'oats'])),
             ));
@@ -121,18 +83,7 @@ describe('Text', () => {
         /** @test {Text.ofAll} */
         it('allows for a question relative to another target to be asked', () =>
             actorCalled('Wendy').attemptsTo(
-                CreatePage('shopping_list', `
-                    <html>
-                    <body>
-                        <h1>Shopping list</h1>
-                        <ul>
-                            <li>milk</li>
-                            <li>oats</li>
-                        </ul>
-                    </body>
-                    </html>
-                `),
-                VisitPage('shopping_list'),
+                Navigate.to('/screenplay/questions/text/shopping_list.html'),
 
                 Ensure.that(
                     Text.ofAll(Shopping_List_Items).of(Target.the('body').located(by.tagName('body'))),
@@ -152,22 +103,7 @@ describe('Text', () => {
         it('allows for the answer to be mapped', () =>
             actorCalled('Wendy').attemptsTo(
 
-                CreatePage('percentages', `
-                    <html>
-                    <body>
-                        <ul id="answers">
-                            <li>
-                                6.67%
-                            </li>
-                            <li>
-                                3.34%
-                            </li>
-                        </ul>
-                    </body>
-                    </html>
-                `),
-
-                VisitPage('percentages'),
+                Navigate.to('/screenplay/questions/text/percentages.html'),
 
                 Ensure.that(
                     Text.ofAll(Target.all('possible answers').located(by.css('#answers li')))

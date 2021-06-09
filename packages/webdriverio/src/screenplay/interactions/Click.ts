@@ -1,4 +1,4 @@
-import { Answerable, AnswersQuestions, Interaction, Question, UsesAbilities } from '@serenity-js/core';
+import { Answerable, AnswersQuestions, Interaction, UsesAbilities } from '@serenity-js/core';
 import { formatted } from '@serenity-js/core/lib/io';
 import { Element } from 'webdriverio';
 

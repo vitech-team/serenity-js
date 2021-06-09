@@ -2,7 +2,11 @@ import { resolve } from 'path';
 import { ConsoleReporter } from '@serenity-js/console-reporter';
 import { Actors } from './screenplay/Actors';
 
+const port = process.env.PORT || 8080;
+
 export const config = {
+
+    baseUrl: `http://localhost:${ port }`,
 
     framework: resolve(__dirname, '../src'),
 

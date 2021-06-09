@@ -1,49 +1,20 @@
 import 'mocha';
 
 import { expect } from '@integration/testing-tools';
-import { endsWith, Ensure, equals } from '@serenity-js/assertions';
-import { actorCalled, AssertionError, Duration, q, TestCompromisedError } from '@serenity-js/core';
-import { CreatePage, DeletePage } from '../../pages';
-import { LocalServer, StartLocalServer, StopLocalServer } from '@serenity-js/local-server';
-import { ChangeApiConfig } from '@serenity-js/rest';
+import { Ensure, equals } from '@serenity-js/assertions';
+import { actorCalled, q, TestCompromisedError } from '@serenity-js/core';
+import { LocalServer } from '@serenity-js/local-server';
 import { by, Navigate, Target, Text } from '../../../src';
 
 /** @test {Navigate} */
 describe('Navigate', () => {
-
-    before(() =>
-        actorCalled('Wendy').attemptsTo(
-            StartLocalServer.onRandomPort(),
-            ChangeApiConfig.setUrlTo(LocalServer.url()),
-        ));
-
-    beforeEach(() =>
-        actorCalled('Wendy').attemptsTo(
-            CreatePage('hello_world', `
-                    <html>
-                        <body>
-                            <h1>Hello World</h1>
-                        </body>
-                    </html>
-                `)
-        ));
-
-    afterEach(() =>
-        actorCalled('Wendy').attemptsTo(
-            DeletePage('hello_world')
-        ));
-
-    after(() =>
-        actorCalled('Wendy').attemptsTo(
-            StopLocalServer.ifRunning(),
-        ));
 
     describe('to(url)', () => {
 
         /** @test {Navigate.to} */
         it('allows the actor to navigate to a desired destination', () =>
             actorCalled('Wendy').attemptsTo(
-                Navigate.to(q `${ LocalServer.url() }/pages/hello_world`),
+                Navigate.to('/screenplay/interactions/navigate/hello_world.html'),
 
                 Ensure.that(Text.of(Target.the('heading').located(by.css('h1'))), equals('Hello World')),
             ));
@@ -51,12 +22,12 @@ describe('Navigate', () => {
         /** @test {Navigate.to} */
         it(`marks the test as compromised if the desired destination can't be reached`, () =>
             expect(actorCalled('Bernie').attemptsTo(
-                Navigate.to('invalid-destination'),
+                Navigate.to('http://localhost:9999/invalid-destination'),
             )).
-            to.be.rejectedWith(TestCompromisedError, `Couldn't navigate to invalid-destination`).
+            to.be.rejectedWith(TestCompromisedError, `Couldn't navigate to http://localhost:9999/invalid-destination`).
             then((error: TestCompromisedError) => {
                 expect(error.cause).to.be.instanceOf(Error)
-                expect(error.cause.message).to.include('net::ERR_NAME_NOT_RESOLVED at http://invalid-destination/')
+                expect(error.cause.message).to.include('net::ERR_CONNECTION_REFUSED at http://localhost:9999/invalid-destination')
             })
         );
 

@@ -1,10 +1,11 @@
 /* istanbul ignore file */
-import * as fs from 'fs';
-import * as path from 'path'; // eslint-disable-line unicorn/import-style
+import { LogicError } from '@serenity-js/core';
 import { ModuleLoader, TestRunnerAdapter } from '@serenity-js/core/lib/io';
 import { ExecutionIgnored, ImplementationPending, Outcome } from '@serenity-js/core/lib/model';
+import * as fs from 'fs';
+import * as path from 'path'; // eslint-disable-line unicorn/import-style
+
 import { MochaConfig } from './MochaConfig';
-import { LogicError } from '@serenity-js/core';
 import type Mocha = require('mocha');
 
 /**

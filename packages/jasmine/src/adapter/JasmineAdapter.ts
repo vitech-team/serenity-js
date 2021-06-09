@@ -1,7 +1,8 @@
 import { ModuleLoader, TestRunnerAdapter } from '@serenity-js/core/lib/io';
-import { JasmineConfig } from './JasmineConfig';
 import { ExecutionIgnored, Outcome } from '@serenity-js/core/lib/model';
+
 import { AcceptingSpecFilter, CustomFunctionSpecFilter, GrepSpecFilter, InvertedGrepSpecFilter, SpecFilter } from './filters';
+import { JasmineConfig } from './JasmineConfig';
 import reporter = require('../index');
 
 /**

@@ -7,9 +7,10 @@ import { LocalServer, StartLocalServer, StopLocalServer } from '@serenity-js/loc
 import { ChangeApiConfig } from '@serenity-js/rest';
 import { given } from 'mocha-testdata';
 import { by, ElementFinder } from 'protractor';
+
 import { Click, CSSClasses, Target, Text } from '../../../src';
-import { UIActors } from '../../UIActors';
 import { CreatePage, VisitPage } from '../../pages';
+import { UIActors } from '../../UIActors';
 
 /** @test {Target} */
 describe('Target', () => {

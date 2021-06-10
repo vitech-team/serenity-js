@@ -1,4 +1,5 @@
 import { resolve } from 'path'; // eslint-disable-line unicorn/import-style
+import { ConsoleReporter } from '@serenity-js/console-reporter';
 
 import { Actors } from './screenplay/Actors';
 
@@ -13,7 +14,7 @@ export const config = {
     serenity: {
         actors: new Actors(),
         crew: [
-            // ConsoleReporter.forDarkTerminals(),
+            ConsoleReporter.forDarkTerminals(),
         ]
     },
 

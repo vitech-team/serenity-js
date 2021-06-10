@@ -23,7 +23,8 @@ export const config = {
     },
 
     specs: [
-        './spec/**/*.spec.ts',
+        './spec/expectations/**/*.spec.ts',
+        './spec/screenplay/**/*.spec.ts',
     ],
 
     reporters: [
@@ -56,8 +57,6 @@ export const config = {
                 '--window-size=1024x768',
             ],
         },
-
-        maxInstances: 1,
     }],
 
     logLevel: 'warn',

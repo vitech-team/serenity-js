@@ -1,5 +1,5 @@
-import { resolve } from 'path'; // eslint-disable-line unicorn/import-style
 import { ConsoleReporter } from '@serenity-js/console-reporter';
+import { resolve } from 'path'; // eslint-disable-line unicorn/import-style
 
 import { Actors } from './screenplay/Actors';
 

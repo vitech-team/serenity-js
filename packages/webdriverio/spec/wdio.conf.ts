@@ -28,8 +28,8 @@ export const config = {
     ],
 
     reporters: [
-        // 'spec',
-        'dot',
+        'spec',
+        // 'dot',
     ],
 
     autoCompileOpts: {

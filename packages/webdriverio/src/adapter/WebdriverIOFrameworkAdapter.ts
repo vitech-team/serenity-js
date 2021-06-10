@@ -1,13 +1,14 @@
-import { ArtifactArchiver, ConfigurationError, Serenity } from '@serenity-js/core';
-import { Config, ModuleLoader, Path, TestRunnerAdapter } from '@serenity-js/core/lib/io';
+/* eslint-disable unicorn/filename-case */
+import { ArtifactArchiver, Serenity } from '@serenity-js/core';
+import { ModuleLoader, Path, TestRunnerAdapter } from '@serenity-js/core/lib/io';
 import type { Capabilities } from '@wdio/types';
 import type { EventEmitter } from 'events';
 import { isPlainObject } from 'is-plain-object';
-import { WebdriverIONotifier } from './WebdriverIONotifier';
 
-import { WebdriverIOConfig } from './WebdriverIOConfig';
 import { BrowserCapabilitiesReporter, BufferedOutputStream, InitialisesReporters, ProvidesWriteStream } from './reporter';
 import { TestRunnerLoader } from './TestRunnerLoader';
+import { WebdriverIOConfig } from './WebdriverIOConfig';
+import { WebdriverIONotifier } from './WebdriverIONotifier';
 import deepmerge = require('deepmerge');
 
 export class WebdriverIOFrameworkAdapter {

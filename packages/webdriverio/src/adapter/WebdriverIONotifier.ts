@@ -1,6 +1,6 @@
+/* eslint-disable unicorn/filename-case */
 import { LogicError, Stage, StageCrewMember } from '@serenity-js/core';
 import { DomainEvent, SceneFinished, SceneStarts, TestSuiteFinished, TestSuiteStarts } from '@serenity-js/core/lib/events';
-import type { EventEmitter } from 'events';
 import {
     CorrelationId,
     ExecutionCompromised,
@@ -15,6 +15,7 @@ import {
 } from '@serenity-js/core/lib/model';
 import { Suite } from '@wdio/reporter/build/stats/suite';
 import { Test } from '@wdio/reporter/build/stats/test';
+import type { EventEmitter } from 'events';
 import { match } from 'tiny-types';
 
 export class WebdriverIONotifier implements StageCrewMember {
@@ -39,10 +40,10 @@ export class WebdriverIONotifier implements StageCrewMember {
 
     notifyOf(event: DomainEvent): void {
         return match<DomainEvent, void>(event)
-            .when(TestSuiteStarts,          this.onTestSuiteStarts.bind(this))
-            .when(TestSuiteFinished,        this.onTestSuiteFinished.bind(this))
-            .when(SceneStarts,              this.onSceneStarts.bind(this))
-            .when(SceneFinished,            this.onSceneFinished.bind(this))
+            .when(TestSuiteStarts,          WebdriverIONotifier.prototype.onTestSuiteStarts.bind(this))
+            .when(TestSuiteFinished,        WebdriverIONotifier.prototype.onTestSuiteFinished.bind(this))
+            .when(SceneStarts,              WebdriverIONotifier.prototype.onSceneStarts.bind(this))
+            .when(SceneFinished,            WebdriverIONotifier.prototype.onSceneFinished.bind(this))
             .else(() => void 0);
     }
 

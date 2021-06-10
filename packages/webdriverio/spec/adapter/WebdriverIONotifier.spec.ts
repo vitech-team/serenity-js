@@ -1,6 +1,11 @@
+/* eslint-disable unicorn/filename-case */
 import 'mocha';
-import { WebdriverIONotifier } from '../../src/adapter/WebdriverIONotifier';
+
+import { expect } from '@integration/testing-tools';
 import { Cast, Clock, Duration, Stage, StageManager } from '@serenity-js/core';
+import { given } from 'mocha-testdata';
+
+import { WebdriverIONotifier } from '../../src/adapter/WebdriverIONotifier';
 import {
     cid,
     executionCompromised,
@@ -12,7 +17,7 @@ import {
     implementationPending,
     retryableSceneDetected,
     retryableSceneFinishedWith,
-    retryableSceneStarts, scene1Duration,
+    retryableSceneStarts,
     scene1FinishedWith, scene1Id,
     scene1Starts,
     scene2FinishedWith,
@@ -20,11 +25,11 @@ import {
     successThreshold,
     testRunFinished,
     testRunFinishes,
-    testRunStarts, testSuiteFinished, testSuiteStarts,
+    testRunStarts,
+    testSuiteFinished,
+    testSuiteStarts,
     when
 } from './fixtures';
-import { expect } from '@integration/testing-tools';
-import { given } from 'mocha-testdata';
 import EventEmitter = require('events');
 import sinon = require('sinon');
 
@@ -359,7 +364,6 @@ describe('WebdriverIONotifier', () => {
                         uid: scene1Id.value,
                     }
                 ],
-
 
                 [
                     'suite:end',

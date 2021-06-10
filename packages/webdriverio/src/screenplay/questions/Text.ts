@@ -1,5 +1,6 @@
 import { Answerable, AnswersQuestions, MetaQuestion, Question, UsesAbilities } from '@serenity-js/core';
 import type { Element, ElementArray } from 'webdriverio';
+
 import { TargetNestedElement, TargetNestedElements } from './target';
 
 export class Text {

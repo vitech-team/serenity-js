@@ -3,6 +3,7 @@ import 'mocha';
 import { expect } from '@integration/testing-tools';
 import { Ensure, not } from '@serenity-js/assertions';
 import { actorCalled } from '@serenity-js/core';
+
 import { by, Click, Navigate, Target } from '../../../src';
 import { isSelected } from '../../expectations';
 

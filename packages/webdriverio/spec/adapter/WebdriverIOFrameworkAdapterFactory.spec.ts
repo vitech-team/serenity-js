@@ -1,17 +1,18 @@
+/* eslint-disable unicorn/filename-case */
 import 'mocha';
 
 import { expect } from '@integration/testing-tools';
 import { Clock, ConfigurationError, Serenity } from '@serenity-js/core';
 import { ModuleLoader, Path, TestRunnerAdapter } from '@serenity-js/core/lib/io';
 import { ExecutionIgnored, Outcome } from '@serenity-js/core/lib/model';
-import type { Capabilities, Reporters } from '@wdio/types';
 import Reporter from '@wdio/reporter';
+import type { Capabilities, Reporters } from '@wdio/types';
 import * as sinon from 'sinon';
 import EventEmitter = require('events');
 
 import { WebdriverIOFrameworkAdapterFactory } from '../../src/adapter';
-import { WebdriverIOConfig } from '../../src/adapter/WebdriverIOConfig';
 import { InitialisesReporters, ProvidesWriteStream } from '../../src/adapter/reporter';
+import { WebdriverIOConfig } from '../../src/adapter/WebdriverIOConfig';
 
 describe('WebdriverIOFrameworkAdapterFactory', () => {
 
@@ -140,7 +141,7 @@ describe('WebdriverIOFrameworkAdapterFactory', () => {
 
         scenarioCount(): number {
             return 1;
-        };
+        }
 
         async run(): Promise<void> {
             // no-op

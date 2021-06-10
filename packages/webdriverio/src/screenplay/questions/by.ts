@@ -1,4 +1,5 @@
 import type { Selector } from 'webdriverio';
+
 import { Locator } from './Locator';
 
 export const by = {

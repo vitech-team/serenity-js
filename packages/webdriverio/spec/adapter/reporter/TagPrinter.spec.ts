@@ -1,7 +1,9 @@
 import 'mocha';
-import { TagPrinter } from '../../../src/adapter/reporter';
+
 import { expect } from '@integration/testing-tools';
 import { BrowserTag, PlatformTag } from '@serenity-js/core/lib/model';
+
+import { TagPrinter } from '../../../src/adapter/reporter';
 
 describe('TagPrinter', () => {
 
@@ -53,10 +55,10 @@ describe('TagPrinter', () => {
         it('should tag a simulator', () => {
             // https://appium.io/docs/en/writing-running-appium/caps/
             const tags = tagPrinter.tagsFor({
-                automationName: "XCUITest",
-                browserName: "Safari",
-                deviceName: "iPhone Simulator",
-                platformName: "iOS",
+                automationName: 'XCUITest',
+                browserName: 'Safari',
+                deviceName: 'iPhone Simulator',
+                platformName: 'iOS',
                 platformVersion: undefined,
                 udid: undefined,
             });
@@ -66,7 +68,6 @@ describe('TagPrinter', () => {
             expect(tags[1]).to.equal(new PlatformTag('iOS'));
         });
     })
-
 
     describe('when working with a single browser', () => {
 
@@ -131,7 +132,6 @@ describe('TagPrinter', () => {
                 expect(tags[0]).to.equal(new BrowserTag('Chrome', '50'));
                 expect(tags[1]).to.equal(new PlatformTag('unknown'));
             });
-
 
             it('should tag "platform" even when "os_version" is missing', () => {
                 const tags = tagPrinter.tagsFor({

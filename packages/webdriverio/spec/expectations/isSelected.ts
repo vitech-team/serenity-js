@@ -1,5 +1,6 @@
 import { Expectation } from '@serenity-js/core';
 import { Element } from 'webdriverio';
+
 import { ElementExpectation } from './ElementExpectation';
 
 /**

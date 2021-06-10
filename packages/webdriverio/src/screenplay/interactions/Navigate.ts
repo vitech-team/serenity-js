@@ -1,5 +1,6 @@
-import { Answerable, AnswersQuestions, Duration, Interaction, TestCompromisedError, UsesAbilities } from '@serenity-js/core';
+import { Answerable, AnswersQuestions, Interaction, TestCompromisedError, UsesAbilities } from '@serenity-js/core';
 import { formatted } from '@serenity-js/core/lib/io';
+
 import { BrowseTheWeb } from '../';
 
 /**

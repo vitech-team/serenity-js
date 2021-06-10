@@ -1,5 +1,6 @@
 import { Actor, Cast, TakeNotes } from '@serenity-js/core';
 import { Browser } from 'webdriverio';
+
 import { BrowseTheWeb } from '../../src';
 
 /*
@@ -9,7 +10,7 @@ import { BrowseTheWeb } from '../../src';
  * This type definition works around this problem.
  */
 declare global {
-    namespace NodeJS {
+    namespace NodeJS {      // eslint-disable-line @typescript-eslint/no-namespace
         interface Global {
             browser: Browser<'async'>
         }

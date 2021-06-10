@@ -82,6 +82,7 @@ module.exports = {
                 'arg': true,
                 'args': true,
                 'attrs': true,
+                'conf': true,
                 'docString': true,
                 'DocString': true,
                 'e': true,
@@ -92,6 +93,7 @@ module.exports = {
                 'params': true,
                 'pkg': true,
                 'props': true,
+                'wdio': true,
             }
         }]
     }

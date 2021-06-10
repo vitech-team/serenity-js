@@ -1,5 +1,5 @@
-export * from './BufferedOutputStream';
 export * from './BrowserCapabilitiesReporter';
-export * from './TagPrinter';
+export * from './BufferedOutputStream';
 export * from './InitialisesReporters';
 export * from './ProvidesWriteStream';
+export * from './TagPrinter';

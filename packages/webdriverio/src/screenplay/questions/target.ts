@@ -1,11 +1,14 @@
-import { Locator } from './Locator';
-import type { Element, ElementArray } from 'webdriverio';
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { Answerable, AnswersQuestions, Expectation, List, MetaQuestion, Question, UsesAbilities } from '@serenity-js/core';
+import type { Element, ElementArray } from 'webdriverio';
+
 import { ElementArrayListAdapter } from './lists';
+import { Locator } from './Locator';
 
 export class Target {
     static the(description: string) {
         return {
+            // todo: add TargetBuilder interfaces
             located(locator: Locator): TargetElement {
                 return new TargetElement(`the ${ description }`, locator);
             },

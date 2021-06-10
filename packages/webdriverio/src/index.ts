@@ -1,5 +1,6 @@
 import { serenity } from '@serenity-js/core';
 import { ModuleLoader, Path } from '@serenity-js/core/lib/io';
+
 import { WebdriverIOFrameworkAdapterFactory } from './adapter';
 
 const adapterFactory = new WebdriverIOFrameworkAdapterFactory(

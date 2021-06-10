@@ -1,5 +1,6 @@
-import type { Browser, Element, ElementArray } from 'webdriverio';
 import { Question } from '@serenity-js/core';
+import type { Browser, Element, ElementArray } from 'webdriverio';
+
 import { BrowseTheWeb } from '../abilities';
 
 export class Locator {

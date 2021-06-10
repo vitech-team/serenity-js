@@ -1,7 +1,8 @@
-import { Config, FileFinder, FileSystem, ModuleLoader, Path, TestRunnerAdapter } from '@serenity-js/core/lib/io';
-import { WebdriverIOConfig } from './WebdriverIOConfig';
 import { ConfigurationError } from '@serenity-js/core';
+import { Config, FileFinder, FileSystem, ModuleLoader, Path, TestRunnerAdapter } from '@serenity-js/core/lib/io';
 import { WebdriverIO } from '@wdio/types/build/Options';
+
+import { WebdriverIOConfig } from './WebdriverIOConfig';
 
 export class TestRunnerLoader {
     private readonly fileSystem: FileSystem;
@@ -33,13 +34,13 @@ export class TestRunnerLoader {
         }
     }
 
-    private cucumberAdapter(cucumberOpts?: WebdriverIO.CucumberOpts): TestRunnerAdapter {
+    private cucumberAdapter(cucumberOptions?: WebdriverIO.CucumberOpts): TestRunnerAdapter {
         const { CucumberCLIAdapter, CucumberFormat, StandardOutput, TempFileOutput } = this.loader.require('@serenity-js/cucumber/lib/cli');
 
-        delete cucumberOpts?.timeout;   // todo: support setting a timeout via config?
-        delete cucumberOpts?.parallel;  // WebdriverIO handles that already
+        delete cucumberOptions?.timeout;   // todo: support setting a timeout via config?
+        delete cucumberOptions?.parallel;  // WebdriverIO handles that already
 
-        const cleanedCucumberOpts = new Config(cucumberOpts)
+        const cleanedCucumberOptions = new Config(cucumberOptions)
             .where('require', requires =>
                 this.finder.filesMatching(requires).map(p => p.value)
             )
@@ -65,20 +66,20 @@ export class TestRunnerLoader {
             ).object();
 
         // check if we need to free up stdout for any native reporters
-        const output = cleanedCucumberOpts?.format?.some(format => new CucumberFormat(format).output === '')
+        const output = cleanedCucumberOptions?.format?.some(format => new CucumberFormat(format).output === '')
             ? new TempFileOutput(this.fileSystem)
             : new StandardOutput();
 
-        return new CucumberCLIAdapter(cleanedCucumberOpts, this.loader, output);
+        return new CucumberCLIAdapter(cleanedCucumberOptions, this.loader, output);
     }
 
-    private jasmineAdapter(jasmineOpts: WebdriverIO.JasmineOpts): TestRunnerAdapter {
+    private jasmineAdapter(jasmineOptions: WebdriverIO.JasmineOpts): TestRunnerAdapter {
         const { JasmineAdapter } = this.loader.require('@serenity-js/jasmine/lib/adapter')
-        return new JasmineAdapter(jasmineOpts, this.loader);
+        return new JasmineAdapter(jasmineOptions, this.loader);
     }
 
-    private mochaAdapter(mochaOpts: WebdriverIO.MochaOpts): TestRunnerAdapter {
+    private mochaAdapter(mochaOptions: WebdriverIO.MochaOpts): TestRunnerAdapter {
         const { MochaAdapter } = this.loader.require('@serenity-js/mocha/lib/adapter')
-        return new MochaAdapter(mochaOpts, this.loader);
+        return new MochaAdapter(mochaOptions, this.loader);
     }
 }

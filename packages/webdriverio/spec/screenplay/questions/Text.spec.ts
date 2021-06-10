@@ -1,10 +1,12 @@
 import 'mocha';
-import { by, Navigate, Target, Text } from '../../../src';
-import { actorCalled, replace, toNumber, trim } from '@serenity-js/core';
-import { Ensure, equals } from '@serenity-js/assertions';
+
 import { expect } from '@integration/testing-tools';
+import { Ensure, equals } from '@serenity-js/assertions';
+import { actorCalled, replace, toNumber, trim } from '@serenity-js/core';
 import { LocalServer, StartLocalServer, StopLocalServer } from '@serenity-js/local-server';
 import { ChangeApiConfig } from '@serenity-js/rest';
+
+import { by, Navigate, Target, Text } from '../../../src';
 
 describe('Text', () => {
 

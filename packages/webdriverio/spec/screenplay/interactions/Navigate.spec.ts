@@ -2,8 +2,8 @@ import 'mocha';
 
 import { expect } from '@integration/testing-tools';
 import { Ensure, equals } from '@serenity-js/assertions';
-import { actorCalled, q, TestCompromisedError } from '@serenity-js/core';
-import { LocalServer } from '@serenity-js/local-server';
+import { actorCalled, TestCompromisedError } from '@serenity-js/core';
+
 import { by, Navigate, Target, Text } from '../../../src';
 
 /** @test {Navigate} */

@@ -2,7 +2,7 @@ import { Ability, UsesAbilities } from '@serenity-js/core';
 import type { Browser } from 'webdriverio';
 
 export class BrowseTheWeb implements Ability {
-    static using(browserInstance: Browser<'async'>) {
+    static using(browserInstance: Browser<'async'>): BrowseTheWeb {
         return new BrowseTheWeb(browserInstance);
     }
 

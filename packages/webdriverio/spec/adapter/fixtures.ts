@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import { AssertionError, ImplementationPendingError, StageCrewMember, TestCompromisedError } from '@serenity-js/core';
+import { DomainEvent, RetryableSceneDetected, SceneFinished, SceneStarts, TestRunFinished, TestRunFinishes, TestRunStarts, TestSuiteFinished, TestSuiteStarts } from '@serenity-js/core/lib/events';
+import { FileSystemLocation, Path } from '@serenity-js/core/lib/io';
 import {
     Category,
     CorrelationId,
@@ -15,15 +19,12 @@ import {
     TestSuiteDetails,
     Timestamp
 } from '@serenity-js/core/lib/model';
-import { FileSystemLocation, Path } from '@serenity-js/core/lib/io';
-import { DomainEvent, RetryableSceneDetected, SceneFinished, SceneStarts, TestRunFinished, TestRunFinishes, TestRunStarts, TestSuiteFinished, TestSuiteStarts } from '@serenity-js/core/lib/events';
-import { AssertionError, ImplementationPendingError, StageCrewMember, TestCompromisedError } from '@serenity-js/core';
 
 function thrown<T extends Error>(error: T): T {
     try {
         throw error;
-    } catch (e) {
-        return e;
+    } catch (error_) {
+        return error_;
     }
 }
 

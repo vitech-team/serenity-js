@@ -1,12 +1,14 @@
 import 'mocha';
-import { BrowserCapabilitiesReporter } from '../../../src/adapter/reporter';
+
 import { EventRecorder, expect } from '@integration/testing-tools';
-import { BrowserTag, PlatformTag } from '@serenity-js/core/lib/model';
 import { Clock, Serenity } from '@serenity-js/core';
-import { RunnerStart } from '@wdio/types/build/Options';
-import { Capabilities } from '@wdio/types';
 import { SceneTagged } from '@serenity-js/core/lib/events';
+import { BrowserTag, PlatformTag } from '@serenity-js/core/lib/model';
+import { Capabilities } from '@wdio/types';
+import { RunnerStart } from '@wdio/types/build/Options';
 import { PassThrough } from 'stream';
+
+import { BrowserCapabilitiesReporter } from '../../../src/adapter/reporter';
 
 describe('BrowserCapabilitiesReporter', () => {
     

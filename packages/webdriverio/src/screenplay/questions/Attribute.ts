@@ -1,12 +1,13 @@
-import { Answerable, AnswersQuestions, Log, LogicError, MetaQuestion, Question, UsesAbilities } from '@serenity-js/core';
+import { Answerable, AnswersQuestions, LogicError, MetaQuestion, Question, UsesAbilities } from '@serenity-js/core';
 import { Element } from 'webdriverio';
+
 import { TargetNestedElement } from './target';
 
 export class Attribute
     extends Question<Promise<string>>
     implements MetaQuestion<Answerable<Element<'async'>>, Promise<string>>
 {
-    static called(name: Answerable<string>) {
+    static called(name: Answerable<string>): Attribute {
         return new Attribute(name);
     }
 

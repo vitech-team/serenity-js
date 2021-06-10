@@ -1,8 +1,9 @@
-import { Capabilities, Options, Reporters } from '@wdio/types';
-import Reporter from '@wdio/reporter';
-import { Tag } from '@serenity-js/core/lib/model';
 import { Serenity } from '@serenity-js/core';
 import { SceneTagged } from '@serenity-js/core/lib/events';
+import { Tag } from '@serenity-js/core/lib/model';
+import Reporter from '@wdio/reporter';
+import { Capabilities, Options, Reporters } from '@wdio/types';
+
 import { TagPrinter } from './TagPrinter';
 
 /**
@@ -21,8 +22,8 @@ export class BrowserCapabilitiesReporter extends Reporter {
 
         this.serenity = options.serenity;
 
-        this.on('runner:start', this.recordBrowserAndPlatformTags.bind(this));
-        this.on('test:start',   this.emitRecordedTags.bind(this));
+        this.on('runner:start', BrowserCapabilitiesReporter.prototype.recordBrowserAndPlatformTags.bind(this));
+        this.on('test:start',   BrowserCapabilitiesReporter.prototype.emitRecordedTags.bind(this));
     }
 
     private recordBrowserAndPlatformTags(event: Options.RunnerStart) {

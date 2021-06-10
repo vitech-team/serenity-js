@@ -1,8 +1,10 @@
 import 'mocha';
-import { Attribute, by, Navigate, Target, Text } from '../../../src';
-import { actorCalled, LogicError } from '@serenity-js/core';
-import { Ensure, equals } from '@serenity-js/assertions';
+
 import { expect } from '@integration/testing-tools';
+import { Ensure, equals } from '@serenity-js/assertions';
+import { actorCalled, LogicError } from '@serenity-js/core';
+
+import { Attribute, by, Navigate, Target, Text } from '../../../src';
 
 describe('Attribute', () => {
 

@@ -1,10 +1,12 @@
 import 'mocha';
-import { actorCalled, Answerable } from '@serenity-js/core';
-import { by, Click, CSSClasses, Navigate, Target, Text } from '../../../src';
-import { contain, Ensure, equals, startsWith } from '@serenity-js/assertions';
+
 import { expect } from '@integration/testing-tools';
+import { contain, Ensure, equals, startsWith } from '@serenity-js/assertions';
+import { actorCalled, Answerable } from '@serenity-js/core';
 import { given } from 'mocha-testdata';
 import type { Element } from 'webdriverio';
+
+import { by, Click, CSSClasses, Navigate, Target, Text } from '../../../src';
 
 describe('Target', () => {
 

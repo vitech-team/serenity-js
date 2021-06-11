@@ -32,11 +32,11 @@
     "clean": "rimraf .nyc_output lib target",
     "lint": "eslint --ext ts --config ../../.eslintrc.js .",
     "lint:fix": "npm run lint -- --fix",
-    "test": "npm run test:adapter && npm run test:wdio",
-    "test:adapter": "nyc --report-dir ../../target/coverage/webdriverio/adapter mocha --config ../../.mocharc.yml 'spec/adapter/**/*.spec.*'",
+    "test": "npm run test:mocha && npm run test:wdio",
+    "test:mocha": "nyc --report-dir ../../target/coverage/webdriverio/mocha mocha --config ../../.mocharc.yml 'spec/adapter/**/*.spec.*'",
     "test:wdio": "start-server-and-test test:wdio:start-server http://localhost:8080 test:wdio:run",
     "test:wdio:start-server": "static-content-server",
-    "test:wdio:run": "nyc --report-dir ../../target/coverage/webdriverio/screenplay wdio ./spec/wdio.conf.ts",
+    "test:wdio:run": "nyc --report-dir ../../target/coverage/webdriverio/wdio wdio ./spec/wdio.conf.ts",
     "wdio": "wdio ./spec/wdio.conf.ts",
     "compile": "tsc --project tsconfig.json",
     "site": "esdoc -c .esdoc.js"
@@ -113,12 +113,11 @@
       ".ts"
     ],
     "require": [
-      "ts-node/register"
     ],
     "reporter": [
       "json"
     ],
     "cache": true,
-    "all": true
+    "all": false
   }
 }

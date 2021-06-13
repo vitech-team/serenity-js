@@ -84,7 +84,6 @@
     "@integration/web-testing-tools": "2.0.0",
     "@serenity-js/assertions": "2.29.1",
     "@serenity-js/console-reporter": "2.29.1",
-    "@serenity-js/core": "2.29.1",
     "@serenity-js/cucumber": "2.29.1",
     "@serenity-js/mocha": "2.29.1",
     "@serenity-js/jasmine": "2.29.1",

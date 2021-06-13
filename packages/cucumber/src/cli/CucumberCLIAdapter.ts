@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/filename-case */
 /* istanbul ignore file covered in integration tests */
 import { ModuleLoader, TestRunnerAdapter, Version } from '@serenity-js/core/lib/io';
 import { ExecutionIgnored, ImplementationPending, Outcome } from '@serenity-js/core/lib/model';

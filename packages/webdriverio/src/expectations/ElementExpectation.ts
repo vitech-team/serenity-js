@@ -17,11 +17,15 @@ export class ElementExpectation extends Expectation<any, Element<'async'>> {
     }
 
     answeredBy(actor: AnswersQuestions): (actual: Element<'async'>) => Promise<ExpectationOutcome<boolean, Element<'async'>>> {
-
         return (actual: Element<'async'>) =>
-            this.fn(actual).then(_ => _
-                ? new ExpectationMet(this.toString(), undefined, actual)
-                : new ExpectationNotMet(this.toString(), undefined, actual),
-            );
+            this.fn(actual)
+                .then(expectationMet =>
+                    expectationMet
+                        ? new ExpectationMet(this.toString(), undefined, actual)
+                        : new ExpectationNotMet(this.toString(), undefined, actual),
+                )
+                .catch(error => {
+                    return new ExpectationNotMet(`${ this.toString() } (${ error.message })`, undefined, actual);
+                });
     }
 }

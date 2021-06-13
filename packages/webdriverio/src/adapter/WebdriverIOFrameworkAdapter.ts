@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/filename-case */
 import { ArtifactArchiver, Serenity } from '@serenity-js/core';
 import { ModuleLoader, Path, TestRunnerAdapter } from '@serenity-js/core/lib/io';
 import type { Capabilities } from '@wdio/types';
@@ -11,6 +10,9 @@ import { WebdriverIOConfig } from './WebdriverIOConfig';
 import { WebdriverIONotifier } from './WebdriverIONotifier';
 import deepmerge = require('deepmerge');
 
+/**
+ * @package
+ */
 export class WebdriverIOFrameworkAdapter {
 
     private adapter: TestRunnerAdapter;

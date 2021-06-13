@@ -1,6 +1,9 @@
 import { BrowserTag, PlatformTag, Tag } from '@serenity-js/core/lib/model';
 import { Capabilities } from '@wdio/types';
 
+/**
+ * @package
+ */
 export class TagPrinter {
     tagsFor(capability: Capabilities.DesiredCapabilities | Capabilities.W3CCapabilities): Tag[] {
         const desiredCapabilities = this.desired(capability);

@@ -9,6 +9,8 @@ import { TagPrinter } from './TagPrinter';
 /**
  * - Spec Reporter
  *  - https://github.com/webdriverio/webdriverio/blob/69c66bf904ae9a6b7e3c40e7fc43e9c3a79d847a/packages/wdio-spec-reporter/src/index.ts#L412-L456
+ *
+ * @package
  */
 export class BrowserCapabilitiesReporter extends Reporter {
 

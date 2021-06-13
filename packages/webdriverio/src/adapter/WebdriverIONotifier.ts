@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/filename-case */
 import { LogicError, Stage, StageCrewMember } from '@serenity-js/core';
 import { DomainEvent, SceneFinished, SceneStarts, TestSuiteFinished, TestSuiteStarts } from '@serenity-js/core/lib/events';
 import {
@@ -18,6 +17,9 @@ import { Test } from '@wdio/reporter/build/stats/test';
 import type { EventEmitter } from 'events';
 import { match } from 'tiny-types';
 
+/**
+ * @package
+ */
 export class WebdriverIONotifier implements StageCrewMember {
 
     private readonly events = new EventLog();

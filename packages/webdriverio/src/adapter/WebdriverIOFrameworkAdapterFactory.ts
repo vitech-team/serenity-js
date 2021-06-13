@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/filename-case */
 import { Serenity } from '@serenity-js/core';
 import { ModuleLoader, Path } from '@serenity-js/core/lib/io';
 import type { Capabilities } from '@wdio/types';
@@ -8,6 +7,9 @@ import { InitialisesReporters, ProvidesWriteStream } from './reporter';
 import { WebdriverIOConfig } from './WebdriverIOConfig';
 import { WebdriverIOFrameworkAdapter } from './WebdriverIOFrameworkAdapter';
 
+/**
+ * @package
+ */
 export class WebdriverIOFrameworkAdapterFactory {
     constructor(
         private readonly serenity: Serenity,

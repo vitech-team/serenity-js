@@ -4,6 +4,9 @@ import { WebdriverIO } from '@wdio/types/build/Options';
 
 import { WebdriverIOConfig } from './WebdriverIOConfig';
 
+/**
+ * @package
+ */
 export class TestRunnerLoader {
     private readonly fileSystem: FileSystem;
     private readonly finder: FileFinder;

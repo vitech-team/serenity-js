@@ -10,7 +10,7 @@ import { Click, CSSClasses, Navigate, Target, Text } from '../../../src';
 import { UIActors } from '../../UIActors';
 
 /** @test {Target} */
-describe.only('Target', () => {
+describe('Target', () => {
 
     class ShoppingList {
         static App = Target.the('shopping list app').located(by.id('shopping-list-app'));

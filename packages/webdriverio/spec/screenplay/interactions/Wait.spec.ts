@@ -18,7 +18,7 @@ describe('Wait', () => {
             actorCalled('Wendy').attemptsTo(
                 Navigate.to('/screenplay/interactions/wait/loader.html'),
 
-                Wait.for(Duration.ofMilliseconds(300)),
+                Wait.for(Duration.ofMilliseconds(1500)),
 
                 Ensure.that(Text.of(Status), equals('Ready!')),
             ));

@@ -2,17 +2,11 @@ import 'mocha';
 
 import { expect } from '@integration/testing-tools';
 import { contain, Ensure, equals, startsWith } from '@serenity-js/assertions';
-import { actorCalled, Answerable, Log, Question } from '@serenity-js/core';
+import { actorCalled, Answerable } from '@serenity-js/core';
 import { given } from 'mocha-testdata';
 import type { Element } from 'webdriverio';
 
 import { by, Click, CSSClasses, Navigate, Target, Text } from '../../../src';
-
-const Source = () => Question.about('page source', () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return $('body').then(body => body.getHTML(true));
-});
 
 describe('Target', () => {
 
@@ -37,7 +31,6 @@ describe('Target', () => {
         it('a single web element matching the selector', () =>
             actorCalled('Wendy').attemptsTo(
                 Navigate.to('/screenplay/questions/target/shopping_list.html'),
-                Log.the(Source()),
 
                 Ensure.that(Text.of(ShoppingList.Header), equals('Shopping list')),
             ));
@@ -50,7 +43,6 @@ describe('Target', () => {
         it('all web elements matching the selector', () =>
             actorCalled('Wendy').attemptsTo(
                 Navigate.to('/screenplay/questions/target/shopping_list.html'),
-                Log.the(Source()),
 
                 Ensure.that(Text.ofAll(ShoppingList.Items), contain('oats')),
             ));
@@ -64,7 +56,6 @@ describe('Target', () => {
         it('an element relative to another target', () =>
             actorCalled('Wendy').attemptsTo(
                 Navigate.to('/screenplay/questions/target/shopping_list.html'),
-                Log.the(Source()),
 
                 Ensure.that(Text.of(ShoppingList.Number_Of_Items_Left), equals('2')),
             ));
@@ -78,7 +69,6 @@ describe('Target', () => {
         it('all elements relative to another target', () =>
             actorCalled('Wendy').attemptsTo(
                 Navigate.to('/screenplay/questions/target/shopping_list.html'),
-                Log.the(Source()),
 
                 Ensure.that(Text.ofAll(ShoppingList.Bought_Items), equals([ 'coffee' ])),
             ));
@@ -157,7 +147,6 @@ describe('Target', () => {
                 it('gets the number of items', () =>
                     actorCalled('Wendy').attemptsTo(
                         Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
-                        Log.the(Source()),
 
                         Ensure.that(AdvancedShoppingList.Titles.count(), equals(3)),
                     ));
@@ -170,7 +159,6 @@ describe('Target', () => {
                 it('picks all the items', () =>
                     actorCalled('Wendy').attemptsTo(
                         Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
-                        Log.the(Source()),
 
                         Ensure.that(Text.ofAll(AdvancedShoppingList.Titles), contain('coconut milk')),
                     ));
@@ -184,7 +172,6 @@ describe('Target', () => {
                 it('picks the first item', () =>
                     actorCalled('Wendy').attemptsTo(
                         Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
-                        Log.the(Source()),
 
                         Ensure.that(Text.of(AdvancedShoppingList.Titles.first()), equals('oats')),
                     ));
@@ -198,7 +185,6 @@ describe('Target', () => {
                 it('picks the last item', () =>
                     actorCalled('Wendy').attemptsTo(
                         Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
-                        Log.the(Source()),
 
                         Ensure.that(Text.of(AdvancedShoppingList.Titles.last()), equals('coffee')),
                     ));
@@ -212,7 +198,6 @@ describe('Target', () => {
                 it('picks the nth item', () =>
                     actorCalled('Wendy').attemptsTo(
                         Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
-                        Log.the(Source()),
 
                         Ensure.that(Text.of(AdvancedShoppingList.Titles.get(1)), equals('coconut milk')),
                     ));
@@ -292,7 +277,6 @@ describe('Target', () => {
                 it('gets the number of items', () =>
                     actorCalled('Wendy').attemptsTo(
                         Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
-                        Log.the(Source()),
 
                         Ensure.that(list.count(), equals(2)),
                     ));
@@ -305,7 +289,6 @@ describe('Target', () => {
                 it('picks all the items', () =>
                     actorCalled('Wendy').attemptsTo(
                         Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
-                        Log.the(Source()),
 
                         Ensure.that(Text.ofAll(list), contain('coconut milk x')),
                     ));
@@ -318,7 +301,6 @@ describe('Target', () => {
                 it('picks the first item', () =>
                     actorCalled('Wendy').attemptsTo(
                         Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
-                        Log.the(Source()),
 
                         Ensure.that(Text.of(list.first()), startsWith('oats')),
                     ));
@@ -331,7 +313,6 @@ describe('Target', () => {
                 it('picks the last item', () =>
                     actorCalled('Wendy').attemptsTo(
                         Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
-                        Log.the(Source()),
 
                         Ensure.that(Text.of(list.last()), startsWith('coconut milk')),
                     ));
@@ -344,7 +325,6 @@ describe('Target', () => {
                 it('picks the nth item', () =>
                     actorCalled('Wendy').attemptsTo(
                         Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
-                        Log.the(Source()),
 
                         Ensure.that(Text.of(list.get(1)), startsWith('coconut milk')),
                     ));
@@ -415,7 +395,6 @@ describe('Target', () => {
                 it('gets the number of items', () =>
                     actorCalled('Wendy').attemptsTo(
                         Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
-                        Log.the(Source()),
 
                         Ensure.that(list.count(), equals(1)),
                     ));
@@ -427,7 +406,6 @@ describe('Target', () => {
                 it('picks all the items', () =>
                     actorCalled('Wendy').attemptsTo(
                         Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
-                        Log.the(Source()),
 
                         Ensure.that(Text.ofAll(list), contain('coconut milk x')),
                     ));
@@ -439,7 +417,6 @@ describe('Target', () => {
                 it('picks the first item', () =>
                     actorCalled('Wendy').attemptsTo(
                         Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
-                        Log.the(Source()),
 
                         Ensure.that(Text.of(list.first()), startsWith('coconut milk')),
                     ));
@@ -451,7 +428,6 @@ describe('Target', () => {
                 it('picks the last item', () =>
                     actorCalled('Wendy').attemptsTo(
                         Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
-                        Log.the(Source()),
 
                         Ensure.that(Text.of(list.last()), startsWith('coconut milk')),
                     ));
@@ -463,7 +439,6 @@ describe('Target', () => {
                 it('picks the nth item', () =>
                     actorCalled('Wendy').attemptsTo(
                         Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
-                        Log.the(Source()),
 
                         Ensure.that(Text.of(list.get(0)), startsWith('coconut milk')),
                     ));
@@ -544,7 +519,6 @@ describe('Target', () => {
             it('makes it easy for an actor to pick the element of interest', () =>
                 actorCalled('Wendy').attemptsTo(
                     Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
-                    Log.the(Source()),
 
                     Click.on(LinkTo(ItemCalled('coffee'))),
 
@@ -558,7 +532,6 @@ describe('Target', () => {
             it('makes it easy for an actor to pick all elements of interest', () =>
                 actorCalled('Wendy').attemptsTo(
                     Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
-                    Log.the(Source()),
 
                     Click.on(LinkTo(ItemCalled('coconut milk'))),
                     Click.on(LinkTo(ItemCalled('coffee'))),

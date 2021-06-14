@@ -61,97 +61,105 @@ export class Navigate {
         return new NavigateToUrl(url);
     }
 
-    // /**
-    //  * @desc
-    //  *  Instructs the {@link @serenity-js/core/lib/screenplay/actor~Actor} to
-    //  *  navigate back one page in the session history.
-    //  *
-    //  * @example <caption>Navigate to path relative to baseUrl</caption>
-    //  *  import { actorCalled } from '@serenity-js/core';
-    //  *  import { Ensure, endsWith } from '@serenity-js/assertions';
-    //  *  import { BrowseTheWeb, Navigate } from '@serenity-js/protractor';
-    //  *
-    //  *  actorCalled('Hannu')
-    //  *      .whoCan(BrowseTheWeb.using(protractor.browser))
-    //  *      .attemptsTo(
-    //  *          Navigate.to('/first'),
-    //  *          Navigate.to('/second'),
-    //  *
-    //  *          Navigate.back(),
-    //  *
-    //  *          Ensure.that(Website.url(), endsWith('/first')),
-    //  *      );
-    //  *
-    //  * @returns {@serenity-js/core/lib/screenplay~Interaction}
-    //  *
-    //  * @see {@link BrowseTheWeb}
-    //  * @see {@link @serenity-js/assertions~Ensure}
-    //  * @see {@link @serenity-js/assertions/lib/expectations~endsWith}
-    //  */
-    // static back(): Interaction {
-    //     return new NavigateBack();
-    // }
-    //
-    // /**
-    //  * @desc
-    //  *  Instructs the {@link @serenity-js/core/lib/screenplay/actor~Actor} to
-    //  *  navigate forward one page in the session history.
-    //  *
-    //  * @example <caption>Navigate to path relative to baseUrl</caption>
-    //  *  import { actorCalled } from '@serenity-js/core';
-    //  *  import { Ensure, endsWith } from '@serenity-js/assertions';
-    //  *  import { BrowseTheWeb, Navigate } from '@serenity-js/protractor';
-    //  *
-    //  *  actorCalled('Hannu')
-    //  *      .whoCan(BrowseTheWeb.using(protractor.browser))
-    //  *      .attemptsTo(
-    //  *          Navigate.to('/first'),
-    //  *          Navigate.to('/second'),
-    //  *
-    //  *          Navigate.back(),
-    //  *          Navigate.forward(),
-    //  *
-    //  *          Ensure.that(Website.url(), endsWith('/second')),
-    //  *      );
-    //  *
-    //  * @returns {@serenity-js/core/lib/screenplay~Interaction}
-    //  *
-    //  * @see {@link BrowseTheWeb}
-    //  * @see {@link @serenity-js/assertions~Ensure}
-    //  * @see {@link @serenity-js/assertions/lib/expectations~endsWith}
-    //  */
-    // static forward(): Interaction {
-    //     return new NavigateForward();
-    // }
-    //
-    // /**
-    //  * @desc
-    //  *  Instructs the {@link @serenity-js/core/lib/screenplay/actor~Actor} to
-    //  *  reload the current page.
-    //  *
-    //  * @example <caption>Navigate to path relative to baseUrl</caption>
-    //  *  import { actorCalled } from '@serenity-js/core';
-    //  *  import { Ensure, endsWith } from '@serenity-js/assertions';
-    //  *  import { Navigate, BrowseTheWeb, DeleteCookies } from '@serenity-js/protractor';
-    //  *
-    //  *  actorCalled('Hannu')
-    //  *      .whoCan(BrowseTheWeb.using(protractor.browser))
-    //  *      .attemptsTo(
-    //  *          Navigate.to('/login'),
-    //  *          DeleteCookies.called('session_id'),
-    //  *          Navigate.reloadPage(),
-    //  *      );
-    //  *
-    //  * @returns {@serenity-js/core/lib/screenplay~Interaction}
-    //  *
-    //  * @see {@link BrowseTheWeb}
-    //  * @see {@link DeleteCookies}
-    //  * @see {@link @serenity-js/assertions~Ensure}
-    //  * @see {@link @serenity-js/assertions/lib/expectations~endsWith}
-    //  */
-    // static reloadPage(): Interaction {
-    //     return new ReloadPage();
-    // }
+    /**
+     * @desc
+     *  Instructs the {@link @serenity-js/core/lib/screenplay/actor~Actor} to
+     *  navigate back one page in the joint session history of the current top-level browsing context.
+     *
+     * @example <caption>Navigate to path relative to baseUrl</caption>
+     *  import { actorCalled } from '@serenity-js/core';
+     *  import { Ensure, endsWith } from '@serenity-js/assertions';
+     *  import { BrowseTheWeb, Navigate } from '@serenity-js/webdriverio';
+     *
+     *  actorCalled('Hannu')
+     *      .whoCan(BrowseTheWeb.using(protractor.browser))
+     *      .attemptsTo(
+     *          Navigate.to('/first'),
+     *          Navigate.to('/second'),
+     *
+     *          Navigate.back(),
+     *
+     *          Ensure.that(Website.url(), endsWith('/first')),
+     *      );
+     *
+     * @returns {@serenity-js/core/lib/screenplay~Interaction}
+     *
+     * @see https://webdriver.io/docs/api/webdriver/#back
+     * @see {@link BrowseTheWeb}
+     * @see {@link @serenity-js/assertions~Ensure}
+     * @see {@link @serenity-js/assertions/lib/expectations~endsWith}
+     */
+    static back(): Interaction {
+        return Interaction.where(`#actor navigates back in the browser history`, actor =>
+            BrowseTheWeb.as(actor).browser.back(),
+        );
+    }
+
+    /**
+     * @desc
+     *  Instructs the {@link @serenity-js/core/lib/screenplay/actor~Actor} to
+     *  navigate forward one page in the session history.
+     *
+     * @example <caption>Navigate to path relative to baseUrl</caption>
+     *  import { actorCalled } from '@serenity-js/core';
+     *  import { Ensure, endsWith } from '@serenity-js/assertions';
+     *  import { BrowseTheWeb, Navigate } from '@serenity-js/webdriverio';
+     *
+     *  actorCalled('Hannu')
+     *      .whoCan(BrowseTheWeb.using(protractor.browser))
+     *      .attemptsTo(
+     *          Navigate.to('/first'),
+     *          Navigate.to('/second'),
+     *
+     *          Navigate.back(),
+     *          Navigate.forward(),
+     *
+     *          Ensure.that(Website.url(), endsWith('/second')),
+     *      );
+     *
+     * @returns {@serenity-js/core/lib/screenplay~Interaction}
+     *
+     * @see {@link BrowseTheWeb}
+     * @see {@link @serenity-js/assertions~Ensure}
+     * @see {@link @serenity-js/assertions/lib/expectations~endsWith}
+     * @see https://webdriver.io/docs/api/webdriver/#forward
+     */
+    static forward(): Interaction {
+        return Interaction.where(`#actor navigates forward in the browser history`, actor =>
+            BrowseTheWeb.as(actor).browser.forward(),
+        );
+    }
+
+    /**
+     * @desc
+     *  Instructs the {@link @serenity-js/core/lib/screenplay/actor~Actor} to
+     *  reload the current page.
+     *
+     * @example <caption>Navigate to path relative to baseUrl</caption>
+     *  import { actorCalled } from '@serenity-js/core';
+     *  import { Ensure, endsWith } from '@serenity-js/assertions';
+     *  import { Navigate, BrowseTheWeb, DeleteCookies } from '@serenity-js/webdriverio';
+     *
+     *  actorCalled('Hannu')
+     *      .whoCan(BrowseTheWeb.using(protractor.browser))
+     *      .attemptsTo(
+     *          Navigate.to('/login'),
+     *          DeleteCookies.called('session_id'),
+     *          Navigate.reloadPage(),
+     *      );
+     *
+     * @returns {@serenity-js/core/lib/screenplay~Interaction}
+     *
+     * @see {@link BrowseTheWeb}
+     * @see {@link DeleteCookies}
+     * @see {@link @serenity-js/assertions~Ensure}
+     * @see {@link @serenity-js/assertions/lib/expectations~endsWith}
+     */
+    static reloadPage(): Interaction {
+        return Interaction.where(`#actor reloads the page`, actor =>
+            BrowseTheWeb.as(actor).browser.refresh(),
+        );
+    }
 }
 
 /**
@@ -198,147 +206,3 @@ class NavigateToUrl extends Interaction {
         return formatted `#actor navigates to ${ this.url }`;
     }
 }
-
-// /**
-//  * @package
-//  */
-// class NavigateToUrlWithTimeout extends Interaction {
-//     constructor(private readonly url: Answerable<string>, private readonly timeout: Answerable<Duration>) {
-//         super();
-//     }
-//
-//     /**
-//      * @desc
-//      *  Makes the provided {@link @serenity-js/core/lib/screenplay/actor~Actor}
-//      *  perform this {@link @serenity-js/core/lib/screenplay~Interaction}.
-//      *
-//      * @param {UsesAbilities & AnswersQuestions} actor
-//      *  An {@link @serenity-js/core/lib/screenplay/actor~Actor} to perform this {@link @serenity-js/core/lib/screenplay~Interaction}
-//      *
-//      * @returns {PromiseLike<void>}
-//      *
-//      * @see {@link @serenity-js/core/lib/screenplay/actor~Actor}
-//      * @see {@link @serenity-js/core/lib/screenplay/actor~UsesAbilities}
-//      * @see {@link @serenity-js/core/lib/screenplay/actor~AnswersQuestions}
-//      */
-//     performAs(actor: UsesAbilities & AnswersQuestions): PromiseLike<void> {
-//         return Promise.all([
-//             actor.answer(this.url),
-//             actor.answer(this.timeout),
-//         ]).then(([url, timeout]) =>
-//             BrowseTheWeb.as(actor).get(url, timeout.inMilliseconds()),
-//         );
-//     }
-//
-//     /**
-//      * @desc
-//      *  Generates a description to be used when reporting this {@link @serenity-js/core/lib/screenplay~Activity}.
-//      *
-//      * @returns {string}
-//      */
-//     toString(): string {
-//         return formatted `#actor navigates to ${ this.url } waiting up to ${ this.timeout } for Angular to load`;
-//     }
-// }
-//
-// /**
-//  * @package
-//  */
-// class NavigateBack extends Interaction {
-//
-//     /**
-//      * @desc
-//      *  Makes the provided {@link @serenity-js/core/lib/screenplay/actor~Actor}
-//      *  perform this {@link @serenity-js/core/lib/screenplay~Interaction}.
-//      *
-//      * @param {UsesAbilities & AnswersQuestions} actor
-//      *  An {@link @serenity-js/core/lib/screenplay/actor~Actor} to perform this {@link @serenity-js/core/lib/screenplay~Interaction}
-//      *
-//      * @returns {PromiseLike<void>}
-//      *
-//      * @see {@link @serenity-js/core/lib/screenplay/actor~Actor}
-//      * @see {@link @serenity-js/core/lib/screenplay/actor~UsesAbilities}
-//      * @see {@link @serenity-js/core/lib/screenplay/actor~AnswersQuestions}
-//      */
-//     performAs(actor: UsesAbilities & AnswersQuestions): Promise<void> {
-//         return promiseOf(BrowseTheWeb.as(actor).navigate().back());
-//     }
-//
-//     /**
-//      * @desc
-//      *  Generates a description to be used when reporting this {@link @serenity-js/core/lib/screenplay~Activity}.
-//      *
-//      * @returns {string}
-//      */
-//     toString(): string {
-//         return formatted `#actor navigates back in the browser history`;
-//     }
-// }
-//
-// /**
-//  * @package
-//  */
-// class NavigateForward extends Interaction {
-//
-//     /**
-//      * @desc
-//      *  Makes the provided {@link @serenity-js/core/lib/screenplay/actor~Actor}
-//      *  perform this {@link @serenity-js/core/lib/screenplay~Interaction}.
-//      *
-//      * @param {UsesAbilities & AnswersQuestions} actor
-//      *  An {@link @serenity-js/core/lib/screenplay/actor~Actor} to perform this {@link @serenity-js/core/lib/screenplay~Interaction}
-//      *
-//      * @returns {PromiseLike<void>}
-//      *
-//      * @see {@link @serenity-js/core/lib/screenplay/actor~Actor}
-//      * @see {@link @serenity-js/core/lib/screenplay/actor~UsesAbilities}
-//      * @see {@link @serenity-js/core/lib/screenplay/actor~AnswersQuestions}
-//      */
-//     performAs(actor: UsesAbilities & AnswersQuestions): Promise<void> {
-//         return promiseOf(BrowseTheWeb.as(actor).navigate().forward());
-//     }
-//
-//     /**
-//      * @desc
-//      *  Generates a description to be used when reporting this {@link @serenity-js/core/lib/screenplay~Activity}.
-//      *
-//      * @returns {string}
-//      */
-//     toString(): string {
-//         return formatted `#actor navigates forward in the browser history`;
-//     }
-// }
-//
-// /**
-//  * @package
-//  */
-// class ReloadPage extends Interaction {
-//
-//     /**
-//      * @desc
-//      *  Makes the provided {@link @serenity-js/core/lib/screenplay/actor~Actor}
-//      *  perform this {@link @serenity-js/core/lib/screenplay~Interaction}.
-//      *
-//      * @param {UsesAbilities & AnswersQuestions} actor
-//      *  An {@link @serenity-js/core/lib/screenplay/actor~Actor} to perform this {@link @serenity-js/core/lib/screenplay~Interaction}
-//      *
-//      * @returns {PromiseLike<void>}
-//      *
-//      * @see {@link @serenity-js/core/lib/screenplay/actor~Actor}
-//      * @see {@link @serenity-js/core/lib/screenplay/actor~UsesAbilities}
-//      * @see {@link @serenity-js/core/lib/screenplay/actor~AnswersQuestions}
-//      */
-//     performAs(actor: UsesAbilities & AnswersQuestions): Promise<void> {
-//         return promiseOf(BrowseTheWeb.as(actor).navigate().refresh());
-//     }
-//
-//     /**
-//      * @desc
-//      *  Generates a description to be used when reporting this {@link @serenity-js/core/lib/screenplay~Activity}.
-//      *
-//      * @returns {string}
-//      */
-//     toString(): string {
-//         return formatted `#actor reloads the page`;
-//     }
-// }

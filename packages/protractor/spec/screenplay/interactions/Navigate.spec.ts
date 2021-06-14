@@ -56,14 +56,15 @@ describe('Navigate', () => {
     describe('back', () => {
 
         /** @test {Navigate.back} */
-        it('allows the actor to navigate back in the browser history', () => actorCalled('Bernie').attemptsTo(
-            Navigate.to(`chrome://version/`),
-            Navigate.to(`chrome://accessibility/`),
+        it('allows the actor to navigate back in the browser history', () =>
+            actorCalled('Bernie').attemptsTo(
+                Navigate.to(`chrome://version/`),
+                Navigate.to(`chrome://accessibility/`),
 
-            Navigate.back(),
+                Navigate.back(),
 
-            Ensure.that(Website.url(), endsWith('version/')),
-        ));
+                Ensure.that(Website.url(), endsWith('version/')),
+            ));
 
         /** @test {Navigate.back} */
         /** @test {Navigate#toString} */
@@ -76,15 +77,16 @@ describe('Navigate', () => {
     describe('forward', () => {
 
         /** @test {Navigate.forward} */
-        it('allows the actor to navigate forward in the browser history', () => actorCalled('Bernie').attemptsTo(
-            Navigate.to('/screenplay/interactions/navigate/first.html'),
-            Navigate.to('/screenplay/interactions/navigate/second.html'),
+        it('allows the actor to navigate forward in the browser history', () =>
+            actorCalled('Bernie').attemptsTo(
+                Navigate.to('/screenplay/interactions/navigate/first.html'),
+                Navigate.to('/screenplay/interactions/navigate/second.html'),
 
-            Navigate.back(),
-            Navigate.forward(),
+                Navigate.back(),
+                Navigate.forward(),
 
-            Ensure.that(Website.url(), endsWith('second.html')),
-        ));
+                Ensure.that(Website.url(), endsWith('second.html')),
+            ));
 
         /** @test {Navigate.forward} */
         /** @test {Navigate#toString} */
@@ -97,13 +99,14 @@ describe('Navigate', () => {
     describe('reloadPage', () => {
 
         /** @test {Navigate.reloadPage} */
-        it('allows the actor to navigate to a desired destination', () => actorCalled('Bernie').attemptsTo(
-            Navigate.to('/screenplay/interactions/navigate/reloaded.html'),
+        it('allows the actor to navigate to a desired destination', () =>
+            actorCalled('Bernie').attemptsTo(
+                Navigate.to('/screenplay/interactions/navigate/reloaded.html'),
 
-            Navigate.reloadPage(),
+                Navigate.reloadPage(),
 
-            Ensure.that(Text.of(Target.the('heading').located(by.id('h'))), equals('Reloaded')),
-        ));
+                Ensure.that(Text.of(Target.the('heading').located(by.id('h'))), equals('Reloaded')),
+            ));
 
         /** @test {Navigate.reloadPage} */
         /** @test {Navigate#toString} */

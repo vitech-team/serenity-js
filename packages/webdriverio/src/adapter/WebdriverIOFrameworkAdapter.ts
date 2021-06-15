@@ -4,7 +4,8 @@ import type { Capabilities } from '@wdio/types';
 import type { EventEmitter } from 'events';
 import { isPlainObject } from 'is-plain-object';
 
-import { BrowserCapabilitiesReporter, BufferedOutputStream, InitialisesReporters, ProvidesWriteStream } from './reporter';
+import { BrowserCapabilitiesReporter, InitialisesReporters, OutputStreamBuffer, ProvidesWriteStream } from './reporter';
+import { OutputStreamBufferPrinter } from './reporter/OutputStreamBufferPrinter';
 import { TestRunnerLoader } from './TestRunnerLoader';
 import { WebdriverIOConfig } from './WebdriverIOConfig';
 import { WebdriverIONotifier } from './WebdriverIONotifier';
@@ -49,18 +50,23 @@ export class WebdriverIOFrameworkAdapter {
             this.specs,
         );
 
-        const outputStream = new BufferedOutputStream(
+        const outputStreamBuffer = new OutputStreamBuffer(
             `[${this.cid}]`,
+        );
+
+        const outputStreamBufferPrinter = new OutputStreamBufferPrinter(
+            outputStreamBuffer,
             reporter.getWriteStreamObject('@serenity-js/webdriverio')
         );
 
         this.serenity.configure({
-            outputStream,
+            outputStream:   outputStreamBuffer,
             cueTimeout:     config.serenity.cueTimeout,
             actors:         config.serenity.actors,
             crew: [
                 ...config.serenity.crew,
                 this.notifier,
+                outputStreamBufferPrinter,
             ]
         });
     }

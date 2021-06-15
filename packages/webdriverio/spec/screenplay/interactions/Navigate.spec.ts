@@ -39,7 +39,6 @@ describe('Navigate', () => {
         });
     });
 
-
     describe('back', () => {
 
         /** @test {Navigate.back} */

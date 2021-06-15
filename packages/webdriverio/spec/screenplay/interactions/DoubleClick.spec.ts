@@ -6,7 +6,6 @@ import { actorCalled } from '@serenity-js/core';
 
 import { by, DoubleClick, Navigate, Target, Text } from '../../../src';
 
-
 describe('DoubleClick', () => {
 
     const Interactive_Element = Target.the('interactive element').located(by.id('double-click-me'));

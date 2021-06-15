@@ -1,17 +1,14 @@
 import 'mocha';
 
 import { expect } from '@integration/testing-tools';
-import * as sinon from 'sinon';
 
 import { OutputStreamBuffer } from '../../../src/adapter/reporter';
 
 describe('OutputStreamBuffer', () => {
 
-    let write:  sinon.SinonSpy,
-        buffer: OutputStreamBuffer;
+    let buffer: OutputStreamBuffer;
 
     beforeEach(() => {
-        write   = sinon.spy();
         buffer  = new OutputStreamBuffer('[prefix]');
     });
 

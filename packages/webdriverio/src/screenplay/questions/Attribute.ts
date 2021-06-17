@@ -1,7 +1,7 @@
 import { Answerable, AnswersQuestions, LogicError, MetaQuestion, Question, UsesAbilities } from '@serenity-js/core';
 import { Element } from 'webdriverio';
 
-import { TargetNestedElement } from './target';
+import { TargetNestedElement } from './targets';
 
 export class Attribute
     extends Question<Promise<string>>

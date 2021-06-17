@@ -1,7 +1,7 @@
 import { Answerable, AnswersQuestions, MetaQuestion, Question, UsesAbilities } from '@serenity-js/core';
 import type { Element, ElementArray } from 'webdriverio';
 
-import { TargetNestedElement, TargetNestedElements } from './target';
+import { TargetNestedElement, TargetNestedElements } from './targets';
 
 export class Text {
     static of(element: Answerable<Element<'async'>>): Question<Promise<string>> & MetaQuestion<Answerable<Element<'async'>>, Promise<string>> {

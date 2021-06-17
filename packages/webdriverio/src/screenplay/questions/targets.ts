@@ -3,7 +3,7 @@ import { Answerable, AnswersQuestions, Expectation, List, MetaQuestion, Question
 import type { Element, ElementArray } from 'webdriverio';
 
 import { ElementArrayListAdapter } from './lists';
-import { Locator } from './Locator';
+import { Locator } from './locators';
 
 export class Target {
     static the(description: string) {

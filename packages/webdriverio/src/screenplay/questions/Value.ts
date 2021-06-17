@@ -2,7 +2,7 @@ import { Answerable, AnswersQuestions, MetaQuestion, Question, UsesAbilities } f
 import { formatted } from '@serenity-js/core/lib/io';
 import { Element } from 'webdriverio';
 
-import { TargetNestedElement } from './target';
+import { TargetNestedElement } from './targets';
 
 /**
  * @extends {@serenity-js/core/lib/screenplay~Question}

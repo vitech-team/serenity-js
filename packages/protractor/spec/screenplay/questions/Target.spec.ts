@@ -36,7 +36,7 @@ describe('Target', () => {
          */
         it('a single web element matching the selector', () =>
             actorCalled('Peter').attemptsTo(
-                Navigate.to('/screenplay/questions/target/shopping_list.html'),
+                Navigate.to('/screenplay/questions/targets/shopping_list.html'),
 
                 Ensure.that(Text.of(ShoppingList.Header), equals('Shopping list')),
             ));
@@ -48,7 +48,7 @@ describe('Target', () => {
          */
         it('all web elements matching the selector', () =>
             actorCalled('Peter').attemptsTo(
-                Navigate.to('/screenplay/questions/target/shopping_list.html'),
+                Navigate.to('/screenplay/questions/targets/shopping_list.html'),
 
                 Ensure.that(Text.ofAll(ShoppingList.Items), contain('oats')),
             ));
@@ -61,7 +61,7 @@ describe('Target', () => {
          */
         it('an element relative to another target', () =>
             actorCalled('Peter').attemptsTo(
-                Navigate.to('/screenplay/questions/target/shopping_list.html'),
+                Navigate.to('/screenplay/questions/targets/shopping_list.html'),
 
                 Ensure.that(Text.of(ShoppingList.Number_Of_Items_Left), equals('2')),
             ));
@@ -74,7 +74,7 @@ describe('Target', () => {
          */
         it('all elements relative to another target', () =>
             actorCalled('Peter').attemptsTo(
-                Navigate.to('/screenplay/questions/target/shopping_list.html'),
+                Navigate.to('/screenplay/questions/targets/shopping_list.html'),
 
                 Ensure.that(Text.ofAll(ShoppingList.Bought_Items), equals(['coffee'])),
             ));
@@ -167,7 +167,7 @@ describe('Target', () => {
          */
         it('allows for Target<ElementFinder> to be nested within another Target<ElementFinder>', () =>
             actorCalled('Peter').attemptsTo(
-                Navigate.to('/screenplay/questions/target/nested_targets.html'),
+                Navigate.to('/screenplay/questions/targets/nested_targets.html'),
 
                 Ensure.that(Text.of(Page.Header.of(Page.Article)), equals('Title')),
                 Ensure.that(Page.Header.of(Page.Article).toString(), equals('the header of the article')),
@@ -182,7 +182,7 @@ describe('Target', () => {
          */
         it('allows for Target<ElementFinder> to form a chain with other Target<ElementFinder>s', () =>
             actorCalled('Peter').attemptsTo(
-                Navigate.to('/screenplay/questions/target/nested_targets.html'),
+                Navigate.to('/screenplay/questions/targets/nested_targets.html'),
 
                 Ensure.that(Text.of(Page.Title.of(Page.Header).of(Page.Article)), equals('Title')),
                 Ensure.that(Page.Title.of(Page.Header.of(Page.Article)).toString(), equals('the title of the header of the article')),
@@ -197,7 +197,7 @@ describe('Target', () => {
          */
         it('allows for Target<ElementArrayFinder> to be nested within another Target<ElementFinder>', () =>
             actorCalled('Peter').attemptsTo(
-                Navigate.to('/screenplay/questions/target/nested_targets.html'),
+                Navigate.to('/screenplay/questions/targets/nested_targets.html'),
 
                 Ensure.that(Text.ofAll(Page.Topics.of(Page.TOC).of(Page.Article)), equals(['topic 1', 'topic 2', 'topic 3'])),
                 Ensure.that(Page.Topics.of(Page.TOC).of(Page.Article).toString(), equals('the topics of the table of contents of the article')),
@@ -215,7 +215,7 @@ describe('Target', () => {
              */
             it('allows for nested Target<ElementArrayFinder> to be filtered', () =>
                 actorCalled('Peter').attemptsTo(
-                    Navigate.to('/screenplay/questions/target/nested_targets.html'),
+                    Navigate.to('/screenplay/questions/targets/nested_targets.html'),
 
                     Ensure.that(
                         Text.ofAll(filteredTopics),
@@ -235,7 +235,7 @@ describe('Target', () => {
              */
             it('allows for nested Target<ElementArrayFinder> to be counted', () =>
                 actorCalled('Peter').attemptsTo(
-                    Navigate.to('/screenplay/questions/target/nested_targets.html'),
+                    Navigate.to('/screenplay/questions/targets/nested_targets.html'),
 
                     Ensure.that(
                         filteredTopics.count(),
@@ -251,7 +251,7 @@ describe('Target', () => {
              */
             it('allows for the first of nested Target<ElementArrayFinder> to be retrieved', () =>
                 actorCalled('Peter').attemptsTo(
-                    Navigate.to('/screenplay/questions/target/nested_targets.html'),
+                    Navigate.to('/screenplay/questions/targets/nested_targets.html'),
 
                     Ensure.that(
                         Text.of(filteredTopics.first()),
@@ -267,7 +267,7 @@ describe('Target', () => {
              */
             it('allows for the last of nested Target<ElementArrayFinder> to be retrieved', () =>
                 actorCalled('Peter').attemptsTo(
-                    Navigate.to('/screenplay/questions/target/nested_targets.html'),
+                    Navigate.to('/screenplay/questions/targets/nested_targets.html'),
 
                     Ensure.that(
                         Text.of(filteredTopics.last()),
@@ -283,7 +283,7 @@ describe('Target', () => {
              */
             it('allows for the nth of nested Target<ElementArrayFinder> to be retrieved', () =>
                 actorCalled('Peter').attemptsTo(
-                    Navigate.to('/screenplay/questions/target/nested_targets.html'),
+                    Navigate.to('/screenplay/questions/targets/nested_targets.html'),
 
                     Ensure.that(
                         Text.of(filteredTopics.get(0)),
@@ -314,7 +314,7 @@ describe('Target', () => {
                  */
                 it('gets the number of items', () =>
                     actorCalled('Peter').attemptsTo(
-                        Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
+                        Navigate.to('/screenplay/questions/targets/advanced_shopping_list.html'),
 
                         Ensure.that(AdvancedShoppingList.Titles.count(), equals(3)),
                     ));
@@ -326,7 +326,7 @@ describe('Target', () => {
                  */
                 it('picks all the items', () =>
                     actorCalled('Peter').attemptsTo(
-                        Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
+                        Navigate.to('/screenplay/questions/targets/advanced_shopping_list.html'),
 
                         Ensure.that(Text.ofAll(AdvancedShoppingList.Titles), contain('coconut milk')),
                     ));
@@ -339,7 +339,7 @@ describe('Target', () => {
                  */
                 it('picks the first item', () =>
                     actorCalled('Peter').attemptsTo(
-                        Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
+                        Navigate.to('/screenplay/questions/targets/advanced_shopping_list.html'),
 
                         Ensure.that(Text.of(AdvancedShoppingList.Titles.first()), equals('oats')),
                     ));
@@ -352,7 +352,7 @@ describe('Target', () => {
                  */
                 it('picks the last item', () =>
                     actorCalled('Peter').attemptsTo(
-                        Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
+                        Navigate.to('/screenplay/questions/targets/advanced_shopping_list.html'),
 
                         Ensure.that(Text.of(AdvancedShoppingList.Titles.last()), equals('coffee')),
                     ));
@@ -365,7 +365,7 @@ describe('Target', () => {
                  */
                 it('picks the nth item', () =>
                     actorCalled('Peter').attemptsTo(
-                        Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
+                        Navigate.to('/screenplay/questions/targets/advanced_shopping_list.html'),
 
                         Ensure.that(Text.of(AdvancedShoppingList.Titles.get(1)), equals('coconut milk')),
                     ));
@@ -444,7 +444,7 @@ describe('Target', () => {
                  */
                 it('gets the number of items', () =>
                     actorCalled('Peter').attemptsTo(
-                        Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
+                        Navigate.to('/screenplay/questions/targets/advanced_shopping_list.html'),
 
                         Ensure.that(list.count(), equals(2)),
                     ));
@@ -456,7 +456,7 @@ describe('Target', () => {
                  */
                 it('picks all the items', () =>
                     actorCalled('Peter').attemptsTo(
-                        Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
+                        Navigate.to('/screenplay/questions/targets/advanced_shopping_list.html'),
 
                         Ensure.that(Text.ofAll(list), contain('coconut milk x')),
                     ));
@@ -468,7 +468,7 @@ describe('Target', () => {
                  */
                 it('picks the first item', () =>
                     actorCalled('Peter').attemptsTo(
-                        Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
+                        Navigate.to('/screenplay/questions/targets/advanced_shopping_list.html'),
 
                         Ensure.that(Text.of(list.first()), startsWith('oats')),
                     ));
@@ -480,7 +480,7 @@ describe('Target', () => {
                  */
                 it('picks the last item', () =>
                     actorCalled('Peter').attemptsTo(
-                        Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
+                        Navigate.to('/screenplay/questions/targets/advanced_shopping_list.html'),
 
                         Ensure.that(Text.of(list.last()), startsWith('coconut milk')),
                     ));
@@ -492,7 +492,7 @@ describe('Target', () => {
                  */
                 it('picks the nth item', () =>
                     actorCalled('Peter').attemptsTo(
-                        Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
+                        Navigate.to('/screenplay/questions/targets/advanced_shopping_list.html'),
 
                         Ensure.that(Text.of(list.get(1)), startsWith('coconut milk')),
                     ));
@@ -562,7 +562,7 @@ describe('Target', () => {
                  */
                 it('gets the number of items', () =>
                     actorCalled('Peter').attemptsTo(
-                        Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
+                        Navigate.to('/screenplay/questions/targets/advanced_shopping_list.html'),
 
                         Ensure.that(list.count(), equals(1)),
                     ));
@@ -573,7 +573,7 @@ describe('Target', () => {
                  */
                 it('picks all the items', () =>
                     actorCalled('Peter').attemptsTo(
-                        Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
+                        Navigate.to('/screenplay/questions/targets/advanced_shopping_list.html'),
 
                         Ensure.that(Text.ofAll(list), contain('coconut milk x')),
                     ));
@@ -584,7 +584,7 @@ describe('Target', () => {
                  */
                 it('picks the first item', () =>
                     actorCalled('Peter').attemptsTo(
-                        Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
+                        Navigate.to('/screenplay/questions/targets/advanced_shopping_list.html'),
 
                         Ensure.that(Text.of(list.first()), startsWith('coconut milk')),
                     ));
@@ -595,7 +595,7 @@ describe('Target', () => {
                  */
                 it('picks the last item', () =>
                     actorCalled('Peter').attemptsTo(
-                        Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
+                        Navigate.to('/screenplay/questions/targets/advanced_shopping_list.html'),
 
                         Ensure.that(Text.of(list.last()), startsWith('coconut milk')),
                     ));
@@ -606,7 +606,7 @@ describe('Target', () => {
                  */
                 it('picks the nth item', () =>
                     actorCalled('Peter').attemptsTo(
-                        Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
+                        Navigate.to('/screenplay/questions/targets/advanced_shopping_list.html'),
 
                         Ensure.that(Text.of(list.get(0)), startsWith('coconut milk')),
                     ));
@@ -686,7 +686,7 @@ describe('Target', () => {
              */
             it('makes it easy for an actor to pick the element of interest', () =>
                 actorCalled('Peter').attemptsTo(
-                    Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
+                    Navigate.to('/screenplay/questions/targets/advanced_shopping_list.html'),
 
                     Click.on(LinkTo(ItemCalled('coffee'))),
 
@@ -699,7 +699,7 @@ describe('Target', () => {
              */
             it('makes it easy for an actor to pick all elements of interest', () =>
                 actorCalled('Peter').attemptsTo(
-                    Navigate.to('/screenplay/questions/target/advanced_shopping_list.html'),
+                    Navigate.to('/screenplay/questions/targets/advanced_shopping_list.html'),
 
                     Click.on(LinkTo(ItemCalled('coconut milk'))),
                     Click.on(LinkTo(ItemCalled('coffee'))),

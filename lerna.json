@@ -25,7 +25,7 @@
     "integration/**",
     "packages/**"
   ],
-  "version": "2.29.4",
+  "version": "2.29.6",
   "command": {
     "create": {
       "homepage": "https://serenity-js.org",
@@ -45,6 +45,14 @@
     }
   },
   "ignoreChanges": [
+    "./.eslintrc.js",
+    "./.esdoc.js",
+    "./.esdoc-patches.js",
+    "./.mocharc.yml",
+    "./.npmignore",
+    "./.nvmrc",
+    "./gh-pages.js",
+    "./Makefile",
     "**/*.md",
     "**/spec/**",
     "./package.json",

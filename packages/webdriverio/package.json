@@ -54,8 +54,8 @@
   },
   "dependencies": {
     "@serenity-js/core": "2.29.6",
-    "@wdio/types": "^7.4.2",
-    "@wdio/reporter": "^7.4.2",
+    "@wdio/types": "^7.7.3",
+    "@wdio/reporter": "^7.7.3",
     "deepmerge": "^4.2.2",
     "is-plain-object": "^5.0.0",
     "tiny-types": "^1.16.1"
@@ -99,7 +99,7 @@
     "mocha": "^8.4.0",
     "mocha-testdata": "^1.2.0",
     "start-server-and-test": "^1.12.5",
-    "webdriverio": "^7.5.7"
+    "webdriverio": "^7.7.4"
   },
   "nyc": {
     "include": [

@@ -1,18 +1,13 @@
 import { resolve } from 'path';
-import { createWriteStream } from 'fs';
-import { StreamReporter } from '@serenity-js/core';
 import { ConsoleReporter } from '@serenity-js/console-reporter';
-import Inspector from './src/Inspector';
 
 export const config = {
 
     framework: '@serenity-js/webdriverio',
-    // framework: 'mocha',
 
     serenity: {
         crew: [
             ConsoleReporter.forDarkTerminals(),
-            // new StreamReporter(createWriteStream(`events-${ process.pid }.ndjson`)),
         ]
     },
 
@@ -25,10 +20,9 @@ export const config = {
         './spec/**/*.spec.ts',
     ],
 
-    reporters: [
-        'spec',
-        Inspector,
-    ],
+    // reporters: [
+    //     'spec',
+    // ],
 
     autoCompileOpts: {
         autoCompile: true,

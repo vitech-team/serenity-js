@@ -8,43 +8,44 @@ import type { Element } from 'webdriverio';
 
 import { by, Click, CSSClasses, Navigate, Target, Text } from '../../../src';
 
+/**
+ * @test {Target}
+ */
 describe('Target', () => {
 
     class ShoppingList {
-        static App = Target.the('shopping list app').located(by.id('shopping-list-app'));
-        static Progress = Target.the('progress bar').located(by.css('.progress')).of(ShoppingList.App);
-        static Number_Of_Items_Left = Target.the('number of items left').of(ShoppingList.Progress).located(by.css('span'));
+        static app = Target.the('shopping list app').located(by.id('shopping-list-app'));
+        static progress = Target.the('progress bar').located(by.css('.progress')).of(ShoppingList.app);
+        static numberOfItemsLeft = Target.the('number of items left').of(ShoppingList.progress).located(by.css('span'));
 
-        static Header = Target.the('header').located(by.tagName('h1'));
-        static List = Target.the('shopping list').located(by.tagName('ul'));
-        static Items = Target.all('items').of(ShoppingList.App).located(by.tagName('li'));
-        static Bought_Items = Target.all('bought items').located(by.css('.bought')).of(ShoppingList.List);
+        static header = Target.the('header').located(by.tagName('h1'));
+        static list = Target.the('shopping list').located(by.tagName('ul'));
+        static items = Target.all('items').of(ShoppingList.app).located(by.tagName('li'));
+        static boughtItems = Target.all('bought items').located(by.css('.bought')).of(ShoppingList.list);
     }
 
     describe('allows the actor to locate', () => {
 
         /**
          * @test {Target}
-         * @test {Target.the}
          * @test {TargetElement}
          */
         it('a single web element matching the selector', () =>
             actorCalled('Wendy').attemptsTo(
                 Navigate.to('/screenplay/questions/targets/shopping_list.html'),
 
-                Ensure.that(Text.of(ShoppingList.Header), equals('Shopping list')),
+                Ensure.that(Text.of(ShoppingList.header), equals('Shopping list')),
             ));
 
         /**
          * @test {Target}
-         * @test {Target.all}
          * @test {TargetElements}
          */
         it('all web elements matching the selector', () =>
             actorCalled('Wendy').attemptsTo(
                 Navigate.to('/screenplay/questions/targets/shopping_list.html'),
 
-                Ensure.that(Text.ofAll(ShoppingList.Items), contain('oats')),
+                Ensure.that(Text.ofAll(ShoppingList.items), contain('oats')),
             ));
 
         /**
@@ -57,7 +58,7 @@ describe('Target', () => {
             actorCalled('Wendy').attemptsTo(
                 Navigate.to('/screenplay/questions/targets/shopping_list.html'),
 
-                Ensure.that(Text.of(ShoppingList.Number_Of_Items_Left), equals('2')),
+                Ensure.that(Text.of(ShoppingList.numberOfItemsLeft), equals('2')),
             ));
 
         /**
@@ -70,7 +71,7 @@ describe('Target', () => {
             actorCalled('Wendy').attemptsTo(
                 Navigate.to('/screenplay/questions/targets/shopping_list.html'),
 
-                Ensure.that(Text.ofAll(ShoppingList.Bought_Items), equals([ 'coffee' ])),
+                Ensure.that(Text.ofAll(ShoppingList.boughtItems), equals([ 'coffee' ])),
             ));
     });
 
@@ -84,7 +85,7 @@ describe('Target', () => {
              * @test {TargetElement}
              */
             it('is being targeted', () => {
-                expect(ShoppingList.Header.toString())
+                expect(ShoppingList.header.toString())
                     .to.equal('the header');
             });
 
@@ -95,7 +96,7 @@ describe('Target', () => {
              * @test {TargetNestedElement#of}
              */
             it('is nested', () => {
-                expect(ShoppingList.Number_Of_Items_Left.toString())
+                expect(ShoppingList.numberOfItemsLeft.toString())
                     .to.equal('number of items left of the progress bar of the shopping list app');
             });
         });
@@ -108,7 +109,7 @@ describe('Target', () => {
              * @test {TargetElements}
              */
             it('are being targeted', () => {
-                expect(ShoppingList.Items.toString())
+                expect(ShoppingList.items.toString())
                     .to.equal('items of the shopping list app');
             });
 
@@ -119,7 +120,7 @@ describe('Target', () => {
              * @test {TargetNestedElements}
              */
             it('are nested', () => {
-                expect(ShoppingList.Bought_Items.toString())
+                expect(ShoppingList.boughtItems.toString())
                     .to.equal('bought items of the shopping list');
             });
         });

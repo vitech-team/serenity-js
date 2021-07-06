@@ -10,20 +10,20 @@ describe('Attribute', () => {
 
     describe('called', () => {
 
-        const DOM = Target.the('DOM').located(by.tagName('html'));
+        const dom = Target.the('DOM').located(by.tagName('html'));
 
         /** @test {Attribute.called} */
         it('allows the actor to read an attribute of a DOM element matching the locator', () =>
             actorCalled('Wendy').attemptsTo(
                 Navigate.to('/screenplay/questions/attribute/language.html'),
 
-                Ensure.that(Attribute.called('lang').of(DOM), equals('en')),
+                Ensure.that(Attribute.called('lang').of(dom), equals('en')),
             ));
 
         /** @test {Attribute.called} */
         /** @test {Attribute#toString} */
         it('produces a sensible description of the question being asked', () => {
-            expect(Attribute.called('lang').of(DOM).toString())
+            expect(Attribute.called('lang').of(dom).toString())
                 .to.equal('"lang" attribute of the DOM');
         });
 

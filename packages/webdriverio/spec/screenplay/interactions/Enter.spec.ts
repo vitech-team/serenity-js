@@ -10,8 +10,8 @@ import { by, Enter, Navigate, Target, Value } from '../../../src';
 describe('Enter', () => {
 
     const Form = {
-        Field: Target.the('name field').located(by.id('field')),
-        Result: Target.the('result').located(by.id('result')),
+        field: Target.the('name field').located(by.id('field')),
+        result: Target.the('result').located(by.id('result')),
     };
 
     /** @test {Enter} */
@@ -20,9 +20,9 @@ describe('Enter', () => {
         actorCalled('Bernie').attemptsTo(
             Navigate.to('/screenplay/interactions/enter/text_copier.html'),
 
-            Enter.theValue(actorCalled('Bernie').name).into(Form.Field),
+            Enter.theValue(actorCalled('Bernie').name).into(Form.field),
 
-            Ensure.that(Value.of(Form.Field), equals(actorCalled('Bernie').name)),
+            Ensure.that(Value.of(Form.field), equals(actorCalled('Bernie').name)),
         ));
 
     /** @test {Enter} */
@@ -31,14 +31,14 @@ describe('Enter', () => {
         actorCalled('Bernie').attemptsTo(
             Navigate.to('/screenplay/interactions/enter/text_copier.html'),
 
-            Enter.theValue('1', ['2', '3']).into(Form.Field),
+            Enter.theValue('1', ['2', '3']).into(Form.field),
 
-            Ensure.that(Value.of(Form.Field), equals('123')),
+            Ensure.that(Value.of(Form.field), equals('123')),
         ));
 
     /** @test {Enter#toString} */
     it('provides a sensible description of the interaction being performed', () => {
-        expect(Enter.theValue(actorCalled('Bernie').name).into(Form.Field).toString())
+        expect(Enter.theValue(actorCalled('Bernie').name).into(Form.field).toString())
             .to.equal(`#actor enters 'Bernie' into the name field`);
     });
 });

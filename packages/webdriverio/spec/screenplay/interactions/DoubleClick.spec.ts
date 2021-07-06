@@ -8,7 +8,7 @@ import { by, DoubleClick, Navigate, Target, Text } from '../../../src';
 
 describe('DoubleClick', () => {
 
-    const Interactive_Element = Target.the('interactive element').located(by.id('double-click-me'));
+    const interactiveElement = Target.the('interactive element').located(by.id('double-click-me'));
 
     /** @test {DoubleClick} */
     /** @test {DoubleClick.on} */
@@ -16,14 +16,14 @@ describe('DoubleClick', () => {
         actorCalled('Bernie').attemptsTo(
             Navigate.to('/screenplay/interactions/double-click/example.html'),
 
-            DoubleClick.on(Interactive_Element),
+            DoubleClick.on(interactiveElement),
 
-            Ensure.that(Text.of(Interactive_Element), equals('done!')),
+            Ensure.that(Text.of(interactiveElement), equals('done!')),
         ));
 
     /** @test {DoubleClick#toString} */
     it('provides a sensible description of the interaction being performed', () => {
-        expect(DoubleClick.on(Interactive_Element).toString())
+        expect(DoubleClick.on(interactiveElement).toString())
             .to.equal('#actor double-clicks on the interactive element');
     });
 });

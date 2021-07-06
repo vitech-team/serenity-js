@@ -10,8 +10,8 @@ import { Attribute, by, Hover, Navigate, Target } from '../../../src';
 describe('Hover', function () {
 
     const Page = {
-        Header: Target.the('header').located(by.css('h1')),
-        Link:   Target.the('link').located(by.css('a')),
+        header: Target.the('header').located(by.css('h1')),
+        link:   Target.the('link').located(by.css('a')),
     };
 
     /** @test {Hover.over} */
@@ -19,18 +19,18 @@ describe('Hover', function () {
         actorCalled('Mickey').attemptsTo(
             Navigate.to('/screenplay/interactions/hover/example.html'),
 
-            Ensure.that(Attribute.called('class').of(Page.Link), equals('off')),
+            Ensure.that(Attribute.called('class').of(Page.link), equals('off')),
 
-            Hover.over(Page.Link),
-            Ensure.that(Attribute.called('class').of(Page.Link), equals('on')),
+            Hover.over(Page.link),
+            Ensure.that(Attribute.called('class').of(Page.link), equals('on')),
 
-            Hover.over(Page.Header),
-            Ensure.that(Attribute.called('class').of(Page.Link), equals('off')),
+            Hover.over(Page.header),
+            Ensure.that(Attribute.called('class').of(Page.link), equals('off')),
         ));
 
     /** @test {Hover#toString} */
     it('provides a sensible description of the interaction being performed', () => {
-        expect(Hover.over(Page.Link).toString())
+        expect(Hover.over(Page.link).toString())
             .to.equal(`#actor hovers the mouse over the link`);
     });
 });

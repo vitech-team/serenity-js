@@ -9,7 +9,7 @@ import { by, Navigate, Target, Text, Wait } from '../../../src';
 /** @test {Wait} */
 describe('Wait', () => {
 
-    const Status = Target.the('header').located(by.id('status'));
+    const status = Target.the('header').located(by.id('status'));
 
     describe('for', () => {
 
@@ -20,7 +20,7 @@ describe('Wait', () => {
 
                 Wait.for(Duration.ofMilliseconds(1500)),
 
-                Ensure.that(Text.of(Status), equals('Ready!')),
+                Ensure.that(Text.of(status), equals('Ready!')),
             ));
 
         /** @test {Wait#toString} */
@@ -37,9 +37,9 @@ describe('Wait', () => {
             actorCalled('Wendy').attemptsTo(
                 Navigate.to('/screenplay/interactions/wait/loader.html'),
 
-                Wait.until(Text.of(Status), equals('Ready!')),
+                Wait.until(Text.of(status), equals('Ready!')),
 
-                Ensure.that(Text.of(Status), equals('Ready!')),
+                Ensure.that(Text.of(status), equals('Ready!')),
             ));
 
         /** @test {Wait.upTo} */
@@ -48,7 +48,7 @@ describe('Wait', () => {
             expect(actorCalled('Wendy').attemptsTo(
                 Navigate.to('/screenplay/interactions/wait/loader.html'),
 
-                Wait.upTo(Duration.ofMilliseconds(10)).until(Text.of(Status), equals('Ready!')),
+                Wait.upTo(Duration.ofMilliseconds(10)).until(Text.of(status), equals('Ready!')),
             )).to.be.rejected.then((error: AssertionError) => {
                 expect(error).to.be.instanceOf(AssertionError);
                 expect(error.message).to.be.equal(`Waited 10ms for the text of the header to equal 'Ready!'`);
@@ -61,7 +61,7 @@ describe('Wait', () => {
 
         /** @test {Wait#toString} */
         it('provides a sensible description of the interaction being performed', () => {
-            expect(Wait.upTo(Duration.ofMilliseconds(10)).until(Text.of(Status), equals('Ready!')).toString())
+            expect(Wait.upTo(Duration.ofMilliseconds(10)).until(Text.of(status), equals('Ready!')).toString())
                 .to.equal(`#actor waits up to 10ms until the text of the header does equal 'Ready!'`);
         });
     });

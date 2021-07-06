@@ -10,23 +10,23 @@ import { by, Click, isSelected, Navigate, Target } from '../../../src';
 describe('Click', () => {
 
     const Form = {
-        Checkbox: Target.the('checkbox').located(by.id('no-spam-please')),
+        checkbox: Target.the('checkbox').located(by.id('no-spam-please')),
     };
 
     /** @test {Click.on} */
     it('allows the actor to click on an element', () =>
         actorCalled('Wendy').attemptsTo(
             Navigate.to('/screenplay/interactions/click/no_spam_form.html'),
-            Ensure.that(Form.Checkbox, not(isSelected())),
+            Ensure.that(Form.checkbox, not(isSelected())),
 
-            Click.on(Form.Checkbox),
+            Click.on(Form.checkbox),
 
-            Ensure.that(Form.Checkbox, isSelected()),
+            Ensure.that(Form.checkbox, isSelected()),
         ));
 
     /** @test {Click#toString} */
     it('provides a sensible description of the interaction being performed', () => {
-        expect(Click.on(Form.Checkbox).toString())
+        expect(Click.on(Form.checkbox).toString())
             .to.equal('#actor clicks on the checkbox');
     });
 });

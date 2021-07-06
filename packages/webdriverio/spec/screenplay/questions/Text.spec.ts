@@ -10,14 +10,14 @@ describe('Text', () => {
 
     describe('of', () => {
 
-        const Header = Target.the('header').located(by.tagName('h1'));
+        const header = Target.the('header').located(by.tagName('h1'));
 
         /** @test {Text.of} */
         it('allows the actor to read the text of the DOM element matching the locator', () =>
             actorCalled('Wendy').attemptsTo(
                 Navigate.to('/screenplay/questions/text/hello_world.html'),
 
-                Ensure.that(Text.of(Header), equals('Hello World!')),
+                Ensure.that(Text.of(header), equals('Hello World!')),
             ));
 
         /** @test {Text.of} */
@@ -36,7 +36,7 @@ describe('Text', () => {
 
                     Navigate.to('/screenplay/questions/text/single_number_example.html'),
 
-                    Ensure.that(Text.of(Header).map(toNumber()), equals(2)),
+                    Ensure.that(Text.of(header).map(toNumber()), equals(2)),
                 ));
 
             /** @test {Text.of} */
@@ -47,7 +47,7 @@ describe('Text', () => {
                     Navigate.to('/screenplay/questions/text/date_example.html'),
 
                     Ensure.that(
-                        Text.of(Header).map(trim()).map(actor => value => new Date(value)), // eslint-disable-line unicorn/consistent-function-scoping
+                        Text.of(header).map(trim()).map(actor => value => new Date(value)), // eslint-disable-line unicorn/consistent-function-scoping
                         equals(new Date('2020-09-11T19:53:18.160Z'))
                     ),
                 ));

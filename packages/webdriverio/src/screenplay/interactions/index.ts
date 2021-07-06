@@ -5,3 +5,4 @@ export * from './Hover';
 export * from './Navigate';
 export * from './RightClick';
 export * from './Wait';
+export * from './WebElementInteraction';

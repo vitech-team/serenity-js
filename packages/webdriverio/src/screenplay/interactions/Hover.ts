@@ -1,6 +1,7 @@
 import { Answerable, AnswersQuestions, Interaction, UsesAbilities } from '@serenity-js/core';
 import { formatted } from '@serenity-js/core/lib/io';
 import { Element } from 'webdriverio';
+import { WebElementInteraction } from './WebElementInteraction';
 
 /**
  * @desc
@@ -42,9 +43,9 @@ import { Element } from 'webdriverio';
  * @see {@link @serenity-js/assertions~Ensure}
  * @see {@link @serenity-js/assertions/lib/expectations~equals}
  *
- * @extends {@serenity-js/core/lib/screenplay~Interaction}
+ * @extends {WebElementInteraction}
  */
-export class Hover extends Interaction {
+export class Hover extends WebElementInteraction {
 
     /**
      * @desc
@@ -64,7 +65,7 @@ export class Hover extends Interaction {
      *  The element to be hovered over
      */
     constructor(private readonly target: Answerable<Element<'async'>>) {
-        super();
+        super(formatted `#actor hovers the mouse over ${ target }`);
     }
 
     /**
@@ -82,17 +83,7 @@ export class Hover extends Interaction {
      * @see {@link @serenity-js/core/lib/screenplay/actor~AnswersQuestions}
      */
     async performAs(actor: UsesAbilities & AnswersQuestions): Promise<void> {
-        const element = await actor.answer(this.target)
+        const element = await this.resolve(actor, this.target);
         return element.moveTo();
-    }
-
-    /**
-     * @desc
-     *  Generates a description to be used when reporting this {@link @serenity-js/core/lib/screenplay~Activity}.
-     *
-     * @returns {string}
-     */
-    toString(): string {
-        return formatted `#actor hovers the mouse over ${this.target}`;
     }
 }

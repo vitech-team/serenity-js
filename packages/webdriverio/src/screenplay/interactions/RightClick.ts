@@ -1,6 +1,7 @@
 import { Answerable, AnswersQuestions, Interaction, UsesAbilities } from '@serenity-js/core';
 import { formatted } from '@serenity-js/core/lib/io';
 import { Element } from 'webdriverio';
+import { WebElementInteraction } from './WebElementInteraction';
 
 /**
  * @desc
@@ -53,9 +54,9 @@ import { Element } from 'webdriverio';
  * @see {@link @serenity-js/assertions~Ensure}
  * @see {@link isVisible}
  *
- * @extends {@serenity-js/core/lib/screenplay~Interaction}
+ * @extends {WebElementInteraction}
  */
-export class RightClick extends Interaction {
+export class RightClick extends WebElementInteraction {
     /**
      * @desc
      *  Instantiates this {@link @serenity-js/core/lib/screenplay~Interaction}.
@@ -74,7 +75,7 @@ export class RightClick extends Interaction {
      *  The element to be right-clicked on
      */
     constructor(private readonly target: Answerable<Element<'async'>>) {
-        super();
+        super(formatted `#actor right-clicks on ${ target }`);
     }
 
     /**
@@ -92,17 +93,7 @@ export class RightClick extends Interaction {
      * @see {@link @serenity-js/core/lib/screenplay/actor~AnswersQuestions}
      */
     async performAs(actor: UsesAbilities & AnswersQuestions): Promise<void> {
-        const element = await actor.answer(this.target)
+        const element = await this.resolve(actor, this.target);
         return element.click({ button: 'right' });
-    }
-
-    /**
-     * @desc
-     *  Generates a description to be used when reporting this {@link @serenity-js/core/lib/screenplay~Activity}.
-     *
-     * @returns {string}
-     */
-    toString(): string {
-        return formatted`#actor right-clicks on ${this.target}`;
     }
 }

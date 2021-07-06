@@ -1,6 +1,7 @@
 import { Answerable, AnswersQuestions, Interaction, UsesAbilities } from '@serenity-js/core';
 import { formatted } from '@serenity-js/core/lib/io';
 import { Element } from 'webdriverio';
+import { WebElementInteraction } from './WebElementInteraction';
 
 /**
  * @desc
@@ -54,9 +55,9 @@ import { Element } from 'webdriverio';
  *
  * @see {@link Target}
  *
- * @extends {@serenity-js/core/lib/screenplay~Interaction}
+ * @extends {WebElementInteraction}
  */
-export class DoubleClick extends Interaction {
+export class DoubleClick extends WebElementInteraction {
 
     /**
      * @desc
@@ -76,7 +77,7 @@ export class DoubleClick extends Interaction {
      *  The element to be double-clicked on
      */
     constructor(private readonly target: Answerable<Element<'async'>>) {
-        super();
+        super(formatted `#actor double-clicks on ${ target }`);
     }
 
     /**
@@ -94,17 +95,7 @@ export class DoubleClick extends Interaction {
      * @see {@link @serenity-js/core/lib/screenplay/actor~AnswersQuestions}
      */
     async performAs(actor: UsesAbilities & AnswersQuestions): Promise<void> {
-        const element = await actor.answer(this.target)
+        const element = await this.resolve(actor, this.target);
         return element.doubleClick();
-    }
-
-    /**
-     * @desc
-     *  Generates a description to be used when reporting this {@link @serenity-js/core/lib/screenplay~Activity}.
-     *
-     * @returns {string}
-     */
-    toString(): string {
-        return formatted `#actor double-clicks on ${ this.target }`;
     }
 }

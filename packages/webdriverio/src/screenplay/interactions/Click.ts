@@ -1,6 +1,7 @@
 import { Answerable, AnswersQuestions, Interaction, UsesAbilities } from '@serenity-js/core';
 import { formatted } from '@serenity-js/core/lib/io';
 import { Element } from 'webdriverio';
+import { WebElementInteraction } from './WebElementInteraction';
 
 /**
  * @desc
@@ -37,9 +38,9 @@ import { Element } from 'webdriverio';
  * @see {@link @serenity-js/assertions~Ensure}
  * @see {@link isSelected}
  *
- * @extends {@serenity-js/core/lib/screenplay~Interaction}
+ * @extends {WebElementInteraction}
  */
-export class Click extends Interaction {
+export class Click extends WebElementInteraction {
 
     /**
      * @desc
@@ -59,7 +60,7 @@ export class Click extends Interaction {
      *  The element to be clicked on
      */
     constructor(private readonly target: Answerable<Element<'async'>>) {
-        super();
+        super(formatted `#actor clicks on ${ target }`);
     }
 
     /**
@@ -77,17 +78,7 @@ export class Click extends Interaction {
      * @see {@link @serenity-js/core/lib/screenplay/actor~AnswersQuestions}
      */
     async performAs(actor: UsesAbilities & AnswersQuestions): Promise<void> {
-        const element = await actor.answer(this.target)
+        const element = await this.resolve(actor, this.target);
         return element.click();
-    }
-
-    /**
-     * @desc
-     *  Generates a description to be used when reporting this {@link @serenity-js/core/lib/screenplay~Activity}.
-     *
-     * @returns {string}
-     */
-    toString(): string {
-        return formatted `#actor clicks on ${ this.target }`;
     }
 }

@@ -2,6 +2,7 @@ import { Answerable, AnswersQuestions, AssertionError, Duration, Expectation, Ex
 import { formatted } from '@serenity-js/core/lib/io';
 
 import { BrowseTheWeb } from '../abilities';
+import { WaitBuilder } from './WaitBuilder';
 
 /**
  * @desc
@@ -156,39 +157,6 @@ export class Wait {
     static until<Actual>(actual: Answerable<Actual>, expectation: Expectation<any, Actual>): Interaction {
         return new WaitUntil(actual, expectation, Wait.Default_Timeout);
     }
-}
-
-/**
- * @desc
- *  Fluent interface to make the instantiation of
- *  the {@link @serenity-js/core/lib/screenplay~Interaction}
- *  to {@link Wait} more readable.
- *
- * @see {@link Wait}
- *
- * @interface
- */
-export interface WaitBuilder {
-
-    /**
-     * @desc
-     *  Instantiates an {@link @serenity-js/core/lib/screenplay~Interaction}
-     *  to {@link Wait}.
-     *
-     * @param {Answerable<Actual>} actual
-     *  A {@link @serenity-js/core/lib/screenplay~Question}
-     *  that the {@link @serenity-js/core/lib/screenplay/actor~Actor}
-     *  will keep asking until the answer meets
-     *  the {@link @serenity-js/core/lib/screenplay/questions~Expectation} provided
-     *
-     * @param {@serenity-js/core/lib/screenplay/questions~Expectation<any,Actual>} expectation
-     *  An {@link @serenity-js/assertions~Expectation} to be met before proceeding
-     *
-     * @returns {Interaction}
-     *
-     * @see {@link Target}
-     */
-    until: <Actual>(actual: Answerable<Actual>, expectation: Expectation<any, Actual>) => Interaction;
 }
 
 /**

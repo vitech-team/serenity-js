@@ -8,7 +8,7 @@ import { TargetNestedElement } from './targets';
 /**
  * @desc
  *  Resolves to an array of [CSS classes](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes#attr-class)
- *  of a given {@link WebElement}, represented by {@link Element<'async'>} or `Question<Element<'async'>>`.
+ *  of a given {@link WebElement}, represented by {@link @serenity-js/core/lib/screenplay~Answerable<Element<'async'>>}.
  *
  * @example <caption>Example widget</caption>
  *  <ul id="shopping-list" class="active favourite">
@@ -20,23 +20,21 @@ import { TargetNestedElement } from './targets';
  * @example <caption>Retrieve CSS classes of a given WebElement</caption>
  *  import { actorCalled } from '@serenity-js/core';
  *  import { Ensure, equals } from '@serenity-js/assertions';
- *  import { BrowseTheWeb, CSSClasses, Target } from '@serenity-js/protractor';
- *  import { by } from 'protractor';
+ *  import { BrowseTheWeb, by, CSSClasses, Target } from '@serenity-js/webdriverio';
  *
  *  const shoppingList = () =>
  *      Target.the('shopping list').located(by.id('shopping-list'))
  *
  *  actorCalled('Lisa')
- *      .whoCan(BrowseTheWeb.using(protractor.browser))
+ *      .whoCan(BrowseTheWeb.using(browser))
  *      .attemptsTo(
  *          Ensure.that(CSSClasses.of(shoppingList()), equals([ 'active', 'favourite' ])),
  *      )
  *
  * @example <caption>Find WebElements with a given class</caption>
  *  import { actorCalled } from '@serenity-js/core';
- *  import { Ensure, equals } from '@serenity-js/assertions';
- *  import { BrowseTheWeb, CSSClasses, Target } from '@serenity-js/protractor';
- *  import { by } from 'protractor';
+ *  import { Ensure, contain } from '@serenity-js/assertions';
+ *  import { BrowseTheWeb, by, CSSClasses, Target } from '@serenity-js/webdriverio';
  *
  *  class ShoppingList {
  *      static items = () =>
@@ -49,7 +47,7 @@ import { TargetNestedElement } from './targets';
  *  }
  *
  *  actorCalled('Lisa')
- *      .whoCan(BrowseTheWeb.using(protractor.browser))
+ *      .whoCan(BrowseTheWeb.using(browser))
  *      .attemptsTo(
  *          Ensure.that(
  *              Text.ofAll(ShoppingList.outstandingItems()),
@@ -84,7 +82,7 @@ export class CSSClasses
      *  Resolves to an array of CSS classes of the `target` element,
      *  located in the context of a `parent` element.
      *
-     * @param {Question<Element<'async'>> | Element<'async'>} parent
+     * @param {@serenity-js/core/lib/screenplay~Answerable<Element<'async'>>} parent
      * @returns {Question<Promise<string[]>>}
      *
      * @see {@link Target.all}

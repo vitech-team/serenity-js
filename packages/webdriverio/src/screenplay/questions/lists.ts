@@ -3,8 +3,6 @@ import { formatted } from '@serenity-js/core/lib/io';
 import { ListAdapter } from '@serenity-js/core/lib/screenplay/questions/lists';
 import type { Element, ElementArray } from 'webdriverio';
 
-// todo: api docs
-
 /**
  * @desc
  *  Adapts {@link ElementArray} so that it can be used with {@link @serenity-js/core/lib/screenplay/questions~List}.

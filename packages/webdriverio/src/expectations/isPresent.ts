@@ -12,7 +12,7 @@ import { ElementExpectation } from './ElementExpectation';
  *
  * @see https://webdriver.io/docs/api/element/isExisting/
  * @see {@link @serenity-js/assertions~Ensure}
- * @see {@link @serenity-js/assertions~Check}
+ * @see {@link @serenity-js/core/lib/screenplay/questions~Check}
  * @see {@link Wait}
  */
 export function isPresent(): Expectation<boolean, Element<'async'>> {

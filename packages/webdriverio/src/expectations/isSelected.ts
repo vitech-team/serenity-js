@@ -11,7 +11,7 @@ import { ElementExpectation } from './ElementExpectation';
  *
  * @see https://webdriver.io/docs/api/element/isSelected/
  * @see {@link @serenity-js/assertions~Ensure}
- * @see {@link @serenity-js/assertions~Check}
+ * @see {@link @serenity-js/core/lib/screenplay/questions~Check}
  * @see {@link Wait}
  */
 export function isSelected(): Expectation<boolean, Element<'async'>> {

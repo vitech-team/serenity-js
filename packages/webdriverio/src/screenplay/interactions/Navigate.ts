@@ -72,7 +72,7 @@ export class Navigate {
      *  import { BrowseTheWeb, Navigate } from '@serenity-js/webdriverio';
      *
      *  actorCalled('Hannu')
-     *      .whoCan(BrowseTheWeb.using(protractor.browser))
+     *      .whoCan(BrowseTheWeb.using(browser))
      *      .attemptsTo(
      *          Navigate.to('/first'),
      *          Navigate.to('/second'),
@@ -106,7 +106,7 @@ export class Navigate {
      *  import { BrowseTheWeb, Navigate } from '@serenity-js/webdriverio';
      *
      *  actorCalled('Hannu')
-     *      .whoCan(BrowseTheWeb.using(protractor.browser))
+     *      .whoCan(BrowseTheWeb.using(browser))
      *      .attemptsTo(
      *          Navigate.to('/first'),
      *          Navigate.to('/second'),
@@ -141,7 +141,7 @@ export class Navigate {
      *  import { Navigate, BrowseTheWeb, DeleteCookies } from '@serenity-js/webdriverio';
      *
      *  actorCalled('Hannu')
-     *      .whoCan(BrowseTheWeb.using(protractor.browser))
+     *      .whoCan(BrowseTheWeb.using(browser))
      *      .attemptsTo(
      *          Navigate.to('/login'),
      *          DeleteCookies.called('session_id'),

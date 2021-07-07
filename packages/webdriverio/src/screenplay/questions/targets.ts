@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { Answerable, AnswersQuestions, Expectation, List, LogicError, MetaQuestion, Question, UsesAbilities } from '@serenity-js/core';
+import { formatted } from '@serenity-js/core/lib/io';
 import type { Element, ElementArray } from 'webdriverio';
 
 import { ElementArrayListAdapter } from './lists';
 import { Locator } from './locators';
-import { formatted } from '@serenity-js/core/lib/io';
 
 export interface TargetBuilder<T> {
     located(locator: Locator): T;

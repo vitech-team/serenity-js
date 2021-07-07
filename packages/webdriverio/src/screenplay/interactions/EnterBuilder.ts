@@ -1,5 +1,5 @@
-import { Element } from 'webdriverio';
 import { Answerable, Interaction } from '@serenity-js/core';
+import { Element } from 'webdriverio';
 
 /**
  * @desc

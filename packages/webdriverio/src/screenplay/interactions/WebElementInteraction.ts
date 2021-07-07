@@ -1,6 +1,6 @@
 import { Answerable, AnswersQuestions, Interaction, LogicError } from '@serenity-js/core';
-import { Element } from 'webdriverio';
 import { formatted } from '@serenity-js/core/lib/io';
+import { Element } from 'webdriverio';
 
 /**
  * @desc

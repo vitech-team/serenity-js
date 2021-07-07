@@ -1,6 +1,7 @@
 import { Answerable, AnswersQuestions, UsesAbilities } from '@serenity-js/core';
 import { formatted } from '@serenity-js/core/lib/io';
 import { Element } from 'webdriverio';
+
 import { EnterBuilder } from './EnterBuilder';
 import { WebElementInteraction } from './WebElementInteraction';
 

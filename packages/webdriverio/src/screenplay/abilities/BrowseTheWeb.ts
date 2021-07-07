@@ -6,8 +6,8 @@ import type { Browser } from 'webdriverio';
  *  An {@link @serenity-js/core/lib/screenplay~Ability} that enables the {@link @serenity-js/core/lib/screenplay/actor~Actor}
  *  to interact with Web apps using [WebdriverIO](https://webdriver.io/).
  *
- *  *Please note*: this class is still experimental, which means that its interface can change without affecting the major version
- *  of Serenity/JS itself.
+ *  *Please note*: this class is still marked as experimental while new WebdriverIO Interactions and Questions are being developed.
+ *  This means that its interface can change without affecting the major version of Serenity/JS itself.
  *
  * @experimental
  *
@@ -38,6 +38,7 @@ import type { Browser } from 'webdriverio';
 export class BrowseTheWeb implements Ability {
     /**
      * @param {@wdio/types~Browser} browserInstance
+     * @returns {BrowseTheWeb}
      */
     static using(browserInstance: Browser<'async'>): BrowseTheWeb {
         return new BrowseTheWeb(browserInstance);

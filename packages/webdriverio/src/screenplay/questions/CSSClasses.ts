@@ -8,7 +8,7 @@ import { TargetNestedElement } from './targets';
 /**
  * @desc
  *  Resolves to an array of [CSS classes](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes#attr-class)
- *  of a given {@link WebElement}, represented by {@link @serenity-js/core/lib/screenplay~Answerable<Element<'async'>>}.
+ *  of a given {@link WebElement}, represented by WebdriverIO {@link @wdio/types~Element}.
  *
  * @example <caption>Example widget</caption>
  *  <ul id="shopping-list" class="active favourite">

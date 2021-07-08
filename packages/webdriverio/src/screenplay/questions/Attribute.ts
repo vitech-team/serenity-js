@@ -6,7 +6,7 @@ import { TargetNestedElement } from './targets';
 /**
  * @desc
  *  Returns the value of the given HTML attribute of a given {@link WebElement},
- *  represented by WebdriverIO {@link @wdio/types~Element}.
+ *  represented by Answerable<{@link @wdio/types~Element}>
  *
  * @example <caption>Example widget</caption>
  *  <ul id="shopping-list" data-items-left="2">

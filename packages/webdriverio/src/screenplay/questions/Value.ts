@@ -5,6 +5,27 @@ import { Element } from 'webdriverio';
 import { TargetNestedElement } from './targets';
 
 /**
+ * @desc
+ *  Returns the `value` attribute of a given {@link WebElement},
+ *  represented by Answerable<{@link @wdio/types~Element}>
+ *
+ * @example <caption>Example widget</caption>
+ *  <input type="text" id="username" value="Alice" />
+ *
+ * @example <caption>Retrieve CSS classes of a given WebElement</caption>
+ *  import { actorCalled } from '@serenity-js/core';
+ *  import { Ensure, equals } from '@serenity-js/assertions';
+ *  import { BrowseTheWeb, by, Value, Target } from '@serenity-js/webdriverio';
+ *
+ *  const usernameField = () =>
+ *      Target.the('username field').located(by.id('username'))
+ *
+ *  actorCalled('Lisa')
+ *      .whoCan(BrowseTheWeb.using(browser))
+ *      .attemptsTo(
+ *          Ensure.that(Value.of(usernameField), equals('Alice')),
+ *      )
+ *
  * @extends {@serenity-js/core/lib/screenplay~Question}
  * @implements {@serenity-js/core/lib/screenplay/questions~MetaQuestion}
  */

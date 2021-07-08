@@ -1,4 +1,8 @@
 /**
+ * @external {@wdio/types~ElementArray} https://github.com/webdriverio/webdriverio/blob/main/packages/webdriverio/src/types.ts#L89
+ */
+
+/**
  * @external {@wdio/types~Browser} https://github.com/webdriverio/webdriverio/blob/main/packages/webdriverio/src/types.ts#L215
  */
 

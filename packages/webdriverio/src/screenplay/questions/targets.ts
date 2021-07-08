@@ -5,15 +5,19 @@ import type { Element, ElementArray } from 'webdriverio';
 
 import { ElementArrayListAdapter } from './lists';
 import { Locator } from './locators';
+import { TargetBuilder } from './TargetBuilder';
+import { NestedTargetBuilder } from './NestedTargetBuilder';
 
-export interface TargetBuilder<T> {
-    located(locator: Locator): T;
-}
-
-export interface NestedTargetBuilder<T> {
-    of(parent: Answerable<Element<'async'>>): TargetBuilder<T>;
-}
-
+/**
+ * @desc
+ *  A type alias representing a {@link @serenity-js/core/lib/screenplay/questions~List} of WebdriverIO Web elements.
+ *
+ * @public
+ *
+ * @see {@link @serenity-js/core/lib/screenplay/questions~List}
+ *
+ * @typedef {List<ElementArrayListAdapter, Promise<Element<'async'>>, Promise<ElementArray>>} TargetList
+ */
 export type TargetList = List<ElementArrayListAdapter, Promise<Element<'async'>>, Promise<ElementArray>>;
 
 /**
@@ -211,6 +215,12 @@ export class Target {
 }
 
 /**
+ * @desc
+ *  You probably don't want to use this class directly. See {@link Target} instead.
+ *
+ * @extends {@serenity-js/core/lib/screenplay~Question}
+ * @implements {@serenity-js/core/lib/screenplay/questions~MetaQuestion}
+ *
  * @see {@link Target}
  */
 export class TargetElements
@@ -262,6 +272,12 @@ export class TargetElements
 }
 
 /**
+ * @desc
+ *  You probably don't want to use this class directly. See {@link Target} instead.
+ *
+ * @extends {@serenity-js/core/lib/screenplay~Question}
+ * @implements {@serenity-js/core/lib/screenplay/questions~MetaQuestion}
+ *
  * @see {@link Target}
  */
 export class TargetNestedElements
@@ -318,6 +334,12 @@ export class TargetNestedElements
 }
 
 /**
+ * @desc
+ *  You probably don't want to use this class directly. See {@link Target} instead.
+ *
+ * @extends {@serenity-js/core/lib/screenplay~Question}
+ * @implements {@serenity-js/core/lib/screenplay/questions~MetaQuestion}
+ *
  * @see {@link Target}
  */
 export class TargetElement
@@ -343,6 +365,12 @@ export class TargetElement
 }
 
 /**
+ * @desc
+ *  You probably don't want to use this class directly. See {@link Target} instead.
+ *
+ * @extends {@serenity-js/core/lib/screenplay~Question}
+ * @implements {@serenity-js/core/lib/screenplay/questions~MetaQuestion}
+ *
  * @see {@link Target}
  */
 export class TargetNestedElement
@@ -355,6 +383,7 @@ export class TargetNestedElement
     ) {
         super(`${ child } of ${ parent }`);
     }
+
     of(parent: Answerable<Element<'async'>>): Question<Promise<Element<'async'>>> {
         return new TargetNestedElement(parent, this);
     }

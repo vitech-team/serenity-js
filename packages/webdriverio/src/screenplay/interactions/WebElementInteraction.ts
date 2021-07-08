@@ -31,7 +31,7 @@ export abstract class WebElementInteraction extends Interaction {
      *
      * @protected
      */
-    protected async resolve<O>(
+    protected async resolve(
         actor: AnswersQuestions,
         element: Answerable<Element<'async'>>,
     ): Promise<Element<'async'>> {

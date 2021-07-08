@@ -1,5 +1,6 @@
 import { Answerable } from '@serenity-js/core';
 import type { Element } from 'webdriverio';
+
 import { TargetBuilder } from './TargetBuilder';
 
 /**

@@ -5,8 +5,8 @@ import type { Element, ElementArray } from 'webdriverio';
 
 import { ElementArrayListAdapter } from './lists';
 import { Locator } from './locators';
-import { TargetBuilder } from './TargetBuilder';
 import { NestedTargetBuilder } from './NestedTargetBuilder';
+import { TargetBuilder } from './TargetBuilder';
 
 /**
  * @desc

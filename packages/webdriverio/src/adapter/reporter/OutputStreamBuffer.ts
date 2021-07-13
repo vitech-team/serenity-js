@@ -13,6 +13,10 @@ export class OutputStreamBuffer implements OutputStream {
         this.buffer += content;
     }
 
+    hasContent(): boolean {
+        return this.buffer !== '';
+    }
+
     flush(): string {
         const prefixedContent = this.buffer
             .split('\n')

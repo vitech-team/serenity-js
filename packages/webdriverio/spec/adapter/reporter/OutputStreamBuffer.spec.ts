@@ -31,4 +31,14 @@ describe('OutputStreamBuffer', () => {
         expect(buffer.flush()).to.equal('[prefix] Hello World!\n');
         expect(buffer.flush()).to.equal('[prefix] \n');
     });
+
+    it(`knows when content has been written to it`, () => {
+        expect(buffer.hasContent()).to.equal(false);
+
+        buffer.write('');
+        expect(buffer.hasContent()).to.equal(false);
+
+        buffer.write('hello!');
+        expect(buffer.hasContent()).to.equal(true);
+    });
 });

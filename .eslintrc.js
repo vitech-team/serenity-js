@@ -100,6 +100,7 @@ module.exports = {
                 'args': true,
                 'attrs': true,
                 'conf': true,
+                'devtools': true,
                 'docString': true,
                 'DocString': true,
                 'e': true,

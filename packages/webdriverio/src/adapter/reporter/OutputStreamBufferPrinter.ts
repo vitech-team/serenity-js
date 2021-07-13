@@ -22,7 +22,7 @@ export class OutputStreamBufferPrinter implements StageCrewMember {
     }
 
     notifyOf(event: DomainEvent): void {
-        if (event instanceof SceneFinished) {
+        if (event instanceof SceneFinished && this.buffer.hasContent()) {
             this.outputStream.write(this.buffer.flush());
         }
     }

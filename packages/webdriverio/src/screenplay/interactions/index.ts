@@ -1,3 +1,4 @@
+export * from './Clear';
 export * from './Click';
 export * from './DoubleClick';
 export * from './Enter';

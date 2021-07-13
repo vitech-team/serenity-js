@@ -25,11 +25,10 @@ import { WebElementInteraction } from './WebElementInteraction';
  *
  * @example <caption>Entering the value into a form field</caption>
  *  import { actorCalled } from '@serenity-js/core';
- *  import { BrowseTheWeb, Enter } from '@serenity-js/protractor';
- *  import { protractor } from 'protractor';
+ *  import { BrowseTheWeb, Enter } from '@serenity-js/webdriverio';
  *
  *  actorCalled('Esme')
- *      .whoCan(BrowseTheWeb.using(protractor.browser))
+ *      .whoCan(BrowseTheWeb.using(browser))
  *      .attemptsTo(
  *          Enter.theValue('Hello world!').into(Form.exampleInput),
  *      );

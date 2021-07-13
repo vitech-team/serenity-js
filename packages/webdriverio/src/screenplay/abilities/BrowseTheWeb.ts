@@ -1,6 +1,8 @@
 import { Ability, UsesAbilities } from '@serenity-js/core';
 import type { Browser } from 'webdriverio';
 
+import { Key } from '../../input';
+
 /**
  * @desc
  *  An {@link @serenity-js/core/lib/screenplay~Ability} that enables the {@link @serenity-js/core/lib/screenplay/actor~Actor}
@@ -73,5 +75,21 @@ export class BrowseTheWeb implements Ability {
      */
     get(destination: string): Promise<void> {
         return this.browser.url(destination) as any;  // todo: check if this returns a string or is mistyped
+    }
+
+    sendKeys(keys: Array<Key | string>): Promise<void> {
+        const keySequence = keys.map(key => {
+            if (! Key.isKey(key)) {
+                return key;
+            }
+
+            if (browser.isDevTools) {
+                return key.devtoolsName;
+            }
+
+            return key.utf16codePoint;
+        });
+
+        return this.browser.keys(keySequence);
     }
 }

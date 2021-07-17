@@ -121,8 +121,13 @@ class PressKeyInField extends WebElementInteraction {
         const field = await this.resolve(actor, this.field);
         const keys  = await actor.answer(this.keys);
 
-        // todo: replace with execute function
-        await BrowseTheWeb.as(actor).browser.execute(`arguments[0].focus()`, field);
+        await BrowseTheWeb.as(actor).browser.execute(
+            /* istanbul ignore next */
+            function focus(element: any) {  // todo: fix type
+                element.focus();
+            },
+            field,
+        );
 
         return BrowseTheWeb.as(actor).sendKeys(keys);
     }

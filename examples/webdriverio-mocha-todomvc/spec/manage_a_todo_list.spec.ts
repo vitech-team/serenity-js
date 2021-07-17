@@ -1,19 +1,18 @@
 import { describe, it } from 'mocha';
 import { contain, Ensure, equals } from '@serenity-js/assertions';
 import { actorCalled, actorInTheSpotlight } from '@serenity-js/core';
-import { RecordedItems, RecordItem, RemoveItem, RenameItem, Start, ToggleItem } from '../src';
+import { ClearLocalStorage, RecordedItems, RecordItem, RemoveItem, RenameItem, Start, ToggleItem } from '../src';
 
 describe('Managing a Todo List', () => {
 
-    // todo: implement ExecuteScript
-    // afterEach(() =>
-    //     actorInTheSpotlight().attemptsTo(
-    //         // todo ClearLocalStorage(),
-    //     ));
+    afterEach(() =>
+        actorInTheSpotlight().attemptsTo(
+            ClearLocalStorage(),
+        ));
 
-    afterEach(() => {
-        browser.execute(`window.localStorage.clear()`);
-    });
+    // afterEach(() => {
+    //     browser.execute(`window.localStorage.clear()`);
+    // });
 
     describe('TodoMVC', () => {
 

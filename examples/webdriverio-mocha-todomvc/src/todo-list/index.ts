@@ -1,4 +1,4 @@
-// export * from './ClearLocalStorage';
+export * from './ClearLocalStorage';
 export * from './RecordedItems';
 export * from './RecordItem';
 export * from './RemoveItem';

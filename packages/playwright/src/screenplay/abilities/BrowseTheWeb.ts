@@ -157,6 +157,17 @@ export class BrowseTheWeb implements Ability {
 
     /**
      * @desc
+     *  Ability to interact with web front-ends using a given playwright page instance.
+     *
+     * @param {Page} page
+     * @returns {BrowseTheWeb}
+     */
+    public static usingPage(startingPage: Page): BrowseTheWeb {
+        return new BrowseTheWeb(undefined, startingPage);
+    }
+
+    /**
+     * @desc
      *  Used to access the Actor's ability to {@link BrowseTheWeb} from within the {@link Interaction} classes,
      *  such as {@link Navigate}.
      *
@@ -171,11 +182,22 @@ export class BrowseTheWeb implements Ability {
     }
 
     /**
-     * @param {Browser} browser
-     *  An instance of a protractor browser
+     * @param {BrowserType} browserType
+     *  A playwright browser type
+     * @param {Page} startingPage
+     *  A starting page
      */
-    private constructor(protected browserType: BrowserType) {
+    private constructor(
+        protected browserType?: BrowserType,
+        protected startingPage?: Page
+    ) {
         this.storedContext = new Stack();
+
+        if (startingPage) {
+            this._browser = startingPage.context().browser();
+            this._browseContext = startingPage.context();
+            this._page = startingPage;
+        }
     }
 
     public withOptions(options: LaunchOptions): BrowseTheWeb {
@@ -289,9 +311,11 @@ export class BrowseTheWeb implements Ability {
      * @returns {Promise<void>}
      */
     async closePage(): Promise<void> {
-        await (
-            await this.page()
-        ).close();
+        let page = await this.page();
+        if (page === this.startingPage) {
+            throw new LogicError("Closing starting page is not allowed");
+        }
+        await page.close();
         this._page = undefined;
         this.clearContext();
     }
@@ -307,6 +331,7 @@ export class BrowseTheWeb implements Ability {
         const windowToKeep = await this.page();
         const windowsToClose = windows.filter((window) => window !== windowToKeep);
         await Promise.all(windowsToClose.map((window) => window.close()));
+        this.clearContext();
     }
 
     /**
@@ -342,6 +367,15 @@ export class BrowseTheWeb implements Ability {
         return (
             await this.workingContext()
         ).waitForSelector(selector, options);
+    }
+
+    public async waitForLoadState(
+      state?: "load" | "domcontentloaded" | "networkidle",
+      options?: { timeout?: number }
+    ): Promise<void> {
+        return (
+            await this.workingContext()
+        ).waitForLoadState(state, options);
     }
 
     public async click(

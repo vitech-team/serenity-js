@@ -370,8 +370,8 @@ export class BrowseTheWeb implements Ability {
     }
 
     public async waitForLoadState(
-      state?: "load" | "domcontentloaded" | "networkidle",
-      options?: { timeout?: number }
+        state?: "load" | "domcontentloaded" | "networkidle",
+        options?: { timeout: number }
     ): Promise<void> {
         return (
             await this.workingContext()

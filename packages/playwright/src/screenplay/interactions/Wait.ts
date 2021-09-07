@@ -24,6 +24,12 @@ export class Wait {
     static for(duration: Duration): Interaction {
         return Timeout.of(duration);
     }
+
+    static forState(
+        state?: 'load' | 'domcontentloaded' | 'networkidle'
+    ): Interaction & { withOptions({timeout: number}): Interaction } {
+        return new WaitForState(state);
+    }
 }
 
 class WaitUntil extends Interaction {
@@ -92,5 +98,24 @@ class TargetElementInState extends TargetElement {
         this.overrideToString(element, this.toString());
 
         return element;
+    }
+}
+
+class WaitForState extends Interaction {
+    constructor(
+        protected readonly state?: 'load' | 'domcontentloaded' | 'networkidle',
+        protected readonly options?: { timeout: number },
+    ) {
+        super();
+    }
+
+    withOptions(options: { timeout: number }): Interaction {
+        return new WaitForState(this.state, options);
+    }
+
+    async performAs(
+        actor: UsesAbilities & AnswersQuestions & PerformsActivities,
+    ): Promise<void> {
+        await BrowseTheWeb.as(actor).waitForLoadState(this.state, this.options)
     }
 }

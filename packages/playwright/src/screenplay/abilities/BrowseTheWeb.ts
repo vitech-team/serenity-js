@@ -279,6 +279,8 @@ export class BrowseTheWeb implements Ability {
             await this.browser()
         ).close();
         this._browser = undefined;
+        this._page = undefined;
+        this._browseContext = undefined;
         this.clearContext();
     }
 

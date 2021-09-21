@@ -157,17 +157,6 @@ export class BrowseTheWeb implements Ability {
 
     /**
      * @desc
-     *  Ability to interact with web front-ends using a given playwright page instance.
-     *
-     * @param {Page} page
-     * @returns {BrowseTheWeb}
-     */
-    public static usingPage(startingPage: Page): BrowseTheWeb {
-        return new BrowseTheWeb(undefined, startingPage);
-    }
-
-    /**
-     * @desc
      *  Used to access the Actor's ability to {@link BrowseTheWeb} from within the {@link Interaction} classes,
      *  such as {@link Navigate}.
      *
@@ -182,22 +171,11 @@ export class BrowseTheWeb implements Ability {
     }
 
     /**
-     * @param {BrowserType} browserType
-     *  A playwright browser type
-     * @param {Page} startingPage
-     *  A starting page
+     * @param {Browser} browser
+     *  An instance of a playwright browser
      */
-    private constructor(
-        protected browserType?: BrowserType,
-        protected startingPage?: Page
-    ) {
+    private constructor(protected browserType: BrowserType) {
         this.storedContext = new Stack();
-
-        if (startingPage) {
-            this._browser = startingPage.context().browser();
-            this._browseContext = startingPage.context();
-            this._page = startingPage;
-        }
     }
 
     public withOptions(options: LaunchOptions): BrowseTheWeb {
@@ -311,11 +289,9 @@ export class BrowseTheWeb implements Ability {
      * @returns {Promise<void>}
      */
     async closePage(): Promise<void> {
-        let page = await this.page();
-        if (page === this.startingPage) {
-            throw new LogicError("Closing starting page is not allowed");
-        }
-        await page.close();
+        await (
+            await this.page()
+        ).close();
         this._page = undefined;
         this.clearContext();
     }

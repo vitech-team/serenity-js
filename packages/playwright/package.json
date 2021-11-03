@@ -49,7 +49,7 @@
   "dependencies": {
     "@serenity-js/assertions": "^2.29.6",
     "@serenity-js/core": "^2.29.6",
-    "playwright": "^1.12.3"
+    "playwright": "~1.15.2"
   },
   "devDependencies": {
     "@types/chai": "^4.2.21",

@@ -10,6 +10,7 @@ export * from './Navigate';
 export * from './Press';
 export * from './ResizeBrowserWindow';
 export * from './RightClick';
+export * from './Scroll';
 export * from './Select';
 export * from './Switch';
 export * from './TakeScreenshot';

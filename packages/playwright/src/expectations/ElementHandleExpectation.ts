@@ -14,7 +14,7 @@ import { ElementHandleAnswer } from '../answerTypes/ElementHandleAnswer';
 
 type ElementEvent = 'attached' | 'visible' | 'hidden';
 
-type ElementState = 'visible' | 'disabled' | 'enabled' | 'editable' | 'checked' | 'attached' | 'clickable';
+type ElementState = 'visible' | 'disabled' | 'enabled' | 'editable' | 'checked' | 'attached' | 'clickable' | 'hidden';
 
 const expectedEvents = new Map<ElementState, ElementEvent>([
     ['visible', 'visible'],
@@ -24,6 +24,7 @@ const expectedEvents = new Map<ElementState, ElementEvent>([
     ['checked', 'visible'],
     ['attached', 'attached'],
     ['clickable', 'visible'],
+    ['hidden', 'hidden'],
 ]);
 
 export interface ElementHandleEvent {
